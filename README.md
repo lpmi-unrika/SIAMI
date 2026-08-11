@@ -10,3 +10,7 @@ Preview statis untuk menguji alur SIAMI sebelum backend Hostinger dibuat.
 
 ## Isolasi data
 Versi GitHub Preview memakai key `siami_preview_*`, sehingga tidak menimpa data versi GitHub SIAMI lama pada browser yang sama.
+
+
+## Master 25 Unit
+Daftar unit audit AMI 2026 sudah dimuat otomatis pada `preview.js` dan tetap dapat diedit oleh Admin LPMI melalui `master-unit.html`.
