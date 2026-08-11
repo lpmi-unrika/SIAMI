@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Tindakan Koreksi & RTL Form 4 | SIAMI Preview</title><link rel="stylesheet" href="preview.css">
+<script src="preview.js"></script><script src="audit-items.js"></script></head><body>
+<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Preview alur sebelum implementasi hosting</p></div></div>
+<div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header><div class="shell"><aside class="side">
+<div class="panel"><h3>Menu Auditee</h3><div class="nav mt">
+<a href="auditee.html">Dashboard Auditee</a>
+<a href="auditee-bukti.html">Persiapan Bukti Form 1b</a>
+<a href="auditee-form3.html">Tanggapan Temuan Form 3</a>
+<a href="auditee-form4.html" class="active">Tindakan Koreksi & RTL</a>
+<a href="auditee-persetujuan.html">Persetujuan Saya</a>
+<a href="auditee-status.html">Status Audit</a>
+<a href="cek-alur.html">Panduan Uji Alur</a>
+</div></div>
+<div class="panel"><h3>Prinsip Akses</h3><p class="small">Akun Auditee menampilkan bagian yang memang menjadi tanggung jawab Auditee. Penilaian A/S/T dan klasifikasi tetap dilakukan Auditor.</p></div>
+</aside><main class="main">
+<section class="hero"><h2>Tindakan Koreksi & RTL — Form 4</h2><p>Auditee mengisi koreksi/tindakan segera, analisis akar penyebab, rencana tindakan korektif dan pencegahan keberulangan, serta pelaksanaan tindakan dan bukti penyelesaian. Verifikasi tetap dilakukan Auditor/LPMI.</p></section>
+<div class="grid g3">
+ <div class="card stat"><span>TOTAL FORM 4</span><strong id="totalF4">0</strong><span>KTS Minor / Mayor</span></div>
+ <div class="card stat"><span>RTL DISETUJUI</span><strong id="approvedPlan">0</strong><span>persetujuan elektronik</span></div>
+ <div class="card stat"><span>DITUTUP AUDITOR</span><strong id="closedCount">0</strong><span>temuan</span></div>
+</div>
+<div id="empty" class="notice warn" style="display:none">Belum ada Form 4. Form 4 hanya dibuat untuk KTS Minor atau KTS Mayor.</div>
+<div id="work" class="grid g2">
+ <section class="panel"><h3>Daftar RTL</h3><div id="selector" class="finding-selector mt"></div></section>
+ <section id="detail" class="card"></section>
+</div>
+<script>
+const F4KEY="siami_preview_form4_2026";let f4={identity:{},ptks:[]};let current=0;
+function load(){try{f4=JSON.parse(localStorage.getItem(F4KEY)||"null")||{identity:{},ptks:[]}}catch(e){f4={identity:{},ptks:[]}}}
+function save(){f4.updatedAt=new Date().toISOString();localStorage.setItem(F4KEY,JSON.stringify(f4))}
+function pkey(p){return p.key||`source-${p.sourceNo}`}
+function ensure(p){
+ p.plans=Array.isArray(p.plans)&&p.plans.length?p.plans:Array.from({length:3},()=>({action:"",plannedEvidence:"",personInCharge:"",startDate:"",deadline:"",successIndicator:""}));
+ p.implementations=Array.isArray(p.implementations)&&p.implementations.length?p.implementations:Array.from({length:3},()=>({implementedAction:"",submittedEvidence:"",completionDate:"",checkedBy:"",initialVerificationNote:""}));
+ p.approvals=p.approvals||{};p.closure=p.closure||{};p.verification=p.verification||{};
+}
+function setField(field,val){const p=f4.ptks[current];p[field]=val;save()}
+function setPlan(i,field,val){const p=f4.ptks[current];ensure(p);p.plans[i][field]=val;save()}
+function setImpl(i,field,val){const p=f4.ptks[current];ensure(p);p.implementations[i][field]=val;save()}
+function approvePlan(){
+ const p=f4.ptks[current];ensure(p);if(!document.getElementById("agreePlan")?.checked){alert("Centang pernyataan persetujuan terlebih dahulu.");return}
+ const required=[p.immediateCorrection,p.rootCause,p.systemicFactors];if(required.some(x=>!String(x||"").trim())){if(!confirm("Masih ada bagian inti B/C yang kosong. Tetap setujui rencana?"))return}
+ const rec=SIAMI_PREVIEW.approve("form4-plan",pkey(p),`${p.noForm4||"Form 4"} · Persetujuan RTL`);
+ p.approvals.auditeeName=rec.signerName;p.approvals.auditeeDate=rec.approvedDate;p.planEApprovalAuditee=rec;save();render()
+}
+function approveClosure(){
+ const p=f4.ptks[current];ensure(p);if(p.verification?.findingStatus!=="DITUTUP"){alert("Persetujuan penutupan baru tersedia setelah Auditor menetapkan status DITUTUP.");return}
+ if(!document.getElementById("agreeClosure")?.checked){alert("Centang pernyataan penutupan terlebih dahulu.");return}
+ const rec=SIAMI_PREVIEW.approve("form4-close",pkey(p),`${p.noForm4||"Form 4"} · Keputusan Penutupan`);
+ p.closure.auditeeName=rec.signerName;p.closure.auditeeDate=rec.approvedDate;p.closeEApprovalAuditee=rec;save();render()
+}
+function rootRadios(p){return ["5 Why","Fishbone","Analisis lainnya"].map(v=>`<label class="checkline" style="padding:8px"><input type="radio" name="rootMethod" value="${v}" ${p.rootMethod===v?"checked":""} onchange="setField('rootMethod',this.value)"> <span>${v}</span></label>`).join("")}
+function approvalHTML(ap){return `<div class="approval-box"><div class="approval-title"><strong>✓ DISETUJUI SECARA ELEKTRONIK</strong><span class="badge ok">Tercatat</span></div><div class="approval-meta"><div><b>Nama</b>${SIAMI_PREVIEW.escape(ap.signerName)}</div><div><b>Peran</b>${SIAMI_PREVIEW.escape(ap.signerRole)}</div><div><b>Unit</b>${SIAMI_PREVIEW.escape(ap.unitName)}</div><div><b>Waktu</b>${SIAMI_PREVIEW.escape(SIAMI_PREVIEW.fmtDateTime(ap.approvedAt))}</div><div><b>Dokumen</b>${SIAMI_PREVIEW.escape(ap.documentLabel)}</div><div><b>Audit ID</b>${SIAMI_PREVIEW.escape(ap.auditId||"-")}</div></div></div>`}
+function renderStats(){
+ const ps=f4.ptks||[];totalF4.textContent=ps.length;approvedPlan.textContent=ps.filter(p=>SIAMI_PREVIEW.approval("form4-plan",pkey(p))).length;closedCount.textContent=ps.filter(p=>p.verification?.findingStatus==="DITUTUP").length
+}
+function render(){
+ const ps=f4.ptks||[];ps.forEach(ensure);renderStats();empty.style.display=ps.length?"none":"block";work.style.display=ps.length?"grid":"none";if(!ps.length)return;
+ current=Math.min(current,ps.length-1);
+ selector.innerHTML=ps.map((p,i)=>`<button class="${i===current?"active":""}" onclick="current=${i};render()"><strong>${SIAMI_PREVIEW.escape(p.noForm4||`Form 4 #${i+1}`)} · ${SIAMI_PREVIEW.escape(p.classification||"-")}</strong><span>Butir ${SIAMI_PREVIEW.escape(p.kode||p.sourceNo||"-")} · ${p.verification?.findingStatus||"Belum diverifikasi"}</span></button>`).join("");
+ const p=ps[current],planAp=SIAMI_PREVIEW.approval("form4-plan",pkey(p)),closeAp=SIAMI_PREVIEW.approval("form4-close",pkey(p));
+ detail.innerHTML=`<div class="itemhead"><div><div class="code">${SIAMI_PREVIEW.escape(p.noForm4||"FORM 4")}</div><h4>PTK, RTL, dan Verifikasi Penutupan</h4><p>${SIAMI_PREVIEW.escape(p.classification||"-")} · Butir ${SIAMI_PREVIEW.escape(p.kode||"-")}</p></div><span class="badge ${p.verification?.findingStatus==="DITUTUP"?"ok":"wait"}">${SIAMI_PREVIEW.escape(p.verification?.findingStatus||"Terbuka")}</span></div>
+ <div class="itembody">
+  <div class="section-title">A. Referensi Temuan — Dibaca dari Form 3</div>
+  <div class="grid g2">
+   <div class="readonly-block"><label>Ringkasan Temuan</label><p>${SIAMI_PREVIEW.escape(p.findingSummary||"-")}</p></div>
+   <div class="readonly-block"><label>Kriteria / Standar</label><p>${SIAMI_PREVIEW.escape(p.criteriaStandard||"-")}</p></div>
+   <div class="readonly-block"><label>Bukti Objektif</label><p>${SIAMI_PREVIEW.escape(p.objectiveEvidence||"-")}</p></div>
+   <div class="readonly-block"><label>Persyaratan / Target</label><p>${SIAMI_PREVIEW.escape(p.requirementTarget||"-")}</p></div>
+  </div>
+  <div class="section-title mt">B. Koreksi / Tindakan Segera — Diisi Auditee</div>
+  <div class="field"><textarea ${planAp?"disabled":""} oninput="setField('immediateCorrection',this.value)" placeholder="Tindakan langsung untuk mengendalikan dampak atau memperbaiki kondisi.">${SIAMI_PREVIEW.escape(p.immediateCorrection||"")}</textarea></div>
+  <div class="section-title mt">C. Analisis Akar Penyebab — Diisi Auditee</div>
+  <div class="grid g2"><div><div class="kpi-label">Metode</div><div class="grid mt">${rootRadios(p)}</div></div>
+   <div class="field"><label>Akar Penyebab Utama</label><textarea ${planAp?"disabled":""} oninput="setField('rootCause',this.value)">${SIAMI_PREVIEW.escape(p.rootCause||"")}</textarea></div>
+   <div class="field"><label>Faktor Pendukung / Penyebab Sistemik</label><textarea ${planAp?"disabled":""} oninput="setField('systemicFactors',this.value)">${SIAMI_PREVIEW.escape(p.systemicFactors||"")}</textarea></div>
+   <div class="field"><label>Metode lain (jika ada)</label><input ${planAp?"disabled":""} value="${SIAMI_PREVIEW.escape(p.rootMethodOther||"")}" onchange="setField('rootMethodOther',this.value)"></div>
+  </div>
+  <div class="section-title mt">D. Rencana Tindakan Korektif dan Pencegahan Keberulangan</div>
+  <div class="rtl-table ${planAp?"locked":""}">${p.plans.map((r,i)=>`<div class="rtl-row"><div class="rowno">${i+1}</div><textarea placeholder="Tindakan korektif" oninput="setPlan(${i},'action',this.value)">${SIAMI_PREVIEW.escape(r.action||"")}</textarea><textarea placeholder="Bukti penyelesaian direncanakan" oninput="setPlan(${i},'plannedEvidence',this.value)">${SIAMI_PREVIEW.escape(r.plannedEvidence||"")}</textarea><input placeholder="PIC" value="${SIAMI_PREVIEW.escape(r.personInCharge||"")}" onchange="setPlan(${i},'personInCharge',this.value)"><input type="date" value="${r.startDate||""}" onchange="setPlan(${i},'startDate',this.value)"><input type="date" value="${r.deadline||""}" onchange="setPlan(${i},'deadline',this.value)"><textarea placeholder="Indikator keberhasilan" oninput="setPlan(${i},'successIndicator',this.value)">${SIAMI_PREVIEW.escape(r.successIndicator||"")}</textarea></div>`).join("")}</div>
+  <div class="mt">${planAp?approvalHTML(planAp):`<div class="approval-box pending"><div class="approval-title"><strong>Persetujuan Rencana Tindak Lanjut oleh Auditee</strong><span class="badge wait">Menunggu</span></div><div class="mt"><label class="checkline"><input id="agreePlan" type="checkbox"><span>Saya menyatakan rencana tindak lanjut telah disusun berdasarkan akar penyebab dan dapat dilaksanakan pada tenggat yang disepakati.</span></label></div><div class="actions mt"><button class="btn success" onclick="approvePlan()">Setujui RTL Secara Elektronik</button></div></div>`}</div>
+  <div class="section-title mt">E. Pelaksanaan Tindakan dan Bukti Penyelesaian — Diisi Auditee</div>
+  <div class="rtl-table">${p.implementations.map((r,i)=>`<div class="rtl-row" style="grid-template-columns:34px minmax(0,1.3fr) minmax(0,1.2fr) 145px minmax(0,1fr)"><div class="rowno">${i+1}</div><textarea placeholder="Tindakan yang telah dilaksanakan" oninput="setImpl(${i},'implementedAction',this.value)">${SIAMI_PREVIEW.escape(r.implementedAction||"")}</textarea><textarea placeholder="Nama/link bukti objektif yang diserahkan" oninput="setImpl(${i},'submittedEvidence',this.value)">${SIAMI_PREVIEW.escape(r.submittedEvidence||"")}</textarea><input type="date" value="${r.completionDate||""}" onchange="setImpl(${i},'completionDate',this.value)"><textarea placeholder="Catatan Auditee (opsional)" oninput="setImpl(${i},'initialVerificationNote',this.value)">${SIAMI_PREVIEW.escape(r.initialVerificationNote||"")}</textarea></div>`).join("")}</div>
+  <div class="section-title mt">F–H. Hasil Verifikasi Auditor/LPMI — Read Only bagi Auditee</div>
+  <div class="grid g3">
+   <div class="readonly-block"><label>Status Temuan</label><p>${SIAMI_PREVIEW.escape(p.verification?.findingStatus||"Belum diverifikasi")}</p></div>
+   <div class="readonly-block"><label>Efektivitas</label><p>${SIAMI_PREVIEW.escape(p.verification?.effectiveness||"-")}</p></div>
+   <div class="readonly-block"><label>Risiko Keberulangan</label><p>${SIAMI_PREVIEW.escape(p.verification?.recurrenceRisk||"-")}</p></div>
+  </div>
+  <div class="readonly-block mt"><label>Hasil Verifikasi dan Penilaian Efektivitas</label><p>${SIAMI_PREVIEW.escape(p.verificationResult||"-")}</p></div>
+  <div class="mt">${closeAp?approvalHTML(closeAp):(p.verification?.findingStatus==="DITUTUP"?`<div class="approval-box pending"><div class="approval-title"><strong>Persetujuan Keputusan Penutupan oleh Wakil Auditi</strong><span class="badge wait">Menunggu</span></div><div class="mt"><label class="checkline"><input id="agreeClosure" type="checkbox"><span>Saya telah membaca hasil verifikasi dan keputusan penutupan temuan ini.</span></label></div><div class="actions mt"><button class="btn success" onclick="approveClosure()">Setujui Penutupan Secara Elektronik</button></div></div>`:`<div class="notice">Persetujuan penutupan akan aktif setelah Auditor/LPMI menetapkan status temuan <strong>DITUTUP</strong>.</div>`)}</div>
+ </div>`;
+}
+load();render();window.addEventListener("focus",()=>{load();render()});
+</script>
+</main></div>
+<script>
+(function(){
+ const s=SIAMI_PREVIEW.session();
+ if(!s){location.href="index.html";return;}
+ if(s.role!=="auditee"){location.href=SIAMI_PREVIEW.roleHome(s.role);return;}
+ const el=document.getElementById("accountPill");if(el)el.textContent=`${s.name||"Pengguna"} · ${s.roleLabel||"Auditee"}`;
+})();
+</script>
+</body></html>

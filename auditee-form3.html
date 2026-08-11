@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Tanggapan Temuan Form 3 | SIAMI Preview</title><link rel="stylesheet" href="preview.css">
+<script src="preview.js"></script><script src="audit-items.js"></script></head><body>
+<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Preview alur sebelum implementasi hosting</p></div></div>
+<div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header><div class="shell"><aside class="side">
+<div class="panel"><h3>Menu Auditee</h3><div class="nav mt">
+<a href="auditee.html">Dashboard Auditee</a>
+<a href="auditee-bukti.html">Persiapan Bukti Form 1b</a>
+<a href="auditee-form3.html" class="active">Tanggapan Temuan Form 3</a>
+<a href="auditee-form4.html">Tindakan Koreksi & RTL</a>
+<a href="auditee-persetujuan.html">Persetujuan Saya</a>
+<a href="auditee-status.html">Status Audit</a>
+<a href="cek-alur.html">Panduan Uji Alur</a>
+</div></div>
+<div class="panel"><h3>Prinsip Akses</h3><p class="small">Akun Auditee menampilkan bagian yang memang menjadi tanggung jawab Auditee. Penilaian A/S/T dan klasifikasi tetap dilakukan Auditor.</p></div>
+</aside><main class="main">
+<section class="hero"><h2>Tanggapan Temuan — Form 3</h2><p>Auditee membaca temuan yang telah dibuat auditor, mengisi Tanggapan Awal Auditi, kemudian mengonfirmasi secara elektronik bahwa temuan telah dijelaskan untuk proses tindak lanjut.</p></section>
+<div class="grid g3">
+ <div class="card stat"><span>TOTAL TEMUAN</span><strong id="totalF3">0</strong><span>Form 3</span></div>
+ <div class="card stat"><span>SUDAH DITANGGAPI</span><strong id="respondedF3">0</strong><span>temuan</span></div>
+ <div class="card stat"><span>DISETUJUI ELEKTRONIK</span><strong id="approvedF3">0</strong><span>konfirmasi</span></div>
+</div>
+<div id="empty" class="notice warn" style="display:none">Belum ada Form 3. Form 3 akan muncul setelah auditor menetapkan temuan Observasi, KTS Minor, atau KTS Mayor.</div>
+<div id="work" class="grid g2">
+ <section class="panel"><h3>Daftar Temuan</h3><div id="selector" class="finding-selector mt"></div></section>
+ <section id="detail" class="card"></section>
+</div>
+<script>
+const F3KEY="siami_preview_form3_2026";let f3={identity:{},findings:[]};let current=0;
+function load(){try{f3=JSON.parse(localStorage.getItem(F3KEY)||"null")||{identity:{},findings:[]}}catch(e){f3={identity:{},findings:[]}}}
+function save(){f3.updatedAt=new Date().toISOString();localStorage.setItem(F3KEY,JSON.stringify(f3))}
+function fkey(f){return f.key||`source-${f.sourceNo}`}
+function updateResponse(v){const f=f3.findings[current];if(!f)return;f.auditeeResponse=v;save();renderStats()}
+function approveCurrent(){
+ const f=f3.findings[current];if(!f)return;
+ const cb=document.getElementById("agreeF3");if(!cb?.checked){alert("Centang pernyataan persetujuan terlebih dahulu.");return}
+ if(!String(f.auditeeResponse||"").trim()){if(!confirm("Tanggapan Awal Auditi masih kosong. Tetap konfirmasi temuan?"))return}
+ const rec=SIAMI_PREVIEW.approve("form3-confirm",fkey(f),f.noForm3||`Form 3 ${f.sourceNo}`);
+ f.signatures=f.signatures||{};f.signatures.wakilAuditiNama=rec.signerName;f.signatures.wakilAuditiTanggal=rec.approvedDate;
+ f.eApprovalAuditee=rec;save();render()
+}
+function renderStats(){
+ const fs=f3.findings||[];totalF3.textContent=fs.length;respondedF3.textContent=fs.filter(x=>String(x.auditeeResponse||"").trim()).length;
+ approvedF3.textContent=fs.filter(x=>SIAMI_PREVIEW.approval("form3-confirm",fkey(x))).length
+}
+function render(){
+ const fs=f3.findings||[];renderStats();empty.style.display=fs.length?"none":"block";work.style.display=fs.length?"grid":"none";if(!fs.length)return;
+ current=Math.min(current,fs.length-1);
+ selector.innerHTML=fs.map((f,i)=>`<button class="${i===current?"active":""}" onclick="current=${i};render()"><strong>${SIAMI_PREVIEW.escape(f.noForm3||`Form 3 #${i+1}`)} · ${SIAMI_PREVIEW.escape(f.klasifikasi||"-")}</strong><span>Butir ${SIAMI_PREVIEW.escape(f.kode||f.sourceNo||"-")} · ${SIAMI_PREVIEW.approval("form3-confirm",fkey(f))?"Sudah dikonfirmasi":"Menunggu konfirmasi"}</span></button>`).join("");
+ const f=fs[current],ap=SIAMI_PREVIEW.approval("form3-confirm",fkey(f));
+ detail.innerHTML=`<div class="itemhead"><div><div class="code">${SIAMI_PREVIEW.escape(f.noForm3||"FORM 3")}</div><h4>${SIAMI_PREVIEW.escape(f.aspek||"Deskripsi Temuan Audit")}</h4><p>Klasifikasi: ${SIAMI_PREVIEW.escape(f.klasifikasi||"-")}</p></div><span class="badge ${ap?"ok":"wait"}">${ap?"Disetujui":"Menunggu"}</span></div>
+ <div class="itembody">
+  <div class="grid g2">
+   <div class="readonly-block"><label>A. Kriteria / Standar</label><p>${SIAMI_PREVIEW.escape(f.criteriaStandard||"-")}</p></div>
+   <div class="readonly-block"><label>Persyaratan / Target</label><p>${SIAMI_PREVIEW.escape(f.requirementTarget||"-")}</p></div>
+   <div class="readonly-block"><label>B. Kondisi Faktual</label><p>${SIAMI_PREVIEW.escape(f.factualCondition||"-")}</p></div>
+   <div class="readonly-block"><label>C. Bukti Objektif</label><p>${SIAMI_PREVIEW.escape(f.objectiveEvidence||"-")}</p></div>
+   <div class="readonly-block"><label>D. Pernyataan Temuan / Kesenjangan</label><p>${SIAMI_PREVIEW.escape(f.gapStatement||"-")}</p></div>
+   <div class="readonly-block"><label>F. Dampak / Risiko</label><p>${SIAMI_PREVIEW.escape(f.impactRisk||"-")}</p></div>
+  </div>
+  <div class="field mt"><label>G. Tanggapan Awal Auditi</label><textarea ${ap?"disabled":""} oninput="updateResponse(this.value)" placeholder="Klarifikasi, dokumen tambahan, atau tanggapan awal Auditee terhadap temuan.">${SIAMI_PREVIEW.escape(f.auditeeResponse||"")}</textarea></div>
+  <div class="mt">${ap?approvalHTML(ap):`<div class="approval-box pending"><div class="approval-title"><strong>Konfirmasi Temuan oleh Auditee</strong><span class="badge wait">Menunggu</span></div><div class="mt"><label class="checkline"><input id="agreeF3" type="checkbox"> <span>Saya telah membaca temuan ini dan menyatakan bahwa temuan telah dijelaskan kepada saya untuk proses tindak lanjut. Persetujuan tidak berarti menghapus hak untuk memberi klarifikasi pada kolom tanggapan.</span></label></div><div class="actions mt"><button class="btn success" onclick="approveCurrent()">Setujui Secara Elektronik</button></div></div>`}</div>
+ </div>`;
+}
+function approvalHTML(ap){return `<div class="approval-box"><div class="approval-title"><strong>✓ DISETUJUI SECARA ELEKTRONIK</strong><span class="badge ok">Tercatat</span></div><div class="approval-meta"><div><b>Nama</b>${SIAMI_PREVIEW.escape(ap.signerName)}</div><div><b>Peran</b>${SIAMI_PREVIEW.escape(ap.signerRole)}</div><div><b>Unit</b>${SIAMI_PREVIEW.escape(ap.unitName)}</div><div><b>Waktu</b>${SIAMI_PREVIEW.escape(SIAMI_PREVIEW.fmtDateTime(ap.approvedAt))}</div><div><b>Dokumen</b>${SIAMI_PREVIEW.escape(ap.documentLabel)}</div><div><b>Audit ID</b>${SIAMI_PREVIEW.escape(ap.auditId||"-")}</div></div></div>`}
+load();render();window.addEventListener("focus",()=>{load();render()});
+</script>
+</main></div>
+<script>
+(function(){
+ const s=SIAMI_PREVIEW.session();
+ if(!s){location.href="index.html";return;}
+ if(s.role!=="auditee"){location.href=SIAMI_PREVIEW.roleHome(s.role);return;}
+ const el=document.getElementById("accountPill");if(el)el.textContent=`${s.name||"Pengguna"} · ${s.roleLabel||"Auditee"}`;
+})();
+</script>
+</body></html>

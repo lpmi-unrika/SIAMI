@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Status Audit Auditee | SIAMI Preview</title><link rel="stylesheet" href="preview.css">
+<script src="preview.js"></script><script src="audit-items.js"></script></head><body>
+<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Preview alur sebelum implementasi hosting</p></div></div>
+<div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header><div class="shell"><aside class="side">
+<div class="panel"><h3>Menu Auditee</h3><div class="nav mt">
+<a href="auditee.html">Dashboard Auditee</a>
+<a href="auditee-bukti.html">Persiapan Bukti Form 1b</a>
+<a href="auditee-form3.html">Tanggapan Temuan Form 3</a>
+<a href="auditee-form4.html">Tindakan Koreksi & RTL</a>
+<a href="auditee-persetujuan.html">Persetujuan Saya</a>
+<a href="auditee-status.html" class="active">Status Audit</a>
+<a href="cek-alur.html">Panduan Uji Alur</a>
+</div></div>
+<div class="panel"><h3>Prinsip Akses</h3><p class="small">Akun Auditee menampilkan bagian yang memang menjadi tanggung jawab Auditee. Penilaian A/S/T dan klasifikasi tetap dilakukan Auditor.</p></div>
+</aside><main class="main">
+<section class="hero"><h2>Status Audit Unit Saya</h2><p>Pantau perjalanan audit dari persiapan bukti, temuan, tanggapan, RTL, verifikasi, hingga penutupan.</p></section>
+<div class="grid g4">
+ <div class="card stat"><span>BUKTI 59 BUTIR</span><strong id="stEvidence">0/59</strong><span>butir memiliki bukti</span></div>
+ <div class="card stat"><span>FORM 3</span><strong id="stF3">0</strong><span>temuan</span></div>
+ <div class="card stat"><span>FORM 4</span><strong id="stF4">0</strong><span>RTL</span></div>
+ <div class="card stat"><span>TEMUAN DITUTUP</span><strong id="stClosed">0</strong><span>selesai</span></div>
+</div>
+<section class="card"><div class="itemhead"><div><div class="code">ALUR AUDIT</div><h4>Progres Unit</h4></div></div><div class="itembody"><div id="timeline" class="timeline"></div></div></section>
+<section class="card"><div class="itemhead"><div><div class="code">STATUS TEMUAN</div><h4>Form 3 / Form 4</h4></div></div><div class="itembody"><div class="tablewrap"><table><thead><tr><th>Butir</th><th>Form 3</th><th>Klasifikasi</th><th>Tanggapan Auditee</th><th>Form 4</th><th>Status Verifikasi</th></tr></thead><tbody id="rows"></tbody></table></div></div></section>
+<script>
+function state(k,f){try{return JSON.parse(localStorage.getItem(k)||"null")||f}catch(e){return f}}
+function render(){
+ const a=SIAMI_PREVIEW.assignment(),ev=SIAMI_PREVIEW.evidence();const itemNos=new Set(Object.entries(ev).filter(([k,v])=>k.startsWith(a.unitId+":")&&(v.fileName||v.linkUrl||v.documentRef)).map(([k])=>Number(k.split(":")[1])));
+ const f3=state("siami_preview_form3_2026",{findings:[]}).findings||[],f4=state("siami_preview_form4_2026",{ptks:[]}).ptks||[];
+ stEvidence.textContent=`${itemNos.size}/59`;stF3.textContent=f3.length;stF4.textContent=f4.length;stClosed.textContent=f4.filter(p=>p.verification?.findingStatus==="DITUTUP").length;
+ const steps=[
+  {title:"Persiapan Bukti Form 1b",desc:`${itemNos.size} dari 59 butir memiliki bukti/identitas dokumen.`,done:itemNos.size===59,url:"auditee-bukti.html"},
+  {title:"Temuan Auditor / Form 3",desc:`${f3.length} temuan telah dibuat.`,done:f3.length>0,url:"auditee-form3.html"},
+  {title:"Tanggapan & Konfirmasi Auditee",desc:`${f3.filter(x=>String(x.auditeeResponse||"").trim()).length} ditanggapi; ${f3.filter(x=>SIAMI_PREVIEW.approval("form3-confirm",x.key||`source-${x.sourceNo}`)).length} dikonfirmasi elektronik.`,done:f3.length>0&&f3.every(x=>SIAMI_PREVIEW.approval("form3-confirm",x.key||`source-${x.sourceNo}`)),url:"auditee-form3.html"},
+  {title:"RTL / Form 4",desc:`${f4.length} Form 4; ${f4.filter(x=>SIAMI_PREVIEW.approval("form4-plan",x.key||`source-${x.sourceNo}`)).length} rencana disetujui Auditee.`,done:f4.length>0&&f4.every(x=>SIAMI_PREVIEW.approval("form4-plan",x.key||`source-${x.sourceNo}`)),url:"auditee-form4.html"},
+  {title:"Verifikasi & Penutupan",desc:`${f4.filter(x=>x.verification?.findingStatus==="DITUTUP").length} dari ${f4.length} temuan Form 4 ditutup.`,done:f4.length>0&&f4.every(x=>x.verification?.findingStatus==="DITUTUP"),url:"auditee-form4.html"}
+ ];
+ timeline.innerHTML=steps.map((s,i)=>`<div class="timeline-row"><div class="timeline-no">${i+1}</div><div><strong>${s.title}</strong><p>${s.desc}</p><div class="actions mt"><a class="btn soft" href="${s.url}">Buka</a></div></div><span class="badge ${s.done?"ok":"wait"}">${s.done?"Selesai":"Berjalan"}</span></div>`).join("");
+ const pmap=new Map(f4.map(p=>[Number(p.sourceNo),p]));
+ rows.innerHTML=f3.length?f3.map(f=>{const p=pmap.get(Number(f.sourceNo));return `<tr><td>${SIAMI_PREVIEW.escape(f.kode||f.sourceNo||"-")}</td><td>${SIAMI_PREVIEW.escape(f.noForm3||"-")}</td><td>${SIAMI_PREVIEW.escape(f.klasifikasi||"-")}</td><td>${String(f.auditeeResponse||"").trim()?"Sudah":"Belum"}</td><td>${SIAMI_PREVIEW.escape(p?.noForm4||"-")}</td><td><span class="badge ${p?.verification?.findingStatus==="DITUTUP"?"ok":"wait"}">${SIAMI_PREVIEW.escape(p?.verification?.findingStatus||"Belum")}</span></td></tr>`}).join(""):`<tr><td colspan="6">Belum ada temuan.</td></tr>`
+}
+render();window.addEventListener("focus",render);
+</script>
+</main></div>
+<script>
+(function(){
+ const s=SIAMI_PREVIEW.session();
+ if(!s){location.href="index.html";return;}
+ if(s.role!=="auditee"){location.href=SIAMI_PREVIEW.roleHome(s.role);return;}
+ const el=document.getElementById("accountPill");if(el)el.textContent=`${s.name||"Pengguna"} · ${s.roleLabel||"Auditee"}`;
+})();
+</script>
+</body></html>

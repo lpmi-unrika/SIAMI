@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard Auditee | SIAMI Preview</title><link rel="stylesheet" href="preview.css">
+<script src="preview.js"></script><script src="audit-items.js"></script></head><body>
+<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Preview alur sebelum implementasi hosting</p></div></div>
+<div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header><div class="shell"><aside class="side">
+<div class="panel"><h3>Menu Auditee</h3><div class="nav mt">
+<a href="auditee.html" class="active">Dashboard Auditee</a>
+<a href="auditee-bukti.html">Persiapan Bukti Form 1b</a>
+<a href="auditee-form3.html">Tanggapan Temuan Form 3</a>
+<a href="auditee-form4.html">Tindakan Koreksi & RTL</a>
+<a href="auditee-persetujuan.html">Persetujuan Saya</a>
+<a href="auditee-status.html">Status Audit</a>
+<a href="cek-alur.html">Panduan Uji Alur</a>
+</div></div>
+<div class="panel"><h3>Prinsip Akses</h3><p class="small">Akun Auditee menampilkan bagian yang memang menjadi tanggung jawab Auditee. Penilaian A/S/T dan klasifikasi tetap dilakukan Auditor.</p></div>
+</aside><main class="main">
+<section class="hero"><h2>Dashboard Auditee</h2><p>Kelola persiapan bukti 59 butir, tanggapi temuan auditor, susun tindakan koreksi/RTL, lakukan persetujuan elektronik, dan pantau status audit unit Anda.</p></section>
+<div id="noAssignment" class="notice warn" style="display:none">Belum ada unit yang ditugaskan oleh Admin LPMI. Admin harus memilih salah satu dari Master 25 Unit terlebih dahulu.</div>
+<div id="workspace">
+<div class="grid g4">
+ <div class="card stat"><span>UNIT DIAUDIT</span><strong id="unitName" style="font-size:16px">-</strong><span id="facultyName">-</span></div>
+ <div class="card stat"><span>BUKTI TERISI</span><strong id="evidenceCount">0</strong><span>file/link</span></div>
+ <div class="card stat"><span>TEMUAN FORM 3</span><strong id="findingCount">0</strong><span>OB / Minor / Mayor</span></div>
+ <div class="card stat"><span>RTL FORM 4</span><strong id="ptkCount">0</strong><span>Minor / Mayor</span></div>
+</div>
+<section class="card"><div class="itemhead"><div><div class="code">RUANG KERJA AUDITEE</div><h4>Tugas Saya dalam AMI</h4><p>Setiap bagian di bawah mengikuti alur dokumen Form 1b, Form 3, dan Form 4.</p></div></div>
+<div class="itembody"><div class="workspace-list">
+ <div class="workspace-card"><h4>1. Persiapan Bukti Form 1b — 59 Butir</h4><p>Unggah PDF maksimal 2 MB atau tautan bukti, isi identitas dokumen, target prodi, dan capaian. Auditor yang memberi status A/S/T.</p><div class="actions"><a class="btn primary" href="auditee-bukti.html">Buka 59 Butir</a><span class="badge info" id="buktiProgress">0/59 butir</span></div></div>
+ <div class="workspace-card"><h4>2. Tanggapan Temuan Form 3</h4><p>Lihat kriteria, kondisi faktual, bukti objektif, dan pernyataan temuan yang dibuat auditor. Isi Tanggapan Awal Auditi dan konfirmasi temuan secara elektronik.</p><div class="actions"><a class="btn primary" href="auditee-form3.html">Buka Tanggapan Form 3</a><span class="badge wait" id="f3Pending">0 menunggu</span></div></div>
+ <div class="workspace-card"><h4>3. Tindakan Koreksi & RTL Form 4</h4><p>Untuk KTS Minor/Mayor: isi koreksi segera, akar penyebab, rencana tindakan, dan bukti pelaksanaan. Persetujuan rencana dilakukan secara elektronik.</p><div class="actions"><a class="btn primary" href="auditee-form4.html">Buka Form 4 Saya</a><span class="badge wait" id="f4Pending">0 RTL</span></div></div>
+ <div class="workspace-card"><h4>4. Persetujuan Saya</h4><p>Rekap persetujuan elektronik Form 3, persetujuan rencana tindak lanjut Form 4, dan persetujuan penutupan bila temuan telah dinyatakan ditutup.</p><div class="actions"><a class="btn soft" href="auditee-persetujuan.html">Lihat Persetujuan</a><span class="badge info" id="approvalCount">0 disetujui</span></div></div>
+ <div class="workspace-card"><h4>5. Status Audit</h4><p>Pantau progres bukti, jumlah temuan, RTL, status verifikasi, dan penutupan temuan.</p><div class="actions"><a class="btn soft" href="auditee-status.html">Lihat Status</a></div></div>
+</div></div></section>
+<div class="notice"><strong>Persetujuan elektronik pada preview:</strong> sistem mencatat nama pengguna, peran, unit, ID audit, dokumen, dan waktu persetujuan. Pada versi Hostinger, backend perlu menambahkan session aman dan audit trail server.</div>
+</div>
+<script>
+function safeState(key,fallback){try{return JSON.parse(localStorage.getItem(key)||"null")||fallback}catch(e){return fallback}}
+function refreshDashboard(){
+ const a=SIAMI_PREVIEW.assignment();
+ const has=SIAMI_PREVIEW.hasAssignment();
+ noAssignment.style.display=has?"none":"block";workspace.style.display=has?"block":"none";
+ if(!has)return;
+ unitName.textContent=a.unitName||"-";facultyName.textContent=a.faculty||"-";
+ const ev=SIAMI_PREVIEW.evidence();
+ const evidences=Object.entries(ev).filter(([k,v])=>k.startsWith(a.unitId+":")&&(v.fileName||v.linkUrl||v.documentRef));
+ evidenceCount.textContent=evidences.length;
+ const itemNos=new Set(evidences.map(([k])=>Number(k.split(":")[1])));
+ buktiProgress.textContent=`${itemNos.size}/59 butir`;
+ const f3=safeState("siami_preview_form3_2026",{findings:[]});const findings=f3.findings||[];
+ const f4=safeState("siami_preview_form4_2026",{ptks:[]});const ptks=f4.ptks||[];
+ findingCount.textContent=findings.length;ptkCount.textContent=ptks.length;f4Pending.textContent=`${ptks.length} RTL`;
+ const f3Unapproved=findings.filter(x=>!SIAMI_PREVIEW.approval("form3-confirm",x.key||`source-${x.sourceNo}`)).length;
+ f3Pending.textContent=`${f3Unapproved} menunggu`;
+ approvalCount.textContent=`${Object.values(SIAMI_PREVIEW.approvals()).filter(x=>x.unitId===a.unitId&&x.status==="approved").length} disetujui`;
+}
+refreshDashboard();window.addEventListener("focus",refreshDashboard);
+</script>
+</main></div>
+<script>
+(function(){
+ const s=SIAMI_PREVIEW.session();
+ if(!s){location.href="index.html";return;}
+ if(s.role!=="auditee"){location.href=SIAMI_PREVIEW.roleHome(s.role);return;}
+ const el=document.getElementById("accountPill");if(el)el.textContent=`${s.name||"Pengguna"} · ${s.roleLabel||"Auditee"}`;
+})();
+</script>
+</body></html>

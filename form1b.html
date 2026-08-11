@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form 1b | SIAMI UNRIKA</title>
+  <meta name="description" content="Form 1b Checklist Kinerja Program Studi SIAMI Universitas Riau Kepulauan">
+  <style>
+    :root {
+      --navy:#0b365c;
+      --blue:#175a8c;
+      --blue-2:#2f80ed;
+      --light:#eaf3fb;
+      --pale:#f5f8fb;
+      --white:#fff;
+      --text:#1f2937;
+      --muted:#667085;
+      --border:#d5dee8;
+      --success:#16834a;
+      --warning:#d97706;
+      --danger:#b42318;
+      --shadow:0 12px 30px rgba(11,54,92,.09);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"Segoe UI",Arial,sans-serif;
+      background:#f3f7fa;
+      color:var(--text);
+    }
+    button,input,select,textarea{font:inherit}
+    a{color:inherit}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      min-height:70px;
+      padding:12px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      background:rgba(255,255,255,.97);
+      border-bottom:1px solid var(--border);
+      backdrop-filter:blur(8px);
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-mark{
+      width:46px;height:46px;border-radius:13px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--navy),var(--blue-2));
+      color:#fff;font-weight:800;
+    }
+    .brand h1{font-size:18px;margin:0;color:var(--navy)}
+    .brand p{font-size:12px;margin:3px 0 0;color:var(--muted)}
+    .top-actions{display:flex;gap:9px;flex-wrap:wrap}
+    .btn{
+      border:0;border-radius:10px;padding:10px 13px;
+      cursor:pointer;font-weight:700;font-size:13px;
+      transition:.2s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:var(--blue);color:#fff}
+    .btn-soft{background:var(--light);color:var(--navy);border:1px solid #cbddec}
+    .btn-danger{background:#feeceb;color:var(--danger);border:1px solid #f5c7c3}
+
+    .layout{
+      width:min(1500px,96%);
+      margin:22px auto 60px;
+      display:grid;
+      grid-template-columns:320px minmax(0,1fr);
+      gap:20px;
+      align-items:start;
+    }
+
+    .sidebar{
+      position:sticky;top:92px;
+      display:grid;gap:16px;
+    }
+    .panel{
+      background:#fff;border:1px solid var(--border);
+      border-radius:18px;box-shadow:var(--shadow);
+      padding:18px;
+    }
+    .panel h2,.panel h3{margin:0;color:var(--navy)}
+    .panel h3{font-size:16px;margin-bottom:12px}
+    .small{font-size:12px;color:var(--muted);line-height:1.55}
+
+    .progress-circle{
+      width:110px;height:110px;border-radius:50%;
+      margin:8px auto 14px;
+      display:grid;place-items:center;
+      background:conic-gradient(var(--blue) 0deg,#e7edf2 0deg);
+      position:relative;
+    }
+    .progress-circle::after{
+      content:"";width:78px;height:78px;border-radius:50%;
+      background:#fff;position:absolute;
+    }
+    .progress-circle strong{
+      position:relative;z-index:1;
+      font-size:23px;color:var(--navy);
+    }
+    .kpis{
+      display:grid;grid-template-columns:repeat(2,1fr);
+      gap:9px;margin-top:12px;
+    }
+    .kpi{
+      padding:11px;border-radius:12px;background:var(--pale);
+      border:1px solid #edf1f5;
+    }
+    .kpi strong{display:block;font-size:20px;color:var(--navy)}
+    .kpi span{font-size:11px;color:var(--muted)}
+
+    .field{display:grid;gap:6px;margin-bottom:11px}
+    .field label{font-size:12px;font-weight:700;color:#3d4e60}
+    .input, select, textarea{
+      width:100%;border:1px solid var(--border);
+      border-radius:10px;padding:10px 11px;background:#fff;
+      color:var(--text);outline:none;
+    }
+    .input:focus,select:focus,textarea:focus{
+      border-color:#75aadb;box-shadow:0 0 0 3px rgba(47,128,237,.12);
+    }
+    textarea{resize:vertical;min-height:76px}
+
+    .main{min-width:0;display:grid;gap:17px}
+    .document-head{
+      background:#fff;border:1px solid var(--border);
+      border-radius:18px;box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .institution{
+      display:grid;grid-template-columns:95px 1fr 180px;
+      min-height:88px;border-bottom:1px solid #8794a1;
+    }
+    .institution > div{
+      padding:14px;display:grid;place-items:center;text-align:center;
+      border-right:1px solid #8794a1;
+    }
+    .institution > div:last-child{border-right:0}
+    .seal{
+      width:62px;height:62px;border-radius:50%;
+      border:4px double var(--blue);
+      display:grid;place-items:center;color:var(--blue);
+      font-size:12px;font-weight:800;
+    }
+    .institution h2{font-size:19px;margin:0;color:#111827}
+    .institution h3{font-size:15px;margin:4px 0 0;color:#111827}
+    .doc-number{font-size:12px;line-height:1.5}
+    .doc-title{padding:18px;text-align:center}
+    .doc-title h2{margin:0;font-size:22px;color:#111827}
+    .doc-title h3{margin:5px 0 0;font-size:17px;color:#111827}
+
+    .identity-grid{
+      padding:0 18px 18px;
+      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:11px;
+    }
+    .identity-field label{
+      display:block;padding:6px 9px;background:#dcebf6;
+      border:1px solid #b8c8d6;border-bottom:0;
+      font-size:12px;font-weight:800;color:#31485a;
+      border-radius:8px 8px 0 0;
+    }
+    .identity-field input{
+      width:100%;border:1px solid #b8c8d6;border-radius:0 0 8px 8px;
+      padding:9px;background:#fff;
+    }
+    .wide{grid-column:span 2}
+
+    .instruction{
+      padding:14px 18px;background:#f9fbfd;border-top:1px solid var(--border);
+      font-size:12px;line-height:1.6;color:#4b5e70;
+    }
+
+    .filter-bar{
+      background:#fff;border:1px solid var(--border);border-radius:15px;
+      padding:13px;display:grid;grid-template-columns:1fr 280px;
+      gap:12px;box-shadow:var(--shadow);
+      position:sticky;top:82px;z-index:30;
+    }
+
+    .section{
+      background:#fff;border:1px solid var(--border);
+      border-radius:17px;overflow:hidden;box-shadow:var(--shadow);
+    }
+    .section-header{
+      width:100%;border:0;background:var(--blue);color:#fff;
+      padding:14px 18px;text-align:left;font-weight:800;
+      cursor:pointer;display:flex;justify-content:space-between;
+      align-items:center;
+    }
+    .section-count{
+      background:rgba(255,255,255,.16);padding:5px 9px;border-radius:999px;
+      font-size:11px;
+    }
+    .section-body{padding:14px;display:grid;gap:13px}
+    .section.collapsed .section-body{display:none}
+
+    .audit-item{
+      border:1px solid var(--border);border-radius:15px;
+      overflow:hidden;background:#fff;
+    }
+    .item-top{
+      display:grid;grid-template-columns:66px 90px 1fr;
+      align-items:stretch;background:#f6f9fb;border-bottom:1px solid var(--border);
+    }
+    .item-cell{padding:11px 12px;border-right:1px solid var(--border)}
+    .item-cell:last-child{border-right:0}
+    .item-no,.item-code{display:grid;place-items:center;text-align:center}
+    .item-no strong{font-size:17px;color:var(--navy)}
+    .item-code strong{color:var(--blue)}
+    .item-title strong{display:block;color:#23384a;margin-bottom:4px}
+    .item-title span{font-size:12px;color:var(--muted)}
+
+    .static-grid{
+      display:grid;grid-template-columns:1.05fr 1fr .8fr;
+      gap:0;border-bottom:1px solid var(--border);
+    }
+    .static-box{padding:12px;border-right:1px solid var(--border)}
+    .static-box:last-child{border-right:0}
+    .static-box label{
+      display:block;font-size:11px;font-weight:800;text-transform:uppercase;
+      letter-spacing:.4px;color:var(--blue);margin-bottom:6px;
+    }
+    .static-box p{font-size:12px;line-height:1.55;margin:0;color:#425466}
+
+    .entry-grid{
+      display:grid;grid-template-columns:250px 1fr;
+      gap:14px;padding:14px;
+    }
+    .choice-panel{display:grid;gap:12px}
+    .radio-group{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+    }
+    .radio-option{
+      position:relative;
+    }
+    .radio-option input{position:absolute;opacity:0;pointer-events:none}
+    .radio-option span{
+      min-height:48px;border:1px solid var(--border);border-radius:11px;
+      display:grid;place-items:center;text-align:center;cursor:pointer;
+      font-size:12px;font-weight:800;background:#fff;padding:7px;
+    }
+    .radio-option input:checked + span{color:#fff;border-color:transparent}
+    .radio-option.a input:checked + span{background:var(--success)}
+    .radio-option.s input:checked + span{background:var(--warning)}
+    .radio-option.t input:checked + span{background:var(--danger)}
+
+    .detail-fields{
+      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;
+    }
+    .detail-fields .notes{grid-column:1/-1}
+    .include-row{
+      display:flex;align-items:center;gap:9px;font-size:12px;color:#425466;
+      padding:9px 10px;border-radius:10px;background:#f7fafc;
+    }
+
+    .status-tag{
+      display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;
+      font-weight:800;background:#eef2f6;color:#536273;
+    }
+    .status-tag.complete{background:#dcfce7;color:#166534}
+
+    .empty{padding:40px;text-align:center;color:var(--muted)}
+    .toast{
+      position:fixed;right:22px;bottom:22px;z-index:100;
+      padding:13px 17px;border-radius:11px;background:#12263a;color:#fff;
+      box-shadow:0 12px 30px rgba(0,0,0,.2);
+      opacity:0;transform:translateY(12px);pointer-events:none;
+      transition:.25s ease;font-size:13px;
+    }
+    .toast.show{opacity:1;transform:translateY(0)}
+    .hidden{display:none!important}
+
+    @media(max-width:1050px){
+      .layout{grid-template-columns:1fr}
+      .sidebar{position:relative;top:auto;grid-template-columns:repeat(2,1fr)}
+      .sidebar .panel:first-child{grid-column:1/-1}
+      .filter-bar{top:70px}
+    }
+    @media(max-width:760px){
+      .topbar{align-items:flex-start;flex-direction:column}
+      .layout{width:94%;margin-top:14px}
+      .sidebar{grid-template-columns:1fr}
+      .institution{grid-template-columns:70px 1fr}
+      .institution > div:nth-child(3){grid-column:1/-1;border-top:1px solid #8794a1}
+      .identity-grid{grid-template-columns:1fr}
+      .wide{grid-column:auto}
+      .filter-bar{grid-template-columns:1fr;position:relative;top:auto}
+      .item-top{grid-template-columns:55px 70px 1fr}
+      .static-grid{grid-template-columns:1fr}
+      .static-box{border-right:0;border-bottom:1px solid var(--border)}
+      .entry-grid{grid-template-columns:1fr}
+      .detail-fields{grid-template-columns:1fr}
+    }
+
+
+
+    .workflow-footer{
+      margin-top:2px;
+      padding:18px 20px;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:18px;
+      align-items:center;
+      border:1px solid var(--border);
+      border-radius:17px;
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+    .workflow-steps{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:9px;
+    }
+    .workflow-step{
+      min-height:58px;
+      padding:9px 10px;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      border:1px solid #e0e7ed;
+      border-radius:11px;
+      background:#f9fbfc;
+    }
+    .workflow-step .number{
+      flex:0 0 28px;
+      width:28px;height:28px;border-radius:50%;
+      display:grid;place-items:center;
+      color:#728396;background:#e8edf1;
+      font-size:11px;font-weight:900;
+    }
+    .workflow-step strong{display:block;font-size:11px;color:#3b5164}
+    .workflow-step span{display:block;margin-top:3px;font-size:9px;color:#83919e}
+    .workflow-step.active{border-color:#a9d1eb;background:#f1f9ff}
+    .workflow-step.active .number{color:#fff;background:var(--blue)}
+    .workflow-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+    .btn-next{background:linear-gradient(135deg,var(--navy),var(--blue-2));color:#fff}
+    .session-strip{
+      margin-bottom:12px;padding:10px 13px;
+      display:flex;justify-content:space-between;align-items:center;gap:12px;
+      border:1px solid #cbddec;border-radius:12px;background:#f3f9fd;
+      color:#425a6f;font-size:11px;
+    }
+    .session-strip strong{color:var(--navy)}
+
+    @media(max-width:980px){
+      .workflow-footer{grid-template-columns:1fr}
+      .workflow-actions{justify-content:flex-start}
+    }
+    @media(max-width:650px){
+      .workflow-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .workflow-actions{display:grid;grid-template-columns:1fr}
+      .workflow-actions .btn{width:100%}
+    }
+
+    @media print{
+      body{background:#fff;font-size:10px}
+      .topbar,.sidebar,.filter-bar,.toast,.no-print,.workflow-footer{display:none!important}
+      .layout{width:100%;display:block;margin:0}
+      .main{display:block}
+      .document-head,.section{box-shadow:none;border-radius:0}
+      .section{margin-top:8px;break-inside:auto}
+      .section-header{background:#175a8c!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      .section-body{display:block!important;padding:0}
+      .audit-item{border-radius:0;break-inside:avoid;margin-bottom:4px}
+      .item-top{grid-template-columns:40px 55px 1fr}
+      .static-grid{grid-template-columns:1fr 1fr 1fr}
+      .entry-grid{grid-template-columns:140px 1fr;padding:8px}
+      .detail-fields{grid-template-columns:repeat(3,1fr)}
+      textarea,input,select{border:0!important;padding:2px!important}
+      .radio-option span{min-height:26px;padding:2px}
+      .institution{min-height:70px}
+      @page{size:A4 landscape;margin:8mm}
+    }
+  
+    /* Revision: verification per evidence */
+    .evidence-panel{margin:0 18px 16px;border:1px solid #cfdae4;border-radius:15px;overflow:hidden;background:#fbfdfe}
+    .evidence-panel-head{padding:13px 15px;display:flex;align-items:center;justify-content:space-between;gap:13px;background:#eef6fb;border-bottom:1px solid #d7e4ed}
+    .evidence-panel-head strong{display:block;color:var(--navy);font-size:12px}
+    .evidence-panel-head span{display:block;margin-top:3px;color:var(--muted);font-size:9px;line-height:1.45}
+    .evidence-table-head,.evidence-row{display:grid;grid-template-columns:minmax(190px,1.05fr) 150px minmax(180px,.9fr) minmax(200px,1fr) 30px;gap:8px;align-items:center}
+    .evidence-table-head{padding:8px 12px;color:#607487;background:#f6f9fb;border-bottom:1px solid #dde7ed;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.35px}
+    .evidence-row{padding:9px 12px;border-bottom:1px solid #e6edf2}
+    .evidence-row:last-child{border-bottom:0}
+    .evidence-name-cell strong{display:block;color:#344c5f;font-size:10px;line-height:1.4}
+    .evidence-origin{display:block!important;margin-top:3px!important;color:#8a99a6!important;font-size:8px!important}
+    .evidence-name{height:38px!important}
+    .evidence-status-cell{display:flex;gap:5px}
+    .mini-status{position:relative;flex:1}
+    .mini-status input{position:absolute;opacity:0}
+    .mini-status span{height:34px;display:grid;place-items:center;border:1px solid #d3dee6;border-radius:8px;background:#fff;color:#70808e;font-size:9px;font-weight:900;cursor:pointer}
+    .mini-status.a input:checked+span{color:#11683b;background:#e9f8ef;border-color:#92d3aa}
+    .mini-status.s input:checked+span{color:#8b5700;background:#fff5df;border-color:#e7c370}
+    .mini-status.t input:checked+span{color:#a1281f;background:#fff0ef;border-color:#e5aaa5}
+    .evidence-remove-cell{text-align:center}
+    .remove-evidence{width:27px;height:27px;border:0;border-radius:8px;color:var(--danger);background:var(--danger-soft);font-size:17px;line-height:1;cursor:pointer}
+    .evidence-actions{padding:10px 12px;display:flex;justify-content:flex-end;border-top:1px solid #e2eaf0;background:#fafcfd}
+    .overall-chip{display:inline-flex!important;align-items:center;justify-content:center;margin:0!important;padding:7px 10px;border-radius:999px;font-size:9px!important;font-weight:900!important;white-space:nowrap}
+    .overall-chip.a{color:#11683b!important;background:#e8f8ee}
+    .overall-chip.s{color:#8a5805!important;background:#fff3d8}
+    .overall-chip.t{color:#a1281f!important;background:#fff0ef}
+    .overall-chip.blank{color:#687887!important;background:#e9eef2}
+    .manual-verification{padding:15px;display:grid;grid-template-columns:minmax(0,1fr) minmax(310px,.75fr);gap:14px;align-items:center}
+    .manual-verification strong{color:#3b5366;font-size:11px}
+    .manual-verification p{margin:4px 0 0;color:var(--muted);font-size:9px;line-height:1.5}
+    .radio-group.compact{grid-template-columns:repeat(3,1fr)}
+    .overall-result-box{padding:12px;border:1px solid #dce6ed;border-radius:12px;background:#f8fbfd}
+    .overall-result-box>span:first-child{display:block;margin-bottom:8px;color:#607486;font-size:8px;font-weight:900;letter-spacing:.5px}
+    .overall-result-box small{display:block;margin-top:8px;color:#7c8c98;font-size:8px;line-height:1.4}
+    .entry-grid.revised{grid-template-columns:minmax(260px,.72fr) minmax(0,1.3fr)}
+    .migration-note{margin:10px 12px 0;padding:9px 10px;border-radius:9px;color:#84550c;background:#fff6e4;font-size:9px}
+    .auto-draft{margin:0 18px 18px;border:1px solid #d6e2ea;border-radius:13px;background:#f9fbfc}
+    .auto-draft summary{padding:11px 13px;color:var(--blue);font-size:10px;font-weight:900;cursor:pointer}
+    .auto-draft-grid{padding:0 13px 13px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+    .auto-draft-grid>div{padding:10px;border:1px solid #e0e8ee;border-radius:10px;background:#fff}
+    .auto-draft-grid label{display:block;color:#687b8b;font-size:8px;font-weight:900;text-transform:uppercase}
+    .auto-draft-grid p{margin:5px 0 0;color:#40576a;font-size:9px;line-height:1.55;white-space:pre-wrap}
+    @media(max-width:1100px){
+      .evidence-table-head{display:none}
+      .evidence-row{grid-template-columns:1fr 150px 1fr 1fr 30px}
+    }
+    @media(max-width:780px){
+      .evidence-panel{margin:0 10px 13px}
+      .evidence-panel-head{align-items:flex-start;flex-direction:column}
+      .evidence-row{grid-template-columns:1fr}
+      .evidence-remove-cell{text-align:right}
+      .manual-verification{grid-template-columns:1fr}
+      .entry-grid.revised{grid-template-columns:1fr}
+      .auto-draft{margin:0 10px 14px}
+      .auto-draft-grid{grid-template-columns:1fr}
+    }
+    @media print{
+      .evidence-panel{margin:0 0 7px;border-radius:0}
+      .evidence-panel-head{padding:5px;border-radius:0}
+      .evidence-table-head{display:grid}
+      .evidence-table-head,.evidence-row{grid-template-columns:1.1fr 80px 1fr 1fr 0;gap:3px}
+      .evidence-row{padding:4px}
+      .mini-status span{height:23px;border-radius:0;font-size:6px}
+      .evidence-row .input{height:25px!important;border-radius:0;font-size:6px}
+      .evidence-remove-cell,.evidence-actions{display:none}
+      .auto-draft{display:none}
+    }
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">AMI</div>
+      <div>
+        <h1>SIAMI UNRIKA</h1>
+        <p>Form 1b · Checklist Kinerja Program Studi</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="btn btn-soft" onclick="returnDashboard()">← Dashboard</button>
+      <button class="btn btn-soft" onclick="openDrive()">Buka Folder Bukti</button>
+      <button class="btn btn-soft" onclick="exportData()">Ekspor Cadangan</button>
+      <label class="btn btn-soft" for="importFile">Impor Cadangan</label>
+      <input id="importFile" type="file" accept=".json" class="hidden" onchange="importData(event)">
+      <button class="btn btn-soft" onclick="window.print()">Cetak / PDF</button>
+      <button class="btn btn-primary" onclick="saveAll(true)">Simpan Form 1b</button>
+    </div>
+  </header>
+
+  <div style="width:min(1500px,96%);margin:16px auto -7px;padding:11px 14px;border:1px solid #c9deed;border-radius:12px;background:#eef7fd;color:#315a76;font-size:11px;line-height:1.55"><strong>Preview alur hosting:</strong> bukti yang diisi pada akun Auditee akan muncul di kolom bukti di bawah. Auditor tetap menetapkan A/S/T dan klasifikasi; data hasil verifikasi kemudian mengalir ke Form 2, Form 3, dan Form 4. <button class="btn btn-soft" type="button" style="margin-left:8px" onclick="previewCompleteOthersAsA()">Uji cepat: isi A untuk butir lain</button></div>
+  <div class="layout">
+    <aside class="sidebar">
+      <section class="panel">
+        <h3>Progres Pemeriksaan</h3>
+        <div class="progress-circle" id="progressCircle"><strong id="progressPercent">0%</strong></div>
+        <div class="kpis">
+          <div class="kpi"><strong id="completedCount">0</strong><span>Butir diperiksa</span></div>
+          <div class="kpi"><strong>59</strong><span>Total butir</span></div>
+          <div class="kpi"><strong id="findingCount">0</strong><span>OB/Mi/Ma</span></div>
+          <div class="kpi"><strong id="form2Count">0</strong><span>Masuk Form 2</span></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3>Ringkasan Hasil Bukti</h3>
+        <div class="kpis">
+          <div class="kpi"><strong id="countA">0</strong><span>A · Lengkap</span></div>
+          <div class="kpi"><strong id="countS">0</strong><span>S · Sebagian</span></div>
+          <div class="kpi"><strong id="countT">0</strong><span>T · Tidak ada</span></div>
+          <div class="kpi"><strong id="countBlank">59</strong><span>Belum diperiksa</span></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3>Informasi Penyimpanan</h3>
+        <p class="small">
+          Isian disimpan otomatis pada browser perangkat ini. Gunakan
+          <strong>Ekspor Cadangan</strong> sebelum berpindah perangkat.
+          Pada tahap integrasi berikutnya, data akan disimpan ke Google Sheets.
+        </p>
+        <button class="btn btn-danger" style="width:100%" onclick="resetForm()">Kosongkan Isian</button>
+      </section>
+    </aside>
+
+    <main class="main">
+      <section class="document-head">
+        <div class="institution">
+          <div><div class="seal">UNRIKA</div></div>
+          <div>
+            <div>
+              <h2>UNIVERSITAS RIAU KEPULAUAN</h2>
+              <h3>LEMBAGA PENJAMINAN MUTU INTERNAL</h3>
+            </div>
+          </div>
+          <div class="doc-number">
+            <strong>No. Dokumen</strong><br>
+            KKA-S……-01
+          </div>
+        </div>
+
+        <div class="doc-title">
+          <h2>BORANG AUDIT MUTU INTERNAL</h2>
+          <h3>FORM 1b - CHECKLIST KINERJA PROGRAM STUDI</h3>
+        </div>
+
+        <div class="identity-grid">
+          <div class="identity-field">
+            <label>Auditi / Program Studi</label>
+            <input id="prodi" data-meta type="text">
+          </div>
+          <div class="identity-field">
+            <label>Tahap Audit</label>
+            <input id="tahapAudit" data-meta type="text" value="Kriteria 1-9, Renstra, dan Monev Kinerja">
+          </div>
+          <div class="identity-field">
+            <label>Tahun Akademik</label>
+            <input id="tahunAkademik" data-meta type="text" value="2025/2026">
+          </div>
+          <div class="identity-field">
+            <label>UPPS / Fakultas</label>
+            <input id="fakultas" data-meta type="text">
+          </div>
+          <div class="identity-field">
+            <label>Lokasi</label>
+            <input id="lokasi" data-meta type="text">
+          </div>
+          <div class="identity-field">
+            <label>Tanggal Audit</label>
+            <input id="tanggalAudit" data-meta type="date">
+          </div>
+          <div class="identity-field">
+            <label>Wakil Auditi</label>
+            <input id="wakilAuditi" data-meta type="text">
+          </div>
+          <div class="identity-field">
+            <label>Auditor Ketua</label>
+            <input id="auditorKetua" data-meta type="text">
+          </div>
+          <div class="identity-field">
+            <label>Auditor Anggota</label>
+            <input id="auditorAnggota" data-meta type="text">
+          </div>
+          <div class="identity-field">
+            <label>Ruang Lingkup</label>
+            <input id="ruangLingkup" data-meta type="text">
+          </div>
+          <div class="identity-field">
+            <label>Periode Data</label>
+            <input id="periodeData" data-meta type="text" value="s.d. 31 Juli 2026">
+          </div>
+          <div class="identity-field">
+            <label>Waktu Audit</label>
+            <input id="waktuAudit" data-meta type="text" placeholder="Contoh: 08.00–15.00 WIB">
+          </div>
+          <div class="identity-field wide">
+            <label>Tautan Folder Bukti Google Drive</label>
+            <input id="folderDriveUrl" data-meta type="url" placeholder="https://drive.google.com/drive/folders/...">
+          </div>
+          <div class="identity-field">
+            <label>ID Audit</label>
+            <input id="auditId" data-meta type="text" placeholder="AUDIT-2026-U01-001">
+          </div>
+        </div>
+
+        <div class="instruction">
+          <strong>Petunjuk:</strong> Auditor memberi satu hasil verifikasi bukti:
+          <strong>A</strong> = Ada/lengkap, <strong>S</strong> = Sebagian/belum lengkap,
+          dan <strong>T</strong> = Tidak ada/tidak dapat diverifikasi.
+          Kolom hasil memuat target prodi, capaian sampai 31 Juli 2026,
+          status/klasifikasi, dan catatan bukti objektif.
+        </div>
+      </section>
+
+      <section class="filter-bar">
+        <input class="input" id="searchInput" type="search"
+               placeholder="Cari kode, aspek, indikator, atau bukti..."
+               oninput="applyFilters()">
+        <select id="sectionFilter" onchange="applyFilters()">
+          <option value="">Semua kelompok audit</option>
+        </select>
+      </section>
+
+      <div id="formContainer"></div>
+
+      <section class="workflow-footer no-print" aria-label="Navigasi tahapan audit">
+        <div>
+          <div class="session-strip">
+            <span>Pengguna aktif: <strong id="activeUserName">Auditor SIAMI</strong></span>
+            <span id="lastSavedText">Belum pernah disimpan</span>
+          </div>
+          <div class="workflow-steps">
+            <div class="workflow-step active">
+              <div class="number">1</div>
+              <div><strong>Form 1b</strong><span id="workflowForm1Status">Sedang dikerjakan</span></div>
+            </div>
+            <div class="workflow-step">
+              <div class="number">2</div>
+              <div><strong>Form 2</strong><span>Ringkasan temuan</span></div>
+            </div>
+            <div class="workflow-step">
+              <div class="number">3</div>
+              <div><strong>Form 3</strong><span>Deskripsi temuan</span></div>
+            </div>
+            <div class="workflow-step">
+              <div class="number">4</div>
+              <div><strong>Form 4</strong><span>PTK dan verifikasi</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="workflow-actions">
+          <button class="btn btn-soft" type="button" onclick="returnDashboard()">← Kembali ke Dashboard</button>
+          <button class="btn btn-primary" type="button" onclick="saveAll(true)">Simpan Draft</button>
+          <button class="btn btn-next" type="button" onclick="continueToForm2()">Lanjut ke Form 2 →</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast">Data tersimpan.</div>
+
+  
+<script src="preview.js"></script>
+<script>
+  const FORM_ITEMS = [{"no":1,"kode":"1.1","aspek":"Ketepatan dan keselarasan visi keilmuan program studi","indikator":"Visi keilmuan menunjukkan kekhasan PS, berwawasan ke depan, relevan dengan IPTEKS dan kebutuhan masyarakat, serta selaras dengan VMTS UPPS/PT.","bukti":"Dokumen visi keilmuan PS; dokumen VMTS UPPS/PT; dokumen pengesahan.","acuan":"-","kelompok":"1. VISI KEILMUAN/VMTS","evidenceItems":["Dokumen visi keilmuan PS","dokumen VMTS UPPS/PT","dokumen pengesahan"]},{"no":2,"kode":"1.2","aspek":"Mekanisme penyusunan visi keilmuan dan keterlibatan pemangku kepentingan","indikator":"Penyusunan melibatkan pimpinan, dosen, mahasiswa, tenaga kependidikan, alumni, pengguna lulusan, pakar/asosiasi/mitra.","bukti":"Undangan; daftar hadir; berita acara; notulen; dokumentasi; masukan stakeholder; rumusan akhir.","acuan":"-","kelompok":"1. VISI KEILMUAN/VMTS","evidenceItems":["Undangan","daftar hadir","berita acara","notulen","dokumentasi","masukan stakeholder","rumusan akhir"]},{"no":3,"kode":"1.3","aspek":"Sosialisasi dan tingkat pemahaman visi keilmuan","indikator":"Sosialisasi dilaksanakan melalui forum dan media yang relevan; pemahaman stakeholder diukur, dianalisis, dievaluasi, dan ditindaklanjuti.","bukti":"Bukti sosialisasi; instrumen survei; hasil pengukuran; analisis; laporan evaluasi; tindak lanjut.","acuan":"-","kelompok":"1. VISI KEILMUAN/VMTS","evidenceItems":["Bukti sosialisasi","instrumen survei","hasil pengukuran","analisis","laporan evaluasi","tindak lanjut"]},{"no":4,"kode":"1.4","aspek":"Visi keilmuan sebagai rujukan pengembangan program studi","indikator":"Visi keilmuan menjadi rujukan kurikulum, pembelajaran, penelitian, dan PkM.","bukti":"Matriks keterkaitan visi dengan CPL/kurikulum, RPS, roadmap penelitian, dan roadmap PkM.","acuan":"-","kelompok":"1. VISI KEILMUAN/VMTS","evidenceItems":["Matriks keterkaitan visi dengan CPL/kurikulum","RPS","Roadmap penelitian","Roadmap PkM"]},{"no":5,"kode":"1.5","aspek":"Renstra, Renop, dan matriks pencapaian sasaran program studi","indikator":"PS memiliki dokumen perencanaan operasional dan indikator tahunan yang diturunkan dari Renstra universitas/UPPS.","bukti":"Renstra UPPS/PS; Renop; program kerja; matriks target dan capaian; bukti pengesahan.","acuan":"Program unit kerja diukur setiap tahun melalui indikator pendidikan, penelitian-PkM, kemahasiswaan-alumni, dan tata kelola.","kelompok":"1. VISI KEILMUAN/VMTS","evidenceItems":["Renstra UPPS/PS","Renop","program kerja","matriks target dan capaian","bukti pengesahan"]},{"no":6,"kode":"1.6","aspek":"Evaluasi visi keilmuan dan tindak lanjut","indikator":"Evaluasi mengidentifikasi kelebihan/kekurangan, menggunakan parameter yang sesuai, terdokumentasi, dan menghasilkan tindak lanjut.","bukti":"Laporan evaluasi; data pendukung; notulen; rekomendasi; bukti tindak lanjut.","acuan":"-","kelompok":"1. VISI KEILMUAN/VMTS","evidenceItems":["Laporan evaluasi","data pendukung","notulen","rekomendasi","bukti tindak lanjut"]},{"no":7,"kode":"2.1","aspek":"Kelengkapan tata pamong","indikator":"Tersedia struktur organisasi, uraian tugas, staffing, tata hubungan, mekanisme, dan sistem kontrol.","bukti":"Struktur organisasi UPPS/PS; SK pejabat; uraian tugas; mekanisme koordinasi dan kontrol.","acuan":"-","kelompok":"2. TATA PAMONG DAN TATA KELOLA","evidenceItems":["Struktur organisasi UPPS/PS","SK pejabat","uraian tugas","mekanisme koordinasi dan kontrol"]},{"no":8,"kode":"2.2","aspek":"Penerapan prinsip good governance","indikator":"Tata pamong dilaksanakan secara kredibel, transparan, akuntabel, bertanggung jawab, dan adil.","bukti":"Dokumen proses pemilihan/penetapan; laporan program kerja; laporan pertanggungjawaban.","acuan":"-","kelompok":"2. TATA PAMONG DAN TATA KELOLA","evidenceItems":["Dokumen proses pemilihan/penetapan","laporan program kerja","laporan pertanggungjawaban"]},{"no":9,"kode":"2.3","aspek":"Pelaksanaan enam fungsi manajemen","indikator":"Pimpinan melaksanakan perencanaan, pengorganisasian, penempatan personel, pelaksanaan, pengendalian/pengawasan, dan pelaporan.","bukti":"Program kerja; pembagian tugas; bukti pelaksanaan; laporan pertanggungjawaban kegiatan.","acuan":"-","kelompok":"2. TATA PAMONG DAN TATA KELOLA","evidenceItems":["Program kerja","pembagian tugas","bukti pelaksanaan","laporan pertanggungjawaban kegiatan"]},{"no":10,"kode":"2.4","aspek":"Evaluasi kinerja pimpinan dan pengelola program studi","indikator":"Kinerja struktural dinilai secara periodik, dianalisis, dan ditindaklanjuti.","bukti":"—","acuan":"Penilaian berbasis kinerja: acuan universitas 60% sangat baik dan 40% baik.","kelompok":"2. TATA PAMONG DAN TATA KELOLA","evidenceItems":[]},{"no":11,"kode":"2.5","aspek":"Kerja sama tridharma program studi","indikator":"Kerja sama pendidikan, penelitian, dan PkM dilaksanakan pada tingkat lokal/wilayah, nasional, dan/atau internasional.","bukti":"MoU/MoA/IA; surat tugas; laporan kegiatan; bukti luaran dan kebermanfaatan.","acuan":"Acuan universitas: 40 kerja sama penelitian/PkM pada 2026.","kelompok":"2. TATA PAMONG DAN TATA KELOLA","evidenceItems":["MoU/MoA/IA","surat tugas","laporan kegiatan","bukti luaran dan kebermanfaatan"]},{"no":12,"kode":"2.6","aspek":"Kebermanfaatan, keberlanjutan, dan kepuasan mitra kerjasama","indikator":"Kerja sama dimonitor dan dievaluasi berdasarkan manfaat, kepuasan mitra, hasil, dan keberlanjutannya.","bukti":"Instrumen monev; hasil survei mitra; analisis; laporan; tindak lanjut.","acuan":"-","kelompok":"2. TATA PAMONG DAN TATA KELOLA","evidenceItems":["Instrumen monev","hasil survei mitra","analisis","laporan","tindak lanjut"]},{"no":13,"kode":"2.7","aspek":"Kepuasan pemangku kepentingan internal dan eksternal","indikator":"Survei mencakup dosen, mahasiswa, tenaga kependidikan, alumni, pengguna lulusan, dan mitra; hasil dianalisis dan ditindaklanjuti.","bukti":"Data; laporan; FGD; publikasi hasil; tindak lanjut.","acuan":"-","kelompok":"2. TATA PAMONG DAN TATA KELOLA","evidenceItems":["Data","laporan","FGD","publikasi hasil","tindak lanjut"]},{"no":14,"kode":"3.1","aspek":"Rasio mahasiswa terhadap dosen tetap","indikator":"Rasio mahasiswa aktif terhadap DTPS memenuhi target dan dianalisis dampaknya terhadap mutu pembelajaran.","bukti":"Data mahasiswa aktif PDDikti; data DTPS; perhitungan rasio.","acuan":"Acuan Renstra universitas 2026: rasio 1:22. Non eksakta 1:30 (nanti cek)","kelompok":"3. MAHASISWA","evidenceItems":["Data mahasiswa aktif PDDikti","data DTPS","perhitungan rasio"]},{"no":15,"kode":"3.2","aspek":"Ketersediaan dan kualitas layanan mahasiswa","indikator":"Layanan akademik, konseling, kesehatan, beasiswa, TI, karier, kebutuhan khusus, dan publikasi tersedia dan mudah diakses.","bukti":"Daftar layanan; laporan penggunaan; bukti sosialisasi.","acuan":"-","kelompok":"3. MAHASISWA","evidenceItems":["Daftar layanan","laporan penggunaan","bukti sosialisasi"]},{"no":16,"kode":"3.3","aspek":"Prestasi akademik dan nonakademik mahasiswa","indikator":"Mahasiswa memperoleh prestasi yang terdokumentasi pada tingkat lokal, nasional, dan/atau internasional.","bukti":"Daftar prestasi; sertifikat/piagam; surat tugas; foto; laporan kegiatan.","acuan":"Acuan monev: 6 mahasiswa terlibat lomba inovasi/kreativitas; target prodi ditetapkan sesuai kondisi.","kelompok":"3. MAHASISWA","evidenceItems":["Daftar prestasi","sertifikat/piagam","surat tugas","foto","laporan kegiatan"]},{"no":17,"kode":"3.4","aspek":"Karya inovatif dan publikasi mahasiswa","indikator":"Mahasiswa menghasilkan karya inovatif, HKI, buku/book chapter, produk, atau publikasi yang relevan.","bukti":"Produk/karya; sertifikat HKI; ISBN; tautan/terbitan publikasi; bukti afiliasi.","acuan":"-","kelompok":"3. MAHASISWA","evidenceItems":["Produk/karya","sertifikat HKI","ISBN","tautan/terbitan publikasi","bukti afiliasi"]},{"no":18,"kode":"3.5","aspek":"Kepuasan mahasiswa","indikator":"Kepuasan diukur secara periodik dengan instrumen yang sahih, dianalisis, dipublikasikan, dan ditindaklanjuti.","bukti":"Bukti tindak lanjut.","acuan":"Acuan IAPSK: tingkat kepuasan mahasiswa sekurang-kurangnya 75%.","kelompok":"3. MAHASISWA","evidenceItems":["Bukti tindak lanjut"]},{"no":19,"kode":"4.1","aspek":"Analisis kebutuhan dan seleksi dosen/tendik","indikator":"Seleksi didasarkan pada analisis kebutuhan, pengumuman transparan, kompetensi, metode beragam, hasil, dan kesempatan banding.","bukti":"Analisis kebutuhan; pengumuman; instrumen seleksi; berita acara; hasil seleksi.","acuan":"-","kelompok":"4. DOSEN DAN TENAGA KEPENDIDIKAN","evidenceItems":["Analisis kebutuhan","pengumuman","instrumen seleksi","berita acara","hasil seleksi"]},{"no":20,"kode":"4.2","aspek":"Profil dan kesesuaian kompetensi DTPS","indikator":"DTPS memiliki NIDN/NIDK, kualifikasi, sertifikat pendidik/kompetensi, dan keahlian yang sesuai mata kuliah.","bukti":"Daftar DTPS; ijazah; jabatan akademik; serdos; sertifikat; CV; pemetaan MK.","acuan":"-","kelompok":"4. DOSEN DAN TENAGA KEPENDIDIKAN","evidenceItems":["Daftar DTPS","ijazah","jabatan akademik","serdos","sertifikat","CV","pemetaan MK"]},{"no":21,"kode":"4.3","aspek":"Kualifikasi akademik S3 dan studi lanjut","indikator":"Proporsi dosen S3 dan dosen studi lanjut ditingkatkan sesuai rencana pengembangan SDM.","bukti":"Data pendidikan; izin/tugas belajar; bukti studi lanjut; rencana pengembangan dosen.","acuan":"Acuan universitas 2026: 50 dosen S3 dan 15 dosen studi lanjut S3.","kelompok":"4. DOSEN DAN TENAGA KEPENDIDIKAN","evidenceItems":["Data pendidikan","izin/tugas belajar","bukti studi lanjut","rencana pengembangan dosen"]},{"no":22,"kode":"4.4","aspek":"Jabatan akademik dan sertifikasi dosen","indikator":"Distribusi Asisten Ahli, Lektor, Lektor Kepala, Guru Besar, dan dosen bersertifikat memenuhi target pengembangan.","bukti":"SK jabatan akademik; sertifikat pendidik; matriks perkembangan jafung.","acuan":"Acuan universitas 2026: 100% dosen memiliki jafung; 10 Lektor Kepala; 3 Guru Besar.","kelompok":"4. DOSEN DAN TENAGA KEPENDIDIKAN","evidenceItems":["SK jabatan akademik","sertifikat pendidik","matriks perkembangan jafung"]},{"no":23,"kode":"4.5","aspek":"Beban kerja dan kesesuaian penugasan DTPS","indikator":"BKD/EWMP berada dalam rentang yang ditetapkan dan mata kuliah sesuai kompetensi dosen.","bukti":"BKD/LKD; SK mengajar; jadwal; BAP; surat tugas penelitian/PkM/penunjang.","acuan":"Acuan IAPSK: BKD 12–16 SKS.","kelompok":"4. DOSEN DAN TENAGA KEPENDIDIKAN","evidenceItems":["BKD/LKD","SK mengajar","jadwal","BAP","surat tugas penelitian/PkM/penunjang"]},{"no":24,"kode":"4.6","aspek":"Beban pembimbingan tugas akhir","indikator":"Penugasan pembimbing utama proporsional dan pembimbingan terdokumentasi.","bukti":"—","acuan":"-","kelompok":"4. DOSEN DAN TENAGA KEPENDIDIKAN","evidenceItems":[]},{"no":25,"kode":"4.7","aspek":"Pengakuan/rekognisi kepakaran DTPS","indikator":"DTPS memperoleh rekognisi sebagai visiting lecturer, invited speaker, editor/reviewer, narasumber, tenaga ahli, atau penerima penghargaan.","bukti":"—","acuan":"-","kelompok":"4. DOSEN DAN TENAGA KEPENDIDIKAN","evidenceItems":[]},{"no":26,"kode":"4.8","aspek":"Pengembangan kompetensi DTPS","indikator":"DTPS mengikuti studi lanjut, sertifikasi, workshop/pelatihan, seminar, konferensi, atau program akademik relevan.","bukti":"—","acuan":"-","kelompok":"4. DOSEN DAN TENAGA KEPENDIDIKAN","evidenceItems":[]},{"no":27,"kode":"4.9","aspek":"Kualifikasi dan pengembangan tenaga kependidikan/laboran","indikator":"Jumlah dan kompetensi tendik/laboran sesuai kebutuhan layanan dan karakteristik program studi.","bukti":"—","acuan":"-","kelompok":"4. DOSEN DAN TENAGA KEPENDIDIKAN","evidenceItems":[]},{"no":28,"kode":"4.10","aspek":"Evaluasi dosen dan tenaga kependidikan","indikator":"Kinerja dosen dan tendik dimonitor, dievaluasi, dan ditindaklanjuti.","bukti":"—","acuan":"Acuan monev universitas: kehadiran dosen/karyawan 97%.","kelompok":"4. DOSEN DAN TENAGA KEPENDIDIKAN","evidenceItems":[]},{"no":29,"kode":"5.1","aspek":"Perencanaan dan pengelolaan keuangan","indikator":"Perencanaan, pelaksanaan, evaluasi, tindak lanjut, dan dukungan sistem informasi terdokumentasi.","bukti":"—","acuan":"-","kelompok":"5. KEUANGAN, SARANA, DAN PRASARANA","evidenceItems":[]},{"no":30,"kode":"5.2","aspek":"Ketersediaan, aksesibilitas, dan kemanfaatan sarana prasarana","indikator":"Ruang, laboratorium/studio, peralatan, pustaka, dan fasilitas administrasi memadai, terawat, dan digunakan.","bukti":"—","acuan":"Acuan universitas: ruang laboratorium 2.000 m²; ruang kelas 9.500 m²; target prodi ditetapkan sesuai kebutuhan.","kelompok":"5. KEUANGAN, SARANA, DAN PRASARANA","evidenceItems":[]},{"no":31,"kode":"5.3","aspek":"Ketersediaan dan pemanfaatan teknologi informasi","indikator":"SIAKAD, LMS, internet, perangkat, dan sistem data mendukung kegiatan akademik dan administrasi.","bukti":"—","acuan":"Acuan monev universitas: pemanfaatan SIAKAD 100%.","kelompok":"5. KEUANGAN, SARANA, DAN PRASARANA","evidenceItems":[]},{"no":32,"kode":"6.1","aspek":"Pengembangan kurikulum berbasis luaran (OBE)","indikator":"Kurikulum disusun sistematis, lengkap, mutakhir, sesuai KKNI, koheren, berciri khas PS, dan disahkan.","bukti":"—","acuan":"-","kelompok":"6. PENDIDIKAN","evidenceItems":[]},{"no":33,"kode":"6.2","aspek":"Keterlibatan stakeholder dalam evaluasi dan pemutakhiran kurikulum","indikator":"Penyusunan/evaluasi melibatkan stakeholder internal dan eksternal serta menggunakan hasil tracer study.","bukti":"—","acuan":"-","kelompok":"6. PENDIDIKAN","evidenceItems":[]},{"no":34,"kode":"6.3","aspek":"Kesesuaian CPL dengan profil lulusan dan KKNI/SKKNI","indikator":"CPL diturunkan dari profil lulusan, sesuai jenjang, dan terpetakan ke mata kuliah.","bukti":"—","acuan":"-","kelompok":"6. PENDIDIKAN","evidenceItems":[]},{"no":35,"kode":"6.4","aspek":"Ketepatan struktur kurikulum dan kesempatan belajar di luar prodi","indikator":"Struktur kurikulum mendukung pencapaian CPL dan memberi kesempatan belajar di luar program studi sesuai ketentuan.","bukti":"—","acuan":"-","kelompok":"6. PENDIDIKAN","evidenceItems":[]},{"no":36,"kode":"6.5","aspek":"Ketersediaan dan kelengkapan RPS","indikator":"Seluruh mata kuliah memiliki RPS yang memuat CPL/CPMK, bahan kajian, metode, tahapan, pengalaman belajar, dan asesmen.","bukti":"—","acuan":"Acuan Renstra 2026: 100% mata kuliah memiliki RPS.","kelompok":"6. PENDIDIKAN","evidenceItems":[]},{"no":37,"kode":"6.6","aspek":"Pelaksanaan pembelajaran, metode, pembelajaran berbasis proyek, dan penilaian","indikator":"Pelaksanaan pembelajaran, metode dan pengalaman belajar—termasuk project-based learning—serta prinsip, teknik, instrumen, dokumentasi, dan umpan balik penilaian sesuai dengan RPS dan CPMK/CPL; dilaksanakan secara edukatif, autentik, objektif, akuntabel, transparan, bervariasi, proporsional, dan terdokumentasi.","bukti":"—","acuan":"Acuan Renstra 2026: kesesuaian RPS dengan pelaksanaan 100%.","kelompok":"6. PENDIDIKAN","evidenceItems":[]},{"no":38,"kode":"6.7","aspek":"Integrasi penelitian dan PkM dalam pembelajaran","indikator":"Hasil penelitian/PkM dosen diintegrasikan ke RPS, materi, modul, studi kasus, atau tugas.","bukti":"—","acuan":"Acuan IAPSK: integrasi penelitian/PkM dalam pembelajaran sekurang-kurangnya 50%; mata kuliah terintegrasi sekurang-kurangnya 25%.","kelompok":"6. PENDIDIKAN","evidenceItems":[]},{"no":39,"kode":"6.8","aspek":"Praktikum, studio, bengkel, atau praktik lapangan","indikator":"Kegiatan praktik dilaksanakan dengan panduan, jadwal, fasilitas, asesmen, dokumentasi, dan monev yang memadai bila relevan.","bukti":"—","acuan":"-","kelompok":"6. PENDIDIKAN","evidenceItems":[]},{"no":40,"kode":"6.9","aspek":"Monitoring dan evaluasi proses pembelajaran","indikator":"Monev dilakukan periodik, mencakup kesesuaian proses, kinerja dosen, penilaian, remedial/pengayaan, dan tindak lanjut.","bukti":"—","acuan":"Acuan Renstra: program evaluasi dan monitoring dilaksanakan setiap tahun.","kelompok":"6. PENDIDIKAN","evidenceItems":[]},{"no":41,"kode":"6.10","aspek":"Peningkatan suasana akademik","indikator":"PS menyelenggarakan kuliah umum, seminar, lokakarya, kegiatan ilmiah mahasiswa, dosen tamu, atau praktisi.","bukti":"—","acuan":"-","kelompok":"6. PENDIDIKAN","evidenceItems":[]},{"no":42,"kode":"6.11","aspek":"Asesmen pencapaian CPL","indikator":"PS melakukan asesmen CPL dengan bukti sahih, menganalisis hasil, dan menindaklanjuti kesenjangan.","bukti":"—","acuan":"-","kelompok":"6. PENDIDIKAN","evidenceItems":[]},{"no":43,"kode":"7.1","aspek":"Peta jalan penelitian program studi","indikator":"Roadmap mendukung visi keilmuan, relevan, memiliki fokus/tahapan, terintegrasi tridharma, dan didukung SDM.","bukti":"—","acuan":"-","kelompok":"7. PENELITIAN","evidenceItems":[]},{"no":44,"kode":"7.2","aspek":"Produktivitas dan sumber pendanaan penelitian DTPS","indikator":"Penelitian DTPS relevan dan didanai dari PT/mandiri, dalam negeri, dan/atau luar negeri.","bukti":"—","acuan":"Acuan universitas 2026: 20 proposal penelitian.","kelompok":"7. PENELITIAN","evidenceItems":[]},{"no":45,"kode":"7.3","aspek":"Kerja sama dan hibah penelitian","indikator":"DTPS mengikuti hibah kompetitif dan penelitian kerja sama antar lembaga/luar negeri.","bukti":"—","acuan":"Acuan monev: 25 kerja sama penelitian antar lembaga dan 2 kerja sama luar negeri.","kelompok":"7. PENELITIAN","evidenceItems":[]},{"no":46,"kode":"7.4","aspek":"Pelibatan mahasiswa dalam penelitian DTPS","indikator":"Mahasiswa dilibatkan secara bermakna dalam proposal, pelaksanaan, pengolahan data, dan/atau luaran.","bukti":"—","acuan":"-","kelompok":"7. PENELITIAN","evidenceItems":[]},{"no":47,"kode":"8.1","aspek":"Peta jalan dan relevansi PkM","indikator":"Roadmap PkM mendukung visi keilmuan, memiliki fokus/tahapan, dan menjadi rujukan kegiatan dosen/mahasiswa.","bukti":"—","acuan":"-","kelompok":"8. PENGABDIAN KEPADA MASYARAKAT","evidenceItems":[]},{"no":48,"kode":"8.2","aspek":"Produktivitas, pendanaan, dan pelibatan mahasiswa dalam PkM","indikator":"PkM DTPS relevan, didanai dari berbagai sumber, dan melibatkan mahasiswa.","bukti":"—","acuan":"Acuan universitas 2026: 30 proposal PkM.","kelompok":"8. PENGABDIAN KEPADA MASYARAKAT","evidenceItems":[]},{"no":49,"kode":"9.1","aspek":"IPK rata-rata lulusan","indikator":"IPK lulusan dihitung, dibandingkan dengan target, dianalisis, dan ditindaklanjuti.","bukti":"—","acuan":"Acuan monev universitas 2026: IPK rata-rata 3,60.","kelompok":"9. LUARAN DAN CAPAIAN TRIDHARMA","evidenceItems":[]},{"no":50,"kode":"9.2","aspek":"Prestasi mahasiswa","indikator":"Prestasi akademik dan nonakademik mahasiswa dianalisis berdasarkan tingkat dan jumlah.","bukti":"—","acuan":"-","kelompok":"9. LUARAN DAN CAPAIAN TRIDHARMA","evidenceItems":[]},{"no":51,"kode":"9.3","aspek":"Masa studi, kelulusan tepat waktu, dan keberhasilan studi","indikator":"PS memantau masa studi, persentase kelulusan tepat waktu, dan keberhasilan studi per angkatan.","bukti":"—","acuan":"Acuan monev universitas 2026: masa studi rata-rata 3,8 tahun.","kelompok":"9. LUARAN DAN CAPAIAN TRIDHARMA","evidenceItems":[]},{"no":52,"kode":"9.4","aspek":"Pelaksanaan tracer study","indikator":"Tracer study terkoordinasi, dilakukan rutin, mencakup pertanyaan inti, menargetkan populasi, dan digunakan untuk pengembangan.","bukti":"—","acuan":"-","kelompok":"9. LUARAN DAN CAPAIAN TRIDHARMA","evidenceItems":[]},{"no":53,"kode":"9.5","aspek":"Waktu tunggu lulusan","indikator":"Waktu tunggu memperoleh pekerjaan pertama dipantau dan dianalisis.","bukti":"—","acuan":"Acuan monev universitas 2026: 90% lulusan bekerja dalam waktu kurang dari 6 bulan.","kelompok":"9. LUARAN DAN CAPAIAN TRIDHARMA","evidenceItems":[]},{"no":54,"kode":"9.6","aspek":"Kesesuaian bidang kerja dan tingkat tempat kerja lulusan","indikator":"Kesesuaian pekerjaan dengan bidang PS serta tingkat lokal/nasional/internasional dianalisis.","bukti":"—","acuan":"-","kelompok":"9. LUARAN DAN CAPAIAN TRIDHARMA","evidenceItems":[]},{"no":55,"kode":"9.7","aspek":"Kepuasan pengguna lulusan","indikator":"Kepuasan pengguna terhadap kompetensi lulusan diukur, dianalisis, dan ditindaklanjuti.","bukti":"—","acuan":"-","kelompok":"9. LUARAN DAN CAPAIAN TRIDHARMA","evidenceItems":[]},{"no":56,"kode":"9.8","aspek":"Employability, kewirausahaan, dan studi lanjut","indikator":"Lulusan bekerja sesuai profil, berwirausaha, melanjutkan studi, atau mengikuti pendidikan profesi.","bukti":"—","acuan":"-","kelompok":"9. LUARAN DAN CAPAIAN TRIDHARMA","evidenceItems":[]},{"no":57,"kode":"9.9","aspek":"Kemampuan bahasa Inggris lulusan","indikator":"Kemampuan bahasa Inggris lulusan diukur dan program peningkatan dilaksanakan.","bukti":"—","acuan":"Acuan monev universitas 2026: rata-rata TOEFL 500.","kelompok":"9. LUARAN DAN CAPAIAN TRIDHARMA","evidenceItems":[]},{"no":58,"kode":"9.10","aspek":"Publikasi dan luaran mahasiswa","indikator":"Mahasiswa menghasilkan publikasi dan luaran penelitian/PkM secara mandiri atau bersama DTPS.","bukti":"—","acuan":"-","kelompok":"9. LUARAN DAN CAPAIAN TRIDHARMA","evidenceItems":[]},{"no":59,"kode":"9.11","aspek":"Unsur pelaksana penjaminan mutu","indikator":"Tersedia GPM/UPM atau unsur pelaksana mutu yang sah dan berfungsi dan penjaminan mutu dilakukan secara berkala dan ditindaklanjuti.","bukti":"—","acuan":"-","kelompok":"9. PENJAMINAN MUTU","evidenceItems":[]}];
+  const STORAGE_KEY = "siami_preview_form1b_2026";
+  const SESSION_KEY = "siamiPreviewSession";
+  const RESULT_LABELS = {
+    A:"Ada/lengkap",
+    S:"Sebagian/belum lengkap",
+    T:"Tidak ada/tidak dapat diverifikasi"
+  };
+  const CLASS_LABELS = {
+    PB:"Praktik Baik",
+    K:"Kesesuaian",
+    OB:"Observasi/Peluang Peningkatan",
+    Mi:"KTS Minor",
+    Ma:"KTS Mayor"
+  };
+
+  let state = {meta:{},answers:{},updatedAt:null,version:2};
+  let session = null;
+  let saveTimer;
+
+  function parseJSON(value){
+    try{return JSON.parse(value || "null")}
+    catch(error){return null}
+  }
+
+  function getSession(){
+    return parseJSON(sessionStorage.getItem(SESSION_KEY)) ||
+           parseJSON(localStorage.getItem(SESSION_KEY));
+  }
+
+  function escapeHTML(value){
+    return String(value ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function escapeAttr(value){
+    return escapeHTML(value).replaceAll("`","&#096;");
+  }
+
+  function showToast(message){
+    const toast=document.getElementById("toast");
+    toast.textContent=message;
+    toast.classList.add("show");
+    clearTimeout(window.siamiForm1Toast);
+    window.siamiForm1Toast=setTimeout(()=>toast.classList.remove("show"),2500);
+  }
+
+  function formatDateTime(value){
+    if(!value)return "Belum pernah disimpan";
+    const d=new Date(value);
+    if(Number.isNaN(d.getTime()))return "Belum pernah disimpan";
+    return `Terakhir disimpan: ${d.toLocaleString("id-ID",{
+      day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"
+    })}`;
+  }
+
+  function officialChecks(item){
+    return (item.evidenceItems || []).map((name,index)=>({
+      id:`official-${item.no}-${index+1}`,
+      name,
+      official:true,
+      status:"",
+      documentRef:"",
+      note:""
+    }));
+  }
+
+  function normalizeEvidenceCheck(check,item,index){
+    return {
+      id:check?.id || `custom-${item.no}-${Date.now()}-${index}`,
+      name:String(check?.name || "").trim(),
+      official:Boolean(check?.official),
+      status:["A","S","T"].includes(check?.status) ? check.status : "",
+      documentRef:String(check?.documentRef || ""),
+      note:String(check?.note || ""),
+      auditeeFileName:String(check?.auditeeFileName || ""),
+      auditeeFileSize:Number(check?.auditeeFileSize || 0),
+      auditeeLink:String(check?.auditeeLink || "")
+    };
+  }
+
+  function normalizeAnswer(item,stored){
+    const base={
+      hasilBukti:"",
+      manualResult:"",
+      target:"",
+      capaian:"",
+      klasifikasi:"",
+      catatan:"",
+      masukForm2:false,
+      evidenceChecks:officialChecks(item),
+      migrationNote:""
+    };
+    if(!stored)return base;
+
+    const answer={...base,...stored};
+    const oldChecks=Array.isArray(stored.evidenceChecks) ? stored.evidenceChecks : [];
+    const oldById=new Map(oldChecks.map(c=>[c.id,c]));
+    const oldByName=new Map(oldChecks.map(c=>[String(c.name || "").toLowerCase(),c]));
+
+    const official=officialChecks(item).map((check,index)=>{
+      const match=oldById.get(check.id) || oldByName.get(check.name.toLowerCase());
+      return match ? {...check,...normalizeEvidenceCheck(match,item,index),official:true,name:check.name} : check;
+    });
+    const custom=oldChecks
+      .filter(c=>!c.official && !String(c.id || "").startsWith("official-"))
+      .map((c,index)=>normalizeEvidenceCheck(c,item,index));
+
+    answer.evidenceChecks=[...official,...custom];
+
+    if(!oldChecks.length && stored.hasilBukti){
+      if(item.evidenceItems.length){
+        if(stored.hasilBukti==="A"){
+          answer.evidenceChecks.forEach(c=>c.status="A");
+        }else if(answer.evidenceChecks.length){
+          answer.evidenceChecks[0].status=stored.hasilBukti;
+          answer.evidenceChecks[0].note=[
+            answer.evidenceChecks[0].note,
+            "Perlu ditinjau kembali karena data berasal dari penilaian butir versi sebelumnya."
+          ].filter(Boolean).join(" ");
+          answer.migrationNote="Penilaian lama perlu dirinci per bukti.";
+        }
+      }else{
+        answer.manualResult=stored.hasilBukti;
+      }
+    }
+
+    refreshDerived(item,answer,false);
+    return answer;
+  }
+
+  function activeChecks(answer){
+    return (answer.evidenceChecks || []).filter(c=>String(c.name || "").trim());
+  }
+
+  function calculateResult(item,answer){
+    const checks=activeChecks(answer);
+    if(checks.length){
+      if(checks.some(c=>!["A","S","T"].includes(c.status)))return "";
+      if(checks.some(c=>c.status==="T"))return "T";
+      if(checks.some(c=>c.status==="S"))return "S";
+      return "A";
+    }
+    return ["A","S","T"].includes(answer.manualResult) ? answer.manualResult : "";
+  }
+
+  function refreshDerived(item,answer,autoSelect=true){
+    answer.hasilBukti=calculateResult(item,answer);
+    if(autoSelect && ["S","T"].includes(answer.hasilBukti)){
+      answer.masukForm2=true;
+    }
+    if(autoSelect && ["OB","Mi","Ma"].includes(answer.klasifikasi)){
+      answer.masukForm2=true;
+    }
+    return answer.hasilBukti;
+  }
+
+  function itemComplete(item,answer){
+    return Boolean(calculateResult(item,answer));
+  }
+
+  function evidenceSummary(item,answer){
+    const checks=activeChecks(answer);
+    const groups={A:[],S:[],T:[]};
+    checks.forEach(c=>{
+      if(groups[c.status]){
+        const detail=[c.name,c.documentRef ? `(${c.documentRef})` : "",c.note ? `— ${c.note}` : ""]
+          .filter(Boolean).join(" ");
+        groups[c.status].push(detail);
+      }
+    });
+    return groups;
+  }
+
+  function createDrafts(item,answer){
+    const groups=evidenceSummary(item,answer);
+    const result=calculateResult(item,answer);
+    const sentences=[];
+
+    if(groups.A.length){
+      sentences.push(`Bukti tersedia dan lengkap: ${groups.A.join("; ")}.`);
+    }
+    if(groups.S.length){
+      sentences.push(`Bukti tersedia tetapi belum lengkap: ${groups.S.join("; ")}.`);
+    }
+    if(groups.T.length){
+      sentences.push(`Bukti tidak tersedia atau tidak dapat diverifikasi: ${groups.T.join("; ")}.`);
+    }
+    if(!groups.A.length && !groups.S.length && !groups.T.length && answer.catatan){
+      sentences.push(answer.catatan.trim());
+    }
+
+    const objectiveParts=[];
+    if(groups.A.length) objectiveParts.push(`Bukti lengkap yang diverifikasi: ${groups.A.join("; ")}.`);
+    if(groups.S.length) objectiveParts.push(`Bukti sebagian yang diverifikasi: ${groups.S.join("; ")}.`);
+    if(groups.T.length) objectiveParts.push(`Bukti yang diminta tetapi tidak dapat ditunjukkan: ${groups.T.join("; ")}.`);
+    if(!objectiveParts.length && answer.catatan) objectiveParts.push(answer.catatan.trim());
+
+    const missing=[...groups.S,...groups.T];
+    let gap="";
+    if(missing.length){
+      const statusText=groups.T.length
+        ? "belum dapat menunjukkan atau memverifikasi secara lengkap"
+        : "belum dapat memverifikasi secara lengkap";
+      gap=`Program studi ${statusText} bukti yang dipersyaratkan pada butir ${item.kode}, yaitu ${missing.join("; ")}. Dengan demikian, pemenuhan terhadap kriteria “${item.indikator}” belum dapat dipastikan secara penuh.`;
+    }else if(result==="A"){
+      gap=`Seluruh bukti wajib pada butir ${item.kode} telah tersedia dan dapat diverifikasi.`;
+    }else if(answer.catatan){
+      gap=answer.catatan.trim();
+    }
+
+    const requirement=[
+      item.indikator,
+      item.bukti && !["—","-"].includes(item.bukti) ? `Bukti yang dipersyaratkan: ${item.bukti}` : "",
+      answer.target ? `Target prodi: ${answer.target}.` : "",
+      item.acuan && item.acuan!=="-" ? `Acuan: ${item.acuan}` : ""
+    ].filter(Boolean).join(" ");
+
+    return {
+      kondisiFaktual:sentences.join(" "),
+      buktiObjektif:objectiveParts.join(" "),
+      pernyataanKesenjangan:gap,
+      persyaratanTarget:requirement
+    };
+  }
+
+  function initialAnswer(item){
+    return normalizeAnswer(item,null);
+  }
+
+  function loadState(){
+    const stored=parseJSON(localStorage.getItem(STORAGE_KEY));
+    if(stored && stored.answers){
+      state={...state,...stored,meta:{...(stored.meta || {})},answers:{...(stored.answers || {})}};
+    }
+    FORM_ITEMS.forEach(item=>{
+      state.answers[item.no]=normalizeAnswer(item,state.answers[item.no]);
+    });
+    state.version=2;
+  }
+
+
+  function syncPreviewAssignmentEvidence(){
+    if(typeof SIAMI_PREVIEW==="undefined")return;
+    const assignment=SIAMI_PREVIEW.assignment();
+    const evidence=SIAMI_PREVIEW.evidence();
+    const auditeeItemData=SIAMI_PREVIEW.auditeeItems ? SIAMI_PREVIEW.auditeeItems() : {};
+
+    state.meta={
+      ...state.meta,
+      prodi:assignment.unitName || state.meta.prodi || "",
+      fakultas:assignment.faculty || state.meta.fakultas || "",
+      lokasi:assignment.location || state.meta.lokasi || "",
+      tanggalAudit:assignment.auditDate || state.meta.tanggalAudit || "",
+      wakilAuditi:assignment.auditeeName || state.meta.wakilAuditi || "",
+      auditorKetua:assignment.leadAuditor || state.meta.auditorKetua || "",
+      auditorAnggota:assignment.memberAuditor || state.meta.auditorAnggota || "",
+      auditId:assignment.auditId || state.meta.auditId || "",
+      tahunAkademik:assignment.academicYear || state.meta.tahunAkademik || "2025/2026"
+    };
+
+    FORM_ITEMS.forEach(item=>{
+      const answer=state.answers[item.no] || initialAnswer(item);
+      const auditeeMeta=auditeeItemData[`${assignment.unitId}:${item.no}`] || {};
+      if(!String(answer.target||"").trim())answer.target=auditeeMeta.target || "";
+      if(!String(answer.capaian||"").trim())answer.capaian=auditeeMeta.capaian || "";
+      const officialNames=item.evidenceItems || [];
+
+      officialNames.forEach((name,index)=>{
+        const source=evidence[SIAMI_PREVIEW.evidenceKey(assignment.unitId,item.no,index)];
+        if(!source)return;
+        let check=answer.evidenceChecks[index];
+        if(!check || !check.official){
+          check={id:`official-${item.no}-${index+1}`,name,official:true,status:"",documentRef:"",note:""};
+          answer.evidenceChecks.splice(index,0,check);
+        }
+        check.auditeeFileName=source.fileName || "";
+        check.auditeeFileSize=Number(source.fileSize || 0);
+        check.auditeeLink=source.linkUrl || "";
+        if(!String(check.documentRef||"").trim()){
+          check.documentRef=source.documentRef || source.fileName || "";
+        }
+      });
+
+      if(!officialNames.length){
+        const source=evidence[SIAMI_PREVIEW.evidenceKey(assignment.unitId,item.no,0)];
+        if(source && (source.fileName || source.linkUrl || source.documentRef)){
+          let check=answer.evidenceChecks.find(c=>c.id===`auditee-preview-${item.no}`);
+          if(!check){
+            check={id:`auditee-preview-${item.no}`,name:"Bukti tambahan/pendukung dari Auditee",official:false,status:"",documentRef:"",note:""};
+            answer.evidenceChecks.push(check);
+          }
+          check.auditeeFileName=source.fileName || "";
+          check.auditeeFileSize=Number(source.fileSize || 0);
+          check.auditeeLink=source.linkUrl || "";
+          if(!String(check.documentRef||"").trim()){
+            check.documentRef=source.documentRef || source.fileName || "";
+          }
+        }
+      }
+      state.answers[item.no]=answer;
+    });
+
+    state.updatedAt=state.updatedAt || new Date().toISOString();
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+  }
+
+  function initializeSession(){
+    session=getSession();
+    if(!session){
+      window.location.replace("index.html");
+      return false;
+    }
+    const name=session.name || "Auditor SIAMI";
+    const userLabel=document.getElementById("activeUserName");
+    if(userLabel)userLabel.textContent=`${name} · ${session.roleLabel || "Auditor"}`;
+    if(session.role==="auditor_ketua" && !state.meta.auditorKetua)state.meta.auditorKetua=name;
+    if(session.role==="auditor_anggota" && !state.meta.auditorAnggota)state.meta.auditorAnggota=name;
+    return true;
+  }
+
+  function populateSectionFilter(){
+    const select=document.getElementById("sectionFilter");
+    if(!select)return;
+    select.innerHTML='<option value="">Semua kelompok audit</option>';
+    [...new Set(FORM_ITEMS.map(item=>item.kelompok))].forEach(section=>{
+      const option=document.createElement("option");
+      option.value=section;
+      option.textContent=section;
+      select.appendChild(option);
+    });
+  }
+
+  function resultBadge(result){
+    if(!result)return '<span class="overall-chip blank">Belum lengkap</span>';
+    return `<span class="overall-chip ${result.toLowerCase()}">${result} · ${RESULT_LABELS[result]}</span>`;
+  }
+
+  function renderEvidenceRow(item,answer,check,index){
+    const radio=code=>check.status===code ? "checked" : "";
+    const nameCell=check.official
+      ? `<strong>${escapeHTML(check.name)}</strong><span class="evidence-origin">Bukti wajib resmi</span>`
+      : `<input class="input evidence-name" type="text" value="${escapeAttr(check.name)}"
+          placeholder="Nama bukti tambahan"
+          oninput="updateEvidence(${item.no},${index},'name',this.value,false)">`;
+
+    return `
+      <div class="evidence-row">
+        <div class="evidence-name-cell">${nameCell}</div>
+        <div class="evidence-status-cell">
+          <label class="mini-status a">
+            <input type="radio" name="ev-${item.no}-${index}" value="A" ${radio("A")}
+              onchange="updateEvidence(${item.no},${index},'status',this.value,true)">
+            <span>A</span>
+          </label>
+          <label class="mini-status s">
+            <input type="radio" name="ev-${item.no}-${index}" value="S" ${radio("S")}
+              onchange="updateEvidence(${item.no},${index},'status',this.value,true)">
+            <span>S</span>
+          </label>
+          <label class="mini-status t">
+            <input type="radio" name="ev-${item.no}-${index}" value="T" ${radio("T")}
+              onchange="updateEvidence(${item.no},${index},'status',this.value,true)">
+            <span>T</span>
+          </label>
+        </div>
+        <div>
+          <input class="input" type="text" value="${escapeAttr(check.documentRef)}"
+            placeholder="Nama/nomor/tanggal dokumen"
+            oninput="updateEvidence(${item.no},${index},'documentRef',this.value,false)">
+          ${(check.auditeeFileName || check.auditeeLink) ? `
+            <div style="margin-top:6px;padding:7px 8px;border-radius:8px;background:#eef7fd;color:#315a76;font-size:8px;line-height:1.45">
+              <strong>Bukti dari Auditee:</strong>
+              ${check.auditeeFileName ? `<span>${escapeHTML(check.auditeeFileName)}${check.auditeeFileSize ? ` · ${Math.round(check.auditeeFileSize/1024)} KB` : ""}</span>` : ""}
+              ${check.auditeeLink ? `<a href="${escapeAttr(check.auditeeLink)}" target="_blank" rel="noopener" style="display:inline-block;margin-left:5px;color:#175a8c;font-weight:900">Buka link ↗</a>` : ""}
+            </div>` : ""}
+        </div>
+        <div>
+          <input class="input" type="text" value="${escapeAttr(check.note)}"
+            placeholder="Kondisi, bagian kurang, atau klarifikasi"
+            oninput="updateEvidence(${item.no},${index},'note',this.value,false)">
+        </div>
+        <div class="evidence-remove-cell">
+          ${check.official ? "" : `<button class="remove-evidence" type="button"
+            onclick="removeEvidence(${item.no},${index})" title="Hapus bukti tambahan">×</button>`}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderManualVerification(item,answer){
+    const checked=code=>answer.manualResult===code ? "checked" : "";
+    return `
+      <div class="manual-verification">
+        <div>
+          <strong>Tidak ada dokumen khusus yang wajib disiapkan program studi</strong>
+          <p>Auditor tetap menetapkan hasil verifikasi butir berdasarkan data atau dokumen dari unit pemilik informasi.</p>
+        </div>
+        <div class="radio-group compact">
+          <label class="radio-option a">
+            <input type="radio" name="manual-${item.no}" value="A" ${checked("A")}
+              onchange="setManualResult(${item.no},this.value)">
+            <span>A<br>Ada/lengkap</span>
+          </label>
+          <label class="radio-option s">
+            <input type="radio" name="manual-${item.no}" value="S" ${checked("S")}
+              onchange="setManualResult(${item.no},this.value)">
+            <span>S<br>Sebagian</span>
+          </label>
+          <label class="radio-option t">
+            <input type="radio" name="manual-${item.no}" value="T" ${checked("T")}
+              onchange="setManualResult(${item.no},this.value)">
+            <span>T<br>Tidak ada</span>
+          </label>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderItem(item){
+    const answer=state.answers[item.no] || initialAnswer(item);
+    const selected=value=>answer.klasifikasi===value ? "selected" : "";
+    const checks=activeChecks(answer);
+    const hasOfficial=(item.evidenceItems || []).length>0;
+    const draft=createDrafts(item,answer);
+    const status=calculateResult(item,answer);
+
+    return `
+      <article class="audit-item"
+        id="item-${item.no}"
+        data-item="${item.no}"
+        data-search="${escapeAttr([
+          item.no,item.kode,item.aspek,item.indikator,item.bukti,item.acuan,item.kelompok,
+          ...(item.evidenceItems || [])
+        ].join(" ").toLowerCase())}">
+        <div class="item-top">
+          <div class="item-cell item-no"><strong>${item.no}</strong></div>
+          <div class="item-cell item-code"><strong>${escapeHTML(item.kode)}</strong></div>
+          <div class="item-cell item-title">
+            <strong>${escapeHTML(item.aspek)}</strong>
+            <span class="status-tag ${itemComplete(item,answer) ? "complete" : ""}" id="tag-${item.no}">
+              ${itemComplete(item,answer) ? "Bukti selesai diperiksa" : "Bukti belum lengkap"}
+            </span>
+          </div>
+        </div>
+
+        <div class="static-grid">
+          <div class="static-box">
+            <label>Indikator / Parameter</label>
+            <p>${escapeHTML(item.indikator)}</p>
+          </div>
+          <div class="static-box">
+            <label>Bukti Wajib yang Disiapkan Program Studi</label>
+            <p>${escapeHTML(item.bukti || "—")}</p>
+          </div>
+          <div class="static-box">
+            <label>Acuan Target Renstra/Monev 2026</label>
+            <p>${escapeHTML(item.acuan || "-")}</p>
+          </div>
+        </div>
+
+        <div class="evidence-panel">
+          <div class="evidence-panel-head">
+            <div>
+              <strong>Verifikasi Bukti per Dokumen/Data</strong>
+              <span>Nilai setiap bukti secara terpisah agar Form 2 dan Form 3 dapat disusun otomatis.</span>
+            </div>
+            <div>${resultBadge(status)}</div>
+          </div>
+
+          ${answer.evidenceChecks.length ? `
+            <div class="evidence-table-head">
+              <div>Bukti yang Diverifikasi</div>
+              <div>Status</div>
+              <div>Identitas Dokumen/Data</div>
+              <div>Catatan Verifikasi</div>
+              <div></div>
+            </div>
+            <div class="evidence-rows">
+              ${answer.evidenceChecks.map((check,index)=>renderEvidenceRow(item,answer,check,index)).join("")}
+            </div>
+          ` : renderManualVerification(item,answer)}
+
+          ${answer.migrationNote ? `<div class="migration-note">${escapeHTML(answer.migrationNote)}</div>` : ""}
+
+          <div class="evidence-actions no-print">
+            <button class="btn btn-soft" type="button" onclick="addEvidence(${item.no})">+ Tambah Bukti Lain</button>
+          </div>
+        </div>
+
+        <div class="entry-grid revised">
+          <div class="choice-panel">
+            <div class="overall-result-box">
+              <span>HASIL UMUM BUTIR</span>
+              ${resultBadge(status)}
+              <small>Dihitung otomatis dari seluruh bukti yang dinilai.</small>
+            </div>
+
+            <div class="field">
+              <label>Status / Klasifikasi Auditor</label>
+              <select onchange="setAnswer(${item.no},'klasifikasi',this.value,true)">
+                <option value="">Pilih klasifikasi</option>
+                <option value="PB" ${selected("PB")}>PB · Praktik Baik</option>
+                <option value="K" ${selected("K")}>K · Kesesuaian</option>
+                <option value="OB" ${selected("OB")}>OB · Observasi/Peluang Peningkatan</option>
+                <option value="Mi" ${selected("Mi")}>Mi · KTS Minor</option>
+                <option value="Ma" ${selected("Ma")}>Ma · KTS Mayor</option>
+              </select>
+            </div>
+
+            <label class="include-row">
+              <input class="include-checkbox" type="checkbox" ${answer.masukForm2 ? "checked" : ""}
+                onchange="setAnswer(${item.no},'masukForm2',this.checked,false)">
+              Masukkan butir ini ke Form 2
+            </label>
+          </div>
+
+          <div class="detail-fields">
+            <div class="field">
+              <label>Target Prodi</label>
+              <input class="input" type="text" value="${escapeAttr(answer.target)}"
+                oninput="setAnswer(${item.no},'target',this.value,false)">
+            </div>
+            <div class="field">
+              <label>Capaian</label>
+              <input class="input" type="text" value="${escapeAttr(answer.capaian)}"
+                oninput="setAnswer(${item.no},'capaian',this.value,false)">
+            </div>
+            <div class="field">
+              <label>Kode Referensi</label>
+              <input class="input" type="text" value="${escapeAttr(item.kode)}" readonly>
+            </div>
+            <div class="field notes">
+              <label>Catatan Umum Auditor</label>
+              <textarea oninput="setAnswer(${item.no},'catatan',this.value,false)"
+                placeholder="Tuliskan konteks audit, sampel, wawancara, atau klarifikasi lain.">${escapeHTML(answer.catatan)}</textarea>
+            </div>
+          </div>
+        </div>
+
+        <details class="auto-draft">
+          <summary>Draf otomatis untuk Form 2 dan Form 3</summary>
+          <div class="auto-draft-grid">
+            <div><label>Kondisi Faktual</label><p>${escapeHTML(draft.kondisiFaktual || "Belum dapat disusun karena bukti belum lengkap.")}</p></div>
+            <div><label>Bukti Objektif</label><p>${escapeHTML(draft.buktiObjektif || "Belum tersedia.")}</p></div>
+            <div><label>Pernyataan Temuan/Kesenjangan</label><p>${escapeHTML(draft.pernyataanKesenjangan || "Belum tersedia.")}</p></div>
+          </div>
+        </details>
+      </article>
+    `;
+  }
+
+  function renderForm(){
+    const container=document.getElementById("formContainer");
+    const grouped=FORM_ITEMS.reduce((acc,item)=>{
+      (acc[item.kelompok] ||= []).push(item);
+      return acc;
+    },{});
+
+    container.innerHTML=Object.entries(grouped).map(([section,sectionItems])=>`
+      <section class="section" data-section="${escapeAttr(section)}">
+        <button type="button" class="section-header" onclick="toggleSection(this)">
+          <span>${escapeHTML(section)}</span>
+          <span class="section-count">${sectionItems.length} butir</span>
+        </button>
+        <div class="section-body">
+          ${sectionItems.map(renderItem).join("")}
+        </div>
+      </section>
+    `).join("");
+
+    bindMeta();
+    updateSummary();
+    applyFilters();
+  }
+
+  function refreshItem(no){
+    const item=FORM_ITEMS.find(x=>x.no===Number(no));
+    const element=document.getElementById(`item-${no}`);
+    if(!item || !element)return;
+    const wrapper=document.createElement("div");
+    wrapper.innerHTML=renderItem(item).trim();
+    element.replaceWith(wrapper.firstElementChild);
+    updateSummary();
+  }
+
+  function bindMeta(){
+    document.querySelectorAll("[data-meta]").forEach(input=>{
+      if(state.meta[input.id] !== undefined && state.meta[input.id] !== null){
+        input.value=state.meta[input.id];
+      }
+      if(input.dataset.bound==="1")return;
+      input.dataset.bound="1";
+      input.addEventListener("input",()=>{
+        state.meta[input.id]=input.value;
+        autoSave();
+      });
+    });
+  }
+
+  function updateEvidence(no,index,field,value,rerender){
+    const item=FORM_ITEMS.find(x=>x.no===Number(no));
+    const answer=state.answers[no];
+    if(!item || !answer || !answer.evidenceChecks[index])return;
+    answer.evidenceChecks[index][field]=value;
+    refreshDerived(item,answer,true);
+    autoSave();
+    if(rerender)refreshItem(no);
+  }
+
+  function addEvidence(no){
+    const item=FORM_ITEMS.find(x=>x.no===Number(no));
+    const answer=state.answers[no];
+    if(!item || !answer)return;
+    answer.evidenceChecks.push({
+      id:`custom-${no}-${Date.now()}`,
+      name:"",
+      official:false,
+      status:"",
+      documentRef:"",
+      note:""
+    });
+    refreshItem(no);
+    autoSave();
+  }
+
+  function removeEvidence(no,index){
+    const item=FORM_ITEMS.find(x=>x.no===Number(no));
+    const answer=state.answers[no];
+    if(!item || !answer || !answer.evidenceChecks[index] || answer.evidenceChecks[index].official)return;
+    answer.evidenceChecks.splice(index,1);
+    refreshDerived(item,answer,true);
+    refreshItem(no);
+    autoSave();
+  }
+
+  function setManualResult(no,value){
+    const item=FORM_ITEMS.find(x=>x.no===Number(no));
+    const answer=state.answers[no];
+    if(!item || !answer)return;
+    answer.manualResult=value;
+    refreshDerived(item,answer,true);
+    refreshItem(no);
+    autoSave();
+  }
+
+  function setAnswer(no,field,value,rerender){
+    const item=FORM_ITEMS.find(x=>x.no===Number(no));
+    const answer=state.answers[no];
+    if(!item || !answer)return;
+    answer[field]=value;
+    refreshDerived(item,answer,true);
+    autoSave();
+    if(rerender)refreshItem(no);
+    else updateSummary();
+  }
+
+  function autoSave(){
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(()=>saveAll(false),450);
+  }
+
+  function saveAll(showMessage=false){
+    document.querySelectorAll("[data-meta]").forEach(input=>{
+      state.meta[input.id]=input.value;
+    });
+    FORM_ITEMS.forEach(item=>refreshDerived(item,state.answers[item.no],true));
+    state.updatedAt=new Date().toISOString();
+    state.version=2;
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+    updateSummary();
+    if(showMessage)showToast("Form 1b berhasil disimpan.");
+  }
+
+  function updateSummary(){
+    const counts={A:0,S:0,T:0,blank:0,findings:0,form2:0};
+    FORM_ITEMS.forEach(item=>{
+      const answer=state.answers[item.no];
+      const result=calculateResult(item,answer);
+      if(result)counts[result]++; else counts.blank++;
+      if(["OB","Mi","Ma"].includes(answer.klasifikasi))counts.findings++;
+      if(answer.masukForm2)counts.form2++;
+    });
+
+    const completed=FORM_ITEMS.length-counts.blank;
+    const percent=Math.round((completed/FORM_ITEMS.length)*100);
+    document.getElementById("completedCount").textContent=completed;
+    document.getElementById("progressPercent").textContent=`${percent}%`;
+    document.getElementById("progressCircle").style.background=
+      `conic-gradient(var(--blue) ${percent*3.6}deg,#e7edf2 0deg)`;
+    document.getElementById("countA").textContent=counts.A;
+    document.getElementById("countS").textContent=counts.S;
+    document.getElementById("countT").textContent=counts.T;
+    document.getElementById("countBlank").textContent=counts.blank;
+    document.getElementById("findingCount").textContent=counts.findings;
+    document.getElementById("form2Count").textContent=counts.form2;
+
+    const workflowStatus=document.getElementById("workflowForm1Status");
+    if(workflowStatus){
+      workflowStatus.textContent=percent===100
+        ? "59/59 butir selesai"
+        : `${completed}/59 butir selesai diverifikasi`;
+    }
+    const lastSaved=document.getElementById("lastSavedText");
+    if(lastSaved)lastSaved.textContent=formatDateTime(state.updatedAt);
+  }
+
+  function applyFilters(){
+    const query=(document.getElementById("searchInput")?.value || "").toLowerCase().trim();
+    const selectedSection=document.getElementById("sectionFilter")?.value || "";
+    document.querySelectorAll(".section").forEach(section=>{
+      const sectionMatch=!selectedSection || section.dataset.section===selectedSection;
+      let visible=0;
+      section.querySelectorAll(".audit-item").forEach(item=>{
+        const matches=sectionMatch && (!query || item.dataset.search.includes(query));
+        item.style.display=matches ? "" : "none";
+        if(matches)visible++;
+      });
+      section.style.display=visible ? "" : "none";
+      if(visible && (query || selectedSection)){
+        section.querySelector(".section-body").style.display="block";
+      }
+    });
+  }
+
+  function toggleSection(button){
+    const body=button.nextElementSibling;
+    body.style.display=body.style.display==="none" ? "block" : "none";
+  }
+
+  function continueToForm2(){
+    saveAll(false);
+    const incomplete=FORM_ITEMS.filter(item=>!itemComplete(item,state.answers[item.no]));
+    if(incomplete.length){
+      const first=incomplete[0];
+      showToast(`${incomplete.length} butir belum selesai diverifikasi per bukti.`);
+      document.getElementById(`item-${first.no}`)?.scrollIntoView({behavior:"smooth",block:"center"});
+      return;
+    }
+    const selected=FORM_ITEMS.filter(item=>state.answers[item.no].masukForm2);
+    if(!selected.length){
+      const proceed=window.confirm("Tidak ada butir yang dipilih masuk ke Form 2. Tetap lanjutkan?");
+      if(!proceed)return;
+    }
+    window.location.href="form2.html";
+  }
+
+  function returnDashboard(){
+    saveAll(false);
+    window.location.href="dashboard.html";
+  }
+
+  function exportBackup(){
+    saveAll(false);
+    const blob=new Blob([JSON.stringify({
+      system:"SIAMI UNRIKA",form:"Form 1b",version:2,
+      exportedAt:new Date().toISOString(),data:state
+    },null,2)],{type:"application/json"});
+    const link=document.createElement("a");
+    link.href=URL.createObjectURL(blob);
+    link.download=`Form1b_${state.meta.auditId || "AUDIT"}_backup.json`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    showToast("Cadangan Form 1b berhasil diekspor.");
+  }
+
+  function importBackup(event){
+    const file=event.target.files?.[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=()=>{
+      const imported=parseJSON(reader.result);
+      const data=imported?.data || imported;
+      if(!data?.answers){
+        showToast("Format cadangan tidak sesuai.");
+        return;
+      }
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+      window.location.reload();
+    };
+    reader.readAsText(file);
+  }
+
+  function resetForm(){
+    if(!window.confirm("Hapus seluruh isian Form 1b pada perangkat ini?"))return;
+    localStorage.removeItem(STORAGE_KEY);
+    window.location.reload();
+  }
+
+  function printForm(){
+    saveAll(false);
+    window.print();
+  }
+
+  function openDriveFolder(){
+    const url=state.meta.folderDriveUrl || document.getElementById("folderDriveUrl")?.value;
+    if(!url){
+      showToast("Tautan folder bukti belum diisi.");
+      return;
+    }
+    window.open(url,"_blank","noopener");
+  }
+
+
+  function previewCompleteOthersAsA(){
+    if(!window.confirm("Untuk mempercepat pengujian, semua bukti yang masih kosong (kecuali butir 1.4) akan diberi A. Lanjutkan?"))return;
+    FORM_ITEMS.forEach(item=>{
+      if(Number(item.no)===4)return;
+      const answer=state.answers[item.no];
+      const checks=activeChecks(answer);
+      if(checks.length){
+        checks.forEach(check=>{if(!["A","S","T"].includes(check.status))check.status="A";});
+      }else if(!["A","S","T"].includes(answer.manualResult)){
+        answer.manualResult="A";
+      }
+      refreshDerived(item,answer,true);
+    });
+    saveAll(false);
+    renderForm();
+    updateSummary();
+    document.getElementById("item-4")?.scrollIntoView({behavior:"smooth",block:"start"});
+    showToast("Butir lain telah diisi A untuk uji cepat. Silakan nilai butir 1.4.");
+  }
+
+  function initialize(){
+    loadState();
+    syncPreviewAssignmentEvidence();
+    if(!initializeSession())return;
+    populateSectionFilter();
+    renderForm();
+    bindMeta();
+    updateSummary();
+
+    window.addEventListener("beforeunload",()=>saveAll(false));
+    document.addEventListener("visibilitychange",()=>{
+      if(document.hidden)saveAll(false);
+    });
+  }
+
+  initialize();
+</script>
+
+</body>
+</html>

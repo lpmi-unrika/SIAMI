@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Panduan Uji Alur SIAMI | SIAMI Preview</title><link rel="stylesheet" href="preview.css"></head><body>
+<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Preview alur sebelum implementasi hosting</p></div></div>
+<div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header>
+<div class="shell"><aside class="side"><div class="panel"><h3>Menu Panduan</h3><div class="nav mt"><a href="index.html" class="">Halaman Login</a><a href="monitoring.html" class="">Monitoring Admin</a><a href="auditee.html" class="">Bukti Auditee</a><a href="dashboard.html" class="">Dashboard Auditor</a><a href="cek-alur.html" class="active">Panduan Uji Alur</a></div></div>
+<div class="panel"><h3>Mode Preview</h3><p class="small">File PDF yang dipilih hanya disimpan sebagai <strong>nama dan ukuran file</strong> pada browser. File sebenarnya baru akan disimpan saat backend Hostinger dibuat.</p></div></aside>
+<main class="main"><section class="hero"><h2>Panduan Uji Alur SIAMI</h2><p>Ikuti skenario ini untuk memeriksa sendiri apakah alur yang akan diberikan kepada Akash sudah sesuai.</p></section>
+<section class="card"><div class="itembody">
+<h3 style="margin:0;color:var(--navy)">Skenario Uji yang Disarankan</h3>
+<div class="notice mt">Tujuannya bukan menguji keamanan/login sungguhan, tetapi memastikan <strong>desain, alur kerja, dan konversi data</strong> sudah sesuai sebelum Akash menghubungkannya ke PHP/MySQL.</div>
+<div class="evidence"><strong>1. Admin LPMI</strong><p class="small">Masuk sebagai Admin LPMI → buka Penugasan Auditor → pastikan unit, auditee, auditor ketua, dan auditor anggota sesuai. Simpan.</p></div>
+<div class="evidence"><strong>2. Auditee</strong><p class="small">Keluar → masuk sebagai Auditee → klik <b>Isi Contoh Uji Butir 1.4</b>. Preview akan menyiapkan Matriks Visi-CPL, RPS, dan Roadmap PkM, sementara Roadmap Penelitian dibiarkan kosong.</p></div>
+<div class="evidence"><strong>3. Auditor</strong><p class="small">Keluar → masuk sebagai Auditor Ketua → Dashboard → Form 1b. Pada butir 1.4, bukti auditee harus terlihat. Beri: Matriks=A, RPS=A, Roadmap Penelitian=T, Roadmap PkM=S. Pilih klasifikasi <b>Mi</b>.</p></div>
+<div class="evidence"><strong>4. Form 2</strong><p class="small">Klik Lanjut ke Form 2. Butir 1.4 harus masuk otomatis dan membawa daftar bukti, kondisi faktual, bukti objektif, persyaratan/target, serta draf kesenjangan.</p></div>
+<div class="evidence"><strong>5. Form 3</strong><p class="small">Lanjut ke Form 3. Karena klasifikasi Mi, sistem harus membuat satu Form 3. Kriteria, persyaratan, kondisi faktual, bukti objektif, dan kesenjangan harus terisi dari Form 2. Lengkapi Dampak/Risiko agar Form 3 lengkap.</p></div>
+<div class="evidence"><strong>6. Form 4</strong><p class="small">Lanjut ke Form 4. Karena temuan Mi, satu Form 4 harus terbentuk dengan referensi Form 3, ringkasan temuan, kriteria, bukti objektif, dan persyaratan/target yang sama.</p></div>
+<div class="evidence"><strong>7. Trace Laporan</strong><p class="small">Dari Form 4 klik Lanjut ke Laporan. Halaman Trace akan menunjukkan hubungan satu butir dari Form 2 → Form 3 → Form 4.</p></div>
+<div class="actions mt"><a class="btn primary" href="index.html">Mulai Pengujian</a><button class="btn danger" onclick="resetEverything()">Reset Seluruh Preview</button></div>
+</div></section>
+<script>
+function resetEverything(){if(confirm("Hapus penugasan, bukti auditee, seluruh Form 1b-4, dan sesi preview?")){SIAMI_PREVIEW.resetAll();alert("Preview telah direset.");location.href="index.html";}}
+</script>
+
+<section class="card"><div class="itemhead"><div><div class="code">AKUN AUDITEE LENGKAP</div><h4>Yang Perlu Diuji</h4></div></div><div class="itembody">
+<div class="workspace-list">
+<div class="workspace-card"><h4>Persiapan Bukti Form 1b</h4><p>Pastikan 59 butir tampil, bukti dapat dicatat, target dan capaian Auditee dapat diisi.</p></div>
+<div class="workspace-card"><h4>Tanggapan Form 3</h4><p>Setelah auditor membuat temuan, login Auditee lalu isi Tanggapan Awal Auditi dan klik Setujui Secara Elektronik.</p></div>
+<div class="workspace-card"><h4>RTL Form 4</h4><p>Untuk Minor/Mayor, isi koreksi, akar penyebab, rencana tindakan, pelaksanaan, serta persetujuan elektronik RTL.</p></div>
+<div class="workspace-card"><h4>Persetujuan & Status</h4><p>Periksa audit trail persetujuan dan status temuan sampai ditutup.</p></div>
+</div></div></section>
+</main></div>
+<script src="preview.js"></script><script src="audit-items.js"></script>
+<script>
+(function(){
+ const s=SIAMI_PREVIEW.session();
+ if(!s){location.href="index.html";return;}
+ const el=document.getElementById("accountPill"); if(el)el.textContent=`${s.name||"Pengguna"} · ${s.roleLabel||s.role}`;
+})();
+</script>
+</body></html>

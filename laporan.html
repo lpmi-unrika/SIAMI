@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Laporan / Trace Preview | SIAMI Preview</title><link rel="stylesheet" href="preview.css"></head><body>
+<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Preview alur sebelum implementasi hosting</p></div></div>
+<div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header>
+<div class="shell"><aside class="side"><div class="panel"><h3>Menu Auditor / LPMI</h3><div class="nav mt"><a href="dashboard.html" class="">Dashboard Auditor</a><a href="laporan.html" class="active">Trace Laporan</a><a href="cek-alur.html" class="">Panduan Uji Alur</a></div></div>
+<div class="panel"><h3>Mode Preview</h3><p class="small">File PDF yang dipilih hanya disimpan sebagai <strong>nama dan ukuran file</strong> pada browser. File sebenarnya baru akan disimpan saat backend Hostinger dibuat.</p></div></aside>
+<main class="main"><section class="hero"><h2>Laporan / Trace Preview</h2><p>Periksa bahwa nomor butir, klasifikasi, kesenjangan, Form 3, dan Form 4 tetap terhubung sampai akhir alur.</p></section>
+<div class="notice"><strong>Preview laporan:</strong> halaman ini tidak membuat PDF final. Tujuannya untuk memastikan data Form 1b → Form 2 → Form 3 → Form 4 sudah sampai ke tahap akhir. Generator PDF sesungguhnya akan dikerjakan di backend Hostinger.</div>
+<div class="grid g4">
+ <div class="card stat"><span>FORM 1b DINILAI</span><strong id="f1">0</strong><span>dari 59</span></div>
+ <div class="card stat"><span>FORM 2</span><strong id="f2">0</strong><span>baris ringkasan</span></div>
+ <div class="card stat"><span>FORM 3</span><strong id="f3">0</strong><span>temuan</span></div>
+ <div class="card stat"><span>FORM 4</span><strong id="f4">0</strong><span>PTK/RTL</span></div>
+</div>
+<section class="card"><div class="itemhead"><div><div class="code">TRACE DATA</div><h4>Jejak Data Antar-Form</h4><p>Gunakan bagian ini untuk memastikan satu butir yang diuji tetap memiliki kode dan isi yang konsisten.</p></div></div>
+<div class="itembody"><div id="trace"></div></div></section>
+<div class="actions"><a class="btn soft" href="form4.html">← Kembali ke Form 4</a><a class="btn primary" href="cek-alur.html">Panduan Uji Alur</a></div>
+<script>
+function j(k,f){try{return JSON.parse(localStorage.getItem(k)||"null")||f}catch(e){return f}}
+const a=j("siami_preview_form1b_2026",{answers:{}}),b=j("siami_preview_form2_2026",{rows:[]}),c=j("siami_preview_form3_2026",{findings:[]}),d=j("siami_preview_form4_2026",{ptks:[]});
+f1.textContent=Object.values(a.answers||{}).filter(x=>x&&(x.hasilBukti||x.manualResult)).length;f2.textContent=(b.rows||[]).length;f3.textContent=(c.findings||[]).length;f4.textContent=(d.ptks||[]).length;
+const rows=(b.rows||[]).map(r=>{
+ const f=(c.findings||[]).find(x=>Number(x.sourceNo)===Number(r.sourceNo));
+ const p=(d.ptks||[]).find(x=>Number(x.sourceNo)===Number(r.sourceNo));
+ return `<div class="evidence"><div class="evtitle"><strong>Butir ${r.kode} · ${SIAMI_PREVIEW.escape(r.aspek)}</strong><span class="badge info">${r.klasifikasi||"-"}</span></div>
+ <div class="grid g3 mt"><div><div class="small">Form 2</div><strong>${SIAMI_PREVIEW.escape(r.noForm3||"Tidak membuat F3")}</strong><div class="small">${SIAMI_PREVIEW.escape(r.pernyataanKesenjangan||r.ringkasan||"-")}</div></div>
+ <div><div class="small">Form 3</div><strong>${f?SIAMI_PREVIEW.escape(f.noForm3):"-"}</strong><div class="small">${f?SIAMI_PREVIEW.escape(f.gapStatement||"-"):"Tidak dibuat"}</div></div>
+ <div><div class="small">Form 4</div><strong>${p?SIAMI_PREVIEW.escape(p.noForm4):"-"}</strong><div class="small">${p?"PTK/RTL tersedia":"Tidak diperlukan"}</div></div></div></div>`;
+}).join("");
+trace.innerHTML=rows||'<div class="notice">Belum ada data Form 2. Jalankan skenario uji terlebih dahulu.</div>';
+</script>
+</main></div>
+<script src="preview.js"></script><script src="audit-items.js"></script>
+<script>
+(function(){
+ const s=SIAMI_PREVIEW.session();
+ if(!s){location.href="index.html";return;}
+ const el=document.getElementById("accountPill"); if(el)el.textContent=`${s.name||"Pengguna"} · ${s.roleLabel||s.role}`;
+})();
+</script>
+</body></html>

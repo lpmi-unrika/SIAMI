@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Penugasan Auditor | SIAMI Preview</title><link rel="stylesheet" href="preview.css"></head><body>
+<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Preview alur sebelum implementasi hosting</p></div></div>
+<div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header>
+<div class="shell"><aside class="side">
+<div class="panel"><h3>Menu Admin LPMI</h3><div class="nav mt">
+<a href="monitoring.html">Monitoring</a><a href="master-unit.html">Master 25 Unit</a><a href="penugasan.html" class="active">Penugasan Auditor</a><a href="cek-alur.html">Panduan Uji Alur</a>
+</div></div>
+<div class="panel"><h3>Mode Preview</h3><p class="small">Untuk pengujian lokal, satu penugasan aktif diuji pada satu waktu. Unit dipilih dari Master 25 Unit.</p></div></aside>
+<main class="main">
+<section class="hero"><h2>Penugasan Auditor</h2><p>Pilih salah satu dari 25 unit resmi, lalu hubungkan dengan auditee dan tim auditor. Tidak ada unit yang dipilih otomatis.</p></section>
+<section class="card"><div class="itemhead"><div><div class="code">PENUGASAN PREVIEW</div><h4>Hubungkan Auditor dengan Unit yang Diaudit</h4><p>Pada hosting nanti, relasi ini disimpan di database dan setiap auditor hanya melihat unit penugasannya.</p></div></div>
+<div class="itembody"><form id="assignForm" class="grid g2">
+ <div class="field"><label>Pilih Unit / Program Studi</label><select id="unitId" required><option value="">— Pilih salah satu dari 25 unit —</option></select></div>
+ <div class="field"><label>UPPS / Fakultas</label><input id="faculty" readonly></div>
+ <div class="field"><label>Wakil Auditi / Auditee</label><input id="auditeeName"></div>
+ <div class="field"><label>Auditor Ketua</label><input id="leadAuditor"></div>
+ <div class="field"><label>Auditor Anggota</label><input id="memberAuditor"></div>
+ <div class="field"><label>Tanggal Audit</label><input id="auditDate" type="date"></div>
+ <div class="field"><label>Lokasi Audit</label><input id="location"></div>
+ <div class="field"><label>ID Audit</label><input id="auditId" readonly></div>
+ <div class="actions"><button class="btn primary" type="submit">Simpan Penugasan</button><button class="btn soft" type="button" onclick="clearAssignment()">Kosongkan Penugasan</button></div>
+</form></div></section>
+<div class="notice">Belum menemukan nama unit yang benar? Buka <strong>Master 25 Unit</strong> terlebih dahulu dan ganti Unit 01–Unit 25 dengan nama unit resmi.</div>
+</main></div>
+<script src="preview.js"></script>
+<script>
+const units=SIAMI_PREVIEW.units().filter(u=>u.active!==false);
+unitId.innerHTML += units.map(u=>`<option value="${u.id}">${SIAMI_PREVIEW.escape(u.name)}${u.faculty?` — ${SIAMI_PREVIEW.escape(u.faculty)}`:""}</option>`).join("");
+function selectedUnit(){return units.find(u=>u.id===unitId.value)}
+function applyUnit(){
+ const u=selectedUnit();faculty.value=u?.faculty||"";
+ auditId.value=u?`AUDIT-2026-${u.id}-001`:"";
+}
+unitId.addEventListener("change",applyUnit);
+function fill(a){
+ unitId.value=a.unitId||"";faculty.value=a.faculty||"";auditeeName.value=a.auditeeName||"";leadAuditor.value=a.leadAuditor||"";
+ memberAuditor.value=a.memberAuditor||"";auditDate.value=a.auditDate||"";location.value=a.location||"Universitas Riau Kepulauan";auditId.value=a.auditId||"";
+}
+fill(SIAMI_PREVIEW.assignment());
+assignForm.addEventListener("submit",e=>{
+ e.preventDefault();const u=selectedUnit();if(!u){alert("Pilih unit terlebih dahulu.");return;}
+ const a={
+   ...SIAMI_PREVIEW.emptyAssignment(),
+   unitId:u.id,unitName:u.name,faculty:u.faculty||"",
+   auditeeName:auditeeName.value.trim(),leadAuditor:leadAuditor.value.trim(),memberAuditor:memberAuditor.value.trim(),
+   auditDate:auditDate.value,location:location.value.trim(),auditId:auditId.value,
+   updatedAt:new Date().toISOString()
+ };
+ localStorage.setItem(SIAMI_PREVIEW.ASSIGNMENT_KEY,JSON.stringify(a));
+ SIAMI_PREVIEW.resetAuditOnly();
+ alert(`Penugasan ${u.name} disimpan. Form 1b–4 dikosongkan untuk unit ini.`);
+});
+function clearAssignment(){
+ if(!confirm("Kosongkan penugasan aktif?"))return;
+ SIAMI_PREVIEW.resetCurrentAssignment();fill(SIAMI_PREVIEW.emptyAssignment());
+}
+const s=SIAMI_PREVIEW.session();if(!s){location.href="index.html"}else accountPill.textContent=`${s.name||"Pengguna"} · ${s.roleLabel||s.role}`;
+</script></body></html>

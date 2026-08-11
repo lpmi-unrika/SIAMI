@@ -1,0 +1,14 @@
+{
+  "name": "SIAMI Preview Lokal - Auditee Lengkap",
+  "version": "2026.08.11-auditee-complete",
+  "entry": "index.html",
+  "auditee_pages": [
+    "auditee.html",
+    "auditee-bukti.html",
+    "auditee-form3.html",
+    "auditee-form4.html",
+    "auditee-persetujuan.html",
+    "auditee-status.html"
+  ],
+  "flow": "Admin -> Auditee Evidence -> Auditor Form1b/2/3 -> Auditee Response/Approval -> Form4 RTL -> Verification/Closure"
+}

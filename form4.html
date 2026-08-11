@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b365c">
+  <title>Form 4 | SIAMI UNRIKA</title>
+  <meta name="description" content="Form 4 PTK, RTL, dan Verifikasi Penutupan Temuan AMI Universitas Riau Kepulauan">
+  <style>
+    :root{
+      --navy:#0b365c;
+      --navy-dark:#072943;
+      --blue:#0f4c81;
+      --blue-2:#2f80ed;
+      --cyan:#38bdf8;
+      --page:#f1f5f8;
+      --white:#fff;
+      --text:#243746;
+      --muted:#6b7d8c;
+      --border:#d6e1e8;
+      --soft:#edf5fb;
+      --success:#16834a;
+      --success-soft:#eaf8ef;
+      --warning:#ad6700;
+      --warning-soft:#fff4dd;
+      --danger:#b42318;
+      --danger-soft:#fff0ef;
+      --shadow:0 12px 34px rgba(11,54,92,.09);
+      --sidebar:310px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      min-height:100vh;
+      font-family:"Segoe UI",Arial,sans-serif;
+      background:var(--page);
+      color:var(--text);
+    }
+    button,input,textarea,select{font:inherit}
+    textarea{resize:vertical}
+
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:var(--sidebar) minmax(0,1fr);
+    }
+
+    /* SIDEBAR */
+    .sidebar{
+      position:fixed;
+      inset:0 auto 0 0;
+      z-index:35;
+      width:var(--sidebar);
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      color:#fff;
+      background:
+        radial-gradient(circle at 15% 0%,rgba(56,189,248,.18),transparent 30%),
+        linear-gradient(180deg,var(--navy),var(--navy-dark));
+      box-shadow:8px 0 28px rgba(7,41,67,.12);
+      transition:transform .25s ease;
+    }
+
+    .brand{
+      padding:21px 18px 18px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+
+    .brand-mark{
+      flex:0 0 45px;
+      width:45px;
+      height:45px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(145deg,var(--blue-2),var(--cyan));
+      font-weight:900;
+      box-shadow:0 10px 22px rgba(0,0,0,.18);
+    }
+
+    .brand h1{font-size:16px}
+    .brand p{
+      margin-top:3px;
+      color:#b9d1e2;
+      font-size:10px;
+      line-height:1.4;
+    }
+
+    .workflow{
+      padding:17px 14px 10px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+    }
+
+    .workflow-step{
+      min-width:0;
+      padding:8px 3px;
+      border-radius:10px;
+      text-align:center;
+      color:#95b3c7;
+      background:rgba(255,255,255,.055);
+      font-size:9px;
+      font-weight:800;
+    }
+
+    .workflow-step.done{
+      color:#d7f8e3;
+      background:rgba(22,131,74,.22);
+    }
+
+    .workflow-step.active{
+      color:#fff;
+      background:rgba(47,128,237,.42);
+      box-shadow:inset 0 -2px 0 #64cffb;
+    }
+
+    .side-summary{
+      margin:4px 14px 12px;
+      padding:13px;
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:13px;
+      background:rgba(255,255,255,.055);
+    }
+
+    .side-summary-label{
+      color:#9dbcd1;
+      font-size:9px;
+      font-weight:800;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+    }
+
+    .side-summary-value{
+      margin-top:7px;
+      font-size:25px;
+      font-weight:900;
+    }
+
+    .side-progress{
+      height:7px;
+      margin-top:10px;
+      overflow:hidden;
+      border-radius:999px;
+      background:rgba(255,255,255,.13);
+    }
+
+    .side-progress-fill{
+      width:0%;
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg,#5cc8ff,#82e1ff);
+      transition:width .3s ease;
+    }
+
+    .side-summary-note{
+      margin-top:8px;
+      color:#b9d1e2;
+      font-size:9px;
+      line-height:1.45;
+    }
+
+    .ptk-nav-head{
+      padding:8px 17px;
+      display:flex;
+      justify-content:space-between;
+      color:#89abc1;
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+    }
+
+    .ptk-nav{
+      flex:1;
+      min-height:0;
+      padding:0 10px 15px;
+      overflow:auto;
+      display:grid;
+      align-content:start;
+      gap:6px;
+    }
+
+    .ptk-link{
+      width:100%;
+      min-height:57px;
+      padding:9px 10px;
+      border:1px solid transparent;
+      border-radius:11px;
+      display:grid;
+      grid-template-columns:31px minmax(0,1fr) 10px;
+      gap:9px;
+      align-items:center;
+      color:#d5e5ef;
+      background:transparent;
+      text-align:left;
+      cursor:pointer;
+      transition:.17s;
+    }
+
+    .ptk-link:hover{background:rgba(255,255,255,.07)}
+    .ptk-link.active{
+      border-color:rgba(117,208,255,.40);
+      background:linear-gradient(90deg,rgba(47,128,237,.38),rgba(56,189,248,.13));
+    }
+
+    .ptk-link .num{
+      width:31px;
+      height:31px;
+      border-radius:9px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.10);
+      font-size:9px;
+      font-weight:900;
+    }
+
+    .ptk-link.active .num{background:#fff;color:var(--navy)}
+    .ptk-link strong{
+      display:block;
+      overflow:hidden;
+      font-size:10px;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .ptk-link span{
+      display:block;
+      margin-top:3px;
+      overflow:hidden;
+      color:#9ebacf;
+      font-size:8px;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .status-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#8198a9;
+    }
+    .status-dot.partial{background:#f5b942}
+    .status-dot.complete{background:#4fd180}
+    .status-dot.closed{background:#35d079;box-shadow:0 0 0 4px rgba(53,208,121,.14)}
+
+    .side-actions{
+      padding:13px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:7px;
+      border-top:1px solid rgba(255,255,255,.09);
+    }
+
+    .side-actions button{
+      min-height:37px;
+      border:0;
+      border-radius:9px;
+      color:#dcebf4;
+      background:rgba(255,255,255,.08);
+      cursor:pointer;
+      font-size:9px;
+      font-weight:900;
+    }
+
+    .side-actions button:hover{background:rgba(255,255,255,.13)}
+
+    /* MAIN */
+    .main{
+      grid-column:2;
+      min-width:0;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:25;
+      min-height:72px;
+      padding:12px 26px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      background:rgba(255,255,255,.95);
+      border-bottom:1px solid var(--border);
+      backdrop-filter:blur(12px);
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;
+    }
+
+    .menu-btn{
+      display:none;
+      width:40px;
+      height:40px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:#fff;
+      color:var(--navy);
+      cursor:pointer;
+    }
+
+    .page-title{min-width:0}
+    .page-title h2{
+      overflow:hidden;
+      color:var(--navy);
+      font-size:18px;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .page-title p{
+      margin-top:3px;
+      overflow:hidden;
+      color:var(--muted);
+      font-size:10px;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .topbar-actions{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .top-badge{
+      padding:8px 11px;
+      border:1px solid #c8ddea;
+      border-radius:999px;
+      color:var(--blue);
+      background:#edf7fd;
+      font-size:9px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    .icon-btn{
+      width:39px;
+      height:39px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:#fff;
+      color:var(--blue);
+      cursor:pointer;
+    }
+
+    .content{
+      width:min(1260px,100%);
+      margin:0 auto;
+      padding:23px;
+    }
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      padding:24px 26px;
+      border-radius:19px;
+      color:#fff;
+      background:
+        radial-gradient(circle at 92% 20%,rgba(56,189,248,.27),transparent 26%),
+        linear-gradient(135deg,var(--navy),#145b93);
+      box-shadow:var(--shadow);
+    }
+
+    .hero::after{
+      content:"04";
+      position:absolute;
+      right:27px;
+      bottom:-35px;
+      color:rgba(255,255,255,.07);
+      font-size:116px;
+      font-weight:900;
+    }
+
+    .hero-inner{position:relative;z-index:1}
+    .hero-label{
+      color:#a9daf7;
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .hero h3{
+      margin-top:7px;
+      font-size:24px;
+    }
+
+    .hero p{
+      max-width:920px;
+      margin-top:8px;
+      color:#d5e8f4;
+      font-size:11px;
+      line-height:1.65;
+    }
+
+    .notice{
+      margin-top:15px;
+      padding:12px 14px;
+      border:1px solid #cfe1ec;
+      border-radius:12px;
+      color:#496477;
+      background:#f7fbfe;
+      font-size:10px;
+      line-height:1.55;
+    }
+
+    .notice.warning{
+      border-color:#f0d18c;
+      color:#85560b;
+      background:#fff9eb;
+    }
+
+    .notice.role-note{
+      border-color:#c7ddeb;
+      background:#f3f9fd;
+    }
+
+    .panel{
+      margin-top:17px;
+      border:1px solid var(--border);
+      border-radius:17px;
+      background:#fff;
+      box-shadow:0 8px 24px rgba(11,54,92,.05);
+      overflow:hidden;
+    }
+
+    .panel-head{
+      padding:15px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:13px;
+      border-bottom:1px solid #e6edf2;
+      background:#fbfdfe;
+    }
+
+    .panel-head h4{
+      color:var(--navy);
+      font-size:14px;
+    }
+
+    .panel-head p{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:9px;
+      line-height:1.45;
+    }
+
+    .section-letter{
+      flex:0 0 auto;
+      min-width:35px;
+      height:33px;
+      padding:0 8px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:linear-gradient(145deg,var(--navy),var(--blue-2));
+      font-size:11px;
+      font-weight:900;
+    }
+
+    .panel-body{padding:18px}
+
+    .identity-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .field{
+      display:grid;
+      gap:6px;
+      min-width:0;
+    }
+
+    .field.wide{grid-column:1/-1}
+    .field.span2{grid-column:span 2}
+
+    .field label{
+      color:#43596b;
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+
+    .field input,
+    .field textarea,
+    .field select{
+      width:100%;
+      border:1px solid var(--border);
+      border-radius:10px;
+      outline:none;
+      background:#fff;
+      color:var(--text);
+      transition:.18s;
+    }
+
+    .field input,
+    .field select{
+      height:42px;
+      padding:0 11px;
+    }
+
+    .field textarea{
+      min-height:112px;
+      padding:11px;
+      line-height:1.55;
+    }
+
+    .field textarea.tall{min-height:150px}
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus{
+      border-color:#77acd5;
+      box-shadow:0 0 0 4px rgba(47,128,237,.10);
+    }
+
+    .field input[readonly],
+    .field textarea[readonly]{
+      color:#506678;
+      background:#f5f8fa;
+    }
+
+    .source-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .classification-row{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:14px;
+    }
+
+    .choice-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:8px;
+    }
+
+    .choice-grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .choice-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+    .choice{
+      position:relative;
+    }
+
+    .choice input{
+      position:absolute;
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .choice label{
+      min-height:43px;
+      padding:9px 10px;
+      border:1px solid #dce5eb;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:#637483;
+      background:#fafcfd;
+      cursor:pointer;
+      font-size:9px;
+      font-weight:800;
+      transition:.17s;
+    }
+
+    .choice label::before{
+      content:"";
+      flex:0 0 17px;
+      width:17px;
+      height:17px;
+      border:1px solid #b6c4cf;
+      border-radius:5px;
+      background:#fff;
+    }
+
+    .choice input:checked + label{
+      border-color:#8dbde0;
+      color:var(--navy);
+      background:#edf7fd;
+      box-shadow:inset 3px 0 0 var(--blue-2);
+    }
+
+    .choice input:checked + label::before{
+      content:"✓";
+      display:grid;
+      place-items:center;
+      border-color:var(--blue-2);
+      color:#fff;
+      background:var(--blue-2);
+      font-size:10px;
+    }
+
+    .method-other{
+      margin-top:10px;
+    }
+
+    .table-wrap{
+      overflow:auto;
+      border:1px solid #dce5eb;
+      border-radius:12px;
+    }
+
+    table{
+      width:100%;
+      min-width:1020px;
+      border-collapse:collapse;
+    }
+
+    th{
+      padding:9px 8px;
+      border-right:1px solid #d9e3ea;
+      border-bottom:1px solid #ccdbe5;
+      color:#385369;
+      background:#eef5f9;
+      font-size:8px;
+      line-height:1.35;
+      text-align:left;
+      vertical-align:top;
+    }
+
+    td{
+      padding:7px;
+      border-right:1px solid #e0e7ec;
+      border-bottom:1px solid #e0e7ec;
+      vertical-align:top;
+    }
+
+    th:last-child,td:last-child{border-right:0}
+    tbody tr:last-child td{border-bottom:0}
+
+    td input,
+    td textarea{
+      width:100%;
+      border:1px solid #d8e2e9;
+      border-radius:7px;
+      outline:none;
+      font-size:8px;
+    }
+
+    td input{
+      height:34px;
+      padding:0 7px;
+    }
+
+    td textarea{
+      min-height:66px;
+      padding:7px;
+      line-height:1.4;
+      resize:vertical;
+    }
+
+    td input:focus,
+    td textarea:focus{
+      border-color:#7aafd6;
+      box-shadow:0 0 0 3px rgba(47,128,237,.09);
+    }
+
+    .row-number{
+      width:34px;
+      padding-top:13px;
+      text-align:center;
+      color:var(--navy);
+      background:#f8fafb;
+      font-size:9px;
+      font-weight:900;
+    }
+
+    .table-actions{
+      margin-top:10px;
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+    }
+
+    .signature-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .signature-card{
+      padding:14px;
+      border:1px solid #dde6ec;
+      border-radius:12px;
+      background:#fafcfd;
+    }
+
+    .signature-card h5{
+      margin-bottom:11px;
+      color:var(--navy);
+      font-size:11px;
+    }
+
+    .signature-card .field + .field{margin-top:9px}
+
+    .verification-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:15px;
+    }
+
+    .verification-box{
+      padding:13px;
+      border:1px solid #dde6ec;
+      border-radius:12px;
+      background:#fafcfd;
+    }
+
+    .verification-box h5{
+      margin-bottom:9px;
+      color:var(--navy);
+      font-size:10px;
+    }
+
+    .verification-box .choice-grid{
+      grid-template-columns:1fr;
+    }
+
+    .status-banner{
+      margin-top:13px;
+      padding:13px 15px;
+      border-radius:12px;
+      color:#5c6e7c;
+      background:#f4f7f9;
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .status-banner.closed{
+      color:var(--success);
+      background:var(--success-soft);
+      border:1px solid #b8e2c7;
+    }
+
+    .status-banner.additional{
+      color:var(--warning);
+      background:var(--warning-soft);
+      border:1px solid #f0d18c;
+    }
+
+    .status-banner.open{
+      color:var(--danger);
+      background:var(--danger-soft);
+      border:1px solid #efc2be;
+    }
+
+    .footer-nav{
+      margin-top:17px;
+      padding:15px 17px;
+      border:1px solid var(--border);
+      border-radius:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      background:#fff;
+      box-shadow:0 8px 22px rgba(11,54,92,.05);
+    }
+
+    .footer-status{
+      color:var(--muted);
+      font-size:9px;
+      line-height:1.5;
+    }
+
+    .footer-status strong{
+      color:var(--navy);
+      font-size:10px;
+    }
+
+    .footer-actions{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      gap:8px;
+    }
+
+    .btn{
+      min-height:40px;
+      padding:0 14px;
+      border:0;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:9px;
+      font-weight:900;
+      transition:.17s;
+    }
+
+    .btn:hover{transform:translateY(-1px)}
+    .btn-soft{color:var(--blue);background:var(--soft)}
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg,var(--navy),var(--blue-2));
+      box-shadow:0 8px 17px rgba(15,76,129,.17);
+    }
+    .btn-success{color:#fff;background:var(--success)}
+    .btn-danger{color:var(--danger);background:var(--danger-soft)}
+
+    .empty-state{
+      padding:48px 24px;
+      text-align:center;
+      color:var(--muted);
+    }
+
+    .empty-state .empty-icon{
+      width:58px;
+      height:58px;
+      margin:0 auto 14px;
+      border-radius:17px;
+      display:grid;
+      place-items:center;
+      color:var(--blue);
+      background:var(--soft);
+      font-size:26px;
+    }
+
+    .empty-state h4{color:var(--navy);font-size:17px}
+    .empty-state p{
+      max-width:590px;
+      margin:9px auto 16px;
+      font-size:10px;
+      line-height:1.65;
+    }
+
+    .toast{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      z-index:60;
+      padding:12px 15px;
+      border-radius:11px;
+      color:#fff;
+      background:#20384a;
+      box-shadow:0 12px 28px rgba(0,0,0,.22);
+      font-size:10px;
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(10px);
+      transition:.22s;
+    }
+
+    .toast.show{opacity:1;transform:none}
+
+    .overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:30;
+      background:rgba(5,25,41,.53);
+    }
+
+    .print-header{display:none}
+
+    @media(max-width:980px){
+      .app{display:block}
+      .sidebar{transform:translateX(-105%)}
+      .sidebar.open{transform:translateX(0)}
+      .main{grid-column:auto}
+      .menu-btn{display:grid;place-items:center}
+      .overlay.show{display:block}
+      .content{padding:16px}
+      .identity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .classification-row{grid-template-columns:1fr}
+    }
+
+    @media(max-width:650px){
+      .topbar{padding:10px 13px}
+      .top-badge{display:none}
+      .content{padding:12px}
+      .hero{padding:21px}
+      .hero h3{font-size:20px}
+      .identity-grid,.source-grid,.signature-grid,.verification-grid{grid-template-columns:1fr}
+      .field.span2{grid-column:auto}
+      .choice-grid,.choice-grid.four,.choice-grid.two{grid-template-columns:1fr}
+      .footer-nav{align-items:stretch;flex-direction:column}
+      .footer-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}
+      .btn{width:100%}
+    }
+
+    @media print{
+      @page{size:A4;margin:10mm}
+      body{background:#fff;font-family:Arial,sans-serif;color:#000}
+      .sidebar,.topbar,.hero,.notice,.footer-nav,.no-print,.toast,.overlay{display:none!important}
+      .app,.main{display:block!important}
+      .content{width:100%;padding:0}
+      .print-header{display:block!important;margin-bottom:7px}
+      .print-header table{
+        width:100%;
+        min-width:0;
+        border-collapse:collapse;
+        font-size:8px;
+      }
+      .print-header td{
+        border:1px solid #222;
+        padding:5px;
+        text-align:center;
+      }
+      .print-header .org{
+        font-size:10px;
+        font-weight:800;
+        line-height:1.35;
+      }
+      .panel{
+        margin:0 0 7px;
+        border:1px solid #333;
+        border-radius:0;
+        box-shadow:none;
+        break-inside:avoid;
+      }
+      .panel-head{
+        padding:5px 7px;
+        border-bottom:1px solid #333;
+        background:#fff;
+      }
+      .panel-head h4{color:#000;font-size:9px}
+      .panel-head p{font-size:6.5px}
+      .panel-body{padding:7px}
+      .section-letter{
+        min-width:22px;height:22px;border-radius:0;
+        border:1px solid #000;background:#fff;color:#000;
+      }
+      .field label{font-size:6.5px}
+      .field input,.field textarea,.field select{
+        border:1px solid #777;border-radius:0;color:#000;background:#fff;font-size:7px;
+      }
+      .field input,.field select{height:25px;padding:0 4px}
+      .field textarea{min-height:50px;padding:4px;line-height:1.3}
+      .field textarea.tall{min-height:70px}
+      .identity-grid,.source-grid,.signature-grid,.verification-grid{gap:5px}
+      .choice label{min-height:27px;padding:4px;border-radius:0;font-size:6.5px}
+      .choice label::before{width:11px;height:11px;border-radius:0}
+      .table-wrap{border-radius:0}
+      table{min-width:0}
+      th{padding:4px;font-size:5.8px}
+      td{padding:3px}
+      td input{height:22px;padding:0 3px;font-size:6px}
+      td textarea{min-height:35px;padding:3px;font-size:6px}
+      .row-number{font-size:6px;padding-top:8px}
+      .signature-card,.verification-box{padding:6px;border-radius:0}
+      .signature-card h5,.verification-box h5{font-size:7px;margin-bottom:4px}
+      .status-banner{padding:6px;border-radius:0;font-size:7px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">AMI</div>
+        <div>
+          <h1>SIAMI UNRIKA</h1>
+          <p>Form 4 · PTK, RTL, dan Verifikasi</p>
+        </div>
+      </div>
+
+      <div class="workflow">
+        <div class="workflow-step done">1 · F1b</div>
+        <div class="workflow-step done">2 · F2</div>
+        <div class="workflow-step done">3 · F3</div>
+        <div class="workflow-step active">4 · F4</div>
+      </div>
+
+      <div class="side-summary">
+        <div class="side-summary-label">Penyelesaian Form 4</div>
+        <div class="side-summary-value"><span id="sideComplete">0</span>/<span id="sideTotal">0</span></div>
+        <div class="side-progress"><div class="side-progress-fill" id="sideProgressFill"></div></div>
+        <div class="side-summary-note" id="sideProgressNote">Menunggu data Form 3.</div>
+      </div>
+
+      <div class="ptk-nav-head">
+        <span>Daftar PTK</span>
+        <span id="navCount">0</span>
+      </div>
+      <nav class="ptk-nav" id="ptkNav"></nav>
+
+      <div class="side-actions">
+        <button type="button" onclick="goForm3()">← Form 3</button>
+        <button type="button" onclick="exportData()">Ekspor JSON</button>
+        <button type="button" onclick="syncFromForm3(true)">Sinkronkan</button>
+        <button type="button" onclick="goDashboard()">Dashboard</button>
+      </div>
+    </aside>
+
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-btn" type="button" onclick="openSidebar()" aria-label="Buka daftar PTK">☰</button>
+          <div class="page-title">
+            <h2 id="pageTitle">Form 4 · Permintaan Tindakan Koreksi</h2>
+            <p id="pageSubtitle">PTK, rencana tindak lanjut, dan verifikasi penutupan</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <span class="top-badge" id="positionBadge">PTK 0 dari 0</span>
+          <button class="icon-btn" type="button" onclick="printCurrent()" title="Cetak Form 4 saat ini">🖨</button>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="hero">
+          <div class="hero-inner">
+            <div class="hero-label">Borang Audit Mutu Internal · Dokumen Terkendali · Revisi 00</div>
+            <h3>FORM 4 — PERMINTAAN TINDAKAN KOREKSI, RTL, DAN VERIFIKASI PENUTUPAN</h3>
+            <p>
+              Satu Form 4 digunakan untuk satu temuan yang memerlukan tindak lanjut.
+              Auditi mengisi analisis akar penyebab, koreksi, dan rencana tindakan;
+              auditor/LPMI melakukan verifikasi bukti serta menetapkan status penutupan.
+            </p>
+          </div>
+        </section>
+
+        <div class="notice role-note">
+          <strong>Alur Tahap 1:</strong> auditi dapat mengisi Form 4 resmi di luar SIAMI,
+          kemudian auditor mencatat atau memindahkan isinya ke halaman ini untuk verifikasi,
+          penutupan, dan penyusunan laporan akhir.
+        </div>
+
+        <div class="notice" id="syncNotice">
+          Data referensi temuan diambil dari Form 3. Isian tindak lanjut dan verifikasi disimpan terpisah.
+        </div>
+
+        <div class="print-header">
+          <table>
+            <tr>
+              <td class="org">UNIVERSITAS RIAU KEPULAUAN<br>LEMBAGA PENJAMINAN MUTU INTERNAL</td>
+              <td>No. Dokumen<br><strong>KKA-S……-04</strong></td>
+            </tr>
+            <tr>
+              <td><strong>FORM 4 — PTK, RTL, DAN VERIFIKASI PENUTUPAN</strong></td>
+              <td>Halaman 1–2</td>
+            </tr>
+          </table>
+        </div>
+
+        <div id="emptyContainer" class="panel" style="display:none">
+          <div class="empty-state">
+            <div class="empty-icon">✓</div>
+            <h4>Tidak ada temuan yang memerlukan Form 4</h4>
+            <p>
+              Form 4 dibuat untuk temuan KTS Minor atau KTS Mayor.
+              Periksa kembali klasifikasi temuan pada Form 2 dan kelengkapan Form 3.
+            </p>
+            <button class="btn btn-primary" type="button" onclick="goForm3()">Kembali ke Form 3</button>
+          </div>
+        </div>
+
+        <div id="formContainer">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h4>Identitas Audit dan Referensi Formulir</h4>
+                <p>Identitas audit disinkronkan dari Form 3.</p>
+              </div>
+              <div class="section-letter">ID</div>
+            </div>
+            <div class="panel-body">
+              <div class="identity-grid">
+                <div class="field">
+                  <label>Auditi / Program Studi</label>
+                  <input id="prodi" data-identity type="text">
+                </div>
+                <div class="field">
+                  <label>Tahap Audit</label>
+                  <input id="tahapAudit" data-identity type="text">
+                </div>
+                <div class="field">
+                  <label>Tahun Akademik</label>
+                  <input id="tahunAkademik" data-identity type="text">
+                </div>
+                <div class="field">
+                  <label>UPPS / Fakultas</label>
+                  <input id="fakultas" data-identity type="text">
+                </div>
+                <div class="field">
+                  <label>Lokasi</label>
+                  <input id="lokasi" data-identity type="text">
+                </div>
+                <div class="field">
+                  <label>Tanggal Diterbitkan</label>
+                  <input id="tanggalDiterbitkan" data-current="tanggalDiterbitkan" type="date">
+                </div>
+                <div class="field">
+                  <label>Auditor Ketua</label>
+                  <input id="auditorKetua" data-identity type="text">
+                </div>
+                <div class="field">
+                  <label>Auditor Anggota</label>
+                  <input id="auditorAnggota" data-identity type="text">
+                </div>
+                <div class="field">
+                  <label>No. Form 4 / PTK</label>
+                  <input data-current="noForm4" type="text" readonly>
+                </div>
+                <div class="field">
+                  <label>No. Temuan Form 2</label>
+                  <input data-current="noTemuanForm2" type="text" readonly>
+                </div>
+                <div class="field">
+                  <label>No. Temuan Form 3</label>
+                  <input data-current="noForm3" type="text" readonly>
+                </div>
+                <div class="field">
+                  <label>Kode Butir Form 1b</label>
+                  <input data-current="kode" type="text" readonly>
+                </div>
+                <div class="field span2">
+                  <label>Distribusi</label>
+                  <input id="distribusi" data-identity type="text">
+                </div>
+                <div class="field">
+                  <label>Status Dokumen</label>
+                  <input value="Terkendali · Revisi 00" type="text" readonly>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h4>Klasifikasi Temuan dan Prioritas</h4>
+                <p>Klasifikasi mengikuti Form 3. Prioritas ditetapkan untuk pengendalian tindak lanjut.</p>
+              </div>
+              <div class="section-letter">K</div>
+            </div>
+            <div class="panel-body">
+              <div class="classification-row">
+                <div>
+                  <div class="choice-grid two">
+                    <div class="choice">
+                      <input id="classMi" type="radio" name="classificationView" disabled>
+                      <label for="classMi">KTS Minor</label>
+                    </div>
+                    <div class="choice">
+                      <input id="classMa" type="radio" name="classificationView" disabled>
+                      <label for="classMa">KTS Mayor</label>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="choice-grid">
+                    <div class="choice">
+                      <input id="priorityHigh" type="radio" name="priority" value="Tinggi">
+                      <label for="priorityHigh">Tinggi</label>
+                    </div>
+                    <div class="choice">
+                      <input id="priorityMedium" type="radio" name="priority" value="Sedang">
+                      <label for="priorityMedium">Sedang</label>
+                    </div>
+                    <div class="choice">
+                      <input id="priorityLow" type="radio" name="priority" value="Rendah">
+                      <label for="priorityLow">Rendah</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h4>A. Referensi Temuan</h4>
+                <p>Referensi ditarik dari Form 3 agar konsisten dengan deskripsi temuan.</p>
+              </div>
+              <div class="section-letter">A</div>
+            </div>
+            <div class="panel-body">
+              <div class="source-grid">
+                <div class="field">
+                  <label>Ringkasan Temuan</label>
+                  <textarea data-current="findingSummary" readonly></textarea>
+                </div>
+                <div class="field">
+                  <label>Kriteria / Standar</label>
+                  <textarea data-current="criteriaStandard" readonly></textarea>
+                </div>
+                <div class="field">
+                  <label>Bukti Objektif</label>
+                  <textarea data-current="objectiveEvidence" readonly></textarea>
+                </div>
+                <div class="field">
+                  <label>Persyaratan / Target</label>
+                  <textarea data-current="requirementTarget" readonly></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h4>B. Koreksi / Tindakan Segera</h4>
+                <p>Diisi berdasarkan tindakan langsung untuk mengendalikan dampak atau memperbaiki kondisi yang ditemukan.</p>
+              </div>
+              <div class="section-letter">B</div>
+            </div>
+            <div class="panel-body">
+              <div class="field">
+                <label>Koreksi / Tindakan Segera *</label>
+                <textarea class="tall" data-current="immediateCorrection"
+                  placeholder="Tuliskan tindakan langsung yang telah atau akan dilakukan sebelum tindakan korektif sistemik."></textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h4>C. Analisis Akar Penyebab</h4>
+                <p>Tuliskan akar penyebab yang telah diverifikasi, bukan hanya gejala.</p>
+              </div>
+              <div class="section-letter">C</div>
+            </div>
+            <div class="panel-body">
+              <div class="choice-grid">
+                <div class="choice">
+                  <input id="method5Why" type="radio" name="rootMethod" value="5 Why">
+                  <label for="method5Why">5 Why</label>
+                </div>
+                <div class="choice">
+                  <input id="methodFishbone" type="radio" name="rootMethod" value="Fishbone">
+                  <label for="methodFishbone">Fishbone</label>
+                </div>
+                <div class="choice">
+                  <input id="methodOther" type="radio" name="rootMethod" value="Analisis lainnya">
+                  <label for="methodOther">Analisis lainnya</label>
+                </div>
+              </div>
+
+              <div class="field method-other">
+                <label>Nama metode lain, jika digunakan</label>
+                <input data-current="rootMethodOther" type="text"
+                  placeholder="Contoh: analisis proses, fault tree, atau metode lain.">
+              </div>
+
+              <div class="source-grid" style="margin-top:12px">
+                <div class="field">
+                  <label>Akar Penyebab Utama *</label>
+                  <textarea class="tall" data-current="rootCause"
+                    placeholder="Tuliskan akar penyebab utama yang telah diverifikasi."></textarea>
+                </div>
+                <div class="field">
+                  <label>Faktor Pendukung / Penyebab Sistemik *</label>
+                  <textarea class="tall" data-current="systemicFactors"
+                    placeholder="Jelaskan faktor proses, SDM, sistem, dokumen, sarana, komunikasi, atau pengendalian."></textarea>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h4>D. Rencana Tindakan Korektif dan Pencegahan Keberulangan</h4>
+                <p>Rencana tindakan harus mengatasi akar penyebab, memiliki PIC, bukti, tenggat, dan indikator keberhasilan.</p>
+              </div>
+              <div class="section-letter">D</div>
+            </div>
+            <div class="panel-body">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="width:38px">No.</th>
+                      <th>Tindakan Korektif / Pencegahan Keberulangan</th>
+                      <th>Bukti Penyelesaian yang Direncanakan</th>
+                      <th style="width:145px">Penanggung Jawab</th>
+                      <th style="width:115px">Mulai</th>
+                      <th style="width:115px">Batas Waktu</th>
+                      <th>Indikator Keberhasilan</th>
+                    </tr>
+                  </thead>
+                  <tbody id="planRows"></tbody>
+                </table>
+              </div>
+              <div class="table-actions no-print">
+                <button class="btn btn-soft" type="button" onclick="addPlanRow()">+ Tambah Tindakan</button>
+                <button class="btn btn-danger" type="button" onclick="removePlanRow()">Hapus Baris Terakhir</button>
+              </div>
+
+              <div class="signature-grid" style="margin-top:15px">
+                <div class="signature-card">
+                  <h5>Wakil Auditi / Penanggung Jawab</h5>
+                  <div class="field">
+                    <label>Nama</label>
+                    <input data-approval="auditeeName" type="text">
+                  </div>
+                  <div class="field">
+                    <label>Tanggal</label>
+                    <input data-approval="auditeeDate" type="date">
+                  </div>
+                </div>
+                <div class="signature-card">
+                  <h5>Auditor Ketua</h5>
+                  <div class="field">
+                    <label>Nama</label>
+                    <input data-approval="auditorName" type="text">
+                  </div>
+                  <div class="field">
+                    <label>Tanggal</label>
+                    <input data-approval="auditorDate" type="date">
+                  </div>
+                </div>
+                <div class="signature-card">
+                  <h5>UPM / GPM</h5>
+                  <div class="field">
+                    <label>Nama</label>
+                    <input data-approval="upmName" type="text">
+                  </div>
+                  <div class="field">
+                    <label>Tanggal</label>
+                    <input data-approval="upmDate" type="date">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h4>E. Pelaksanaan Tindakan dan Bukti Penyelesaian</h4>
+                <p>Diisi setelah rencana tindakan dilaksanakan dan bukti penyelesaian tersedia.</p>
+              </div>
+              <div class="section-letter">E</div>
+            </div>
+            <div class="panel-body">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="width:38px">No.</th>
+                      <th>Tindakan yang Telah Dilaksanakan</th>
+                      <th>Bukti Objektif yang Diserahkan</th>
+                      <th style="width:120px">Tanggal Selesai</th>
+                      <th style="width:150px">Diperiksa Oleh</th>
+                      <th>Catatan Verifikasi Awal</th>
+                    </tr>
+                  </thead>
+                  <tbody id="implementationRows"></tbody>
+                </table>
+              </div>
+              <div class="table-actions no-print">
+                <button class="btn btn-soft" type="button" onclick="addImplementationRow()">+ Tambah Pelaksanaan</button>
+                <button class="btn btn-danger" type="button" onclick="removeImplementationRow()">Hapus Baris Terakhir</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h4>F. Verifikasi Tindak Lanjut dan Status Temuan</h4>
+                <p>Diisi oleh auditor/LPMI berdasarkan bukti dan hasil verifikasi.</p>
+              </div>
+              <div class="section-letter">F</div>
+            </div>
+            <div class="panel-body">
+              <div class="identity-grid">
+                <div class="field">
+                  <label>Tanggal Verifikasi</label>
+                  <input data-verification="verificationDate" type="date">
+                </div>
+                <div class="field">
+                  <label>Tanggal Penutupan</label>
+                  <input data-verification="closureDate" type="date">
+                </div>
+                <div class="field">
+                  <label>Batas Waktu Utama</label>
+                  <input data-current="mainDeadline" type="date">
+                </div>
+              </div>
+
+              <div class="verification-grid" style="margin-top:15px">
+                <div class="verification-box">
+                  <h5>Metode Verifikasi</h5>
+                  <div class="choice-grid">
+                    <div class="choice"><input id="verifyDocument" type="checkbox" value="Telaah dokumen" data-check-group="methods"><label for="verifyDocument">Telaah dokumen</label></div>
+                    <div class="choice"><input id="verifyInterview" type="checkbox" value="Wawancara" data-check-group="methods"><label for="verifyInterview">Wawancara</label></div>
+                    <div class="choice"><input id="verifyObservation" type="checkbox" value="Observasi" data-check-group="methods"><label for="verifyObservation">Observasi</label></div>
+                    <div class="choice"><input id="verifySample" type="checkbox" value="Uji petik" data-check-group="methods"><label for="verifySample">Uji petik</label></div>
+                  </div>
+                </div>
+
+                <div class="verification-box">
+                  <h5>Kecukupan Bukti</h5>
+                  <div class="choice-grid">
+                    <div class="choice"><input id="evidenceAdequate" type="radio" name="evidenceAdequacy" value="Memadai"><label for="evidenceAdequate">Memadai</label></div>
+                    <div class="choice"><input id="evidenceNotAdequate" type="radio" name="evidenceAdequacy" value="Belum memadai"><label for="evidenceNotAdequate">Belum memadai</label></div>
+                  </div>
+                </div>
+
+                <div class="verification-box">
+                  <h5>Pelaksanaan Tindakan</h5>
+                  <div class="choice-grid">
+                    <div class="choice"><input id="actionDone" type="radio" name="actionImplementation" value="Selesai"><label for="actionDone">Selesai</label></div>
+                    <div class="choice"><input id="actionPartial" type="radio" name="actionImplementation" value="Sebagian"><label for="actionPartial">Sebagian</label></div>
+                    <div class="choice"><input id="actionNotDone" type="radio" name="actionImplementation" value="Belum dilaksanakan"><label for="actionNotDone">Belum dilaksanakan</label></div>
+                  </div>
+                </div>
+
+                <div class="verification-box">
+                  <h5>Efektivitas</h5>
+                  <div class="choice-grid">
+                    <div class="choice"><input id="effective" type="radio" name="effectiveness" value="Efektif"><label for="effective">Efektif</label></div>
+                    <div class="choice"><input id="notEffective" type="radio" name="effectiveness" value="Belum efektif"><label for="notEffective">Belum efektif</label></div>
+                    <div class="choice"><input id="notAssessed" type="radio" name="effectiveness" value="Belum dapat dinilai"><label for="notAssessed">Belum dapat dinilai</label></div>
+                  </div>
+                </div>
+
+                <div class="verification-box">
+                  <h5>Risiko Keberulangan</h5>
+                  <div class="choice-grid">
+                    <div class="choice"><input id="riskLow" type="radio" name="recurrenceRisk" value="Rendah"><label for="riskLow">Rendah</label></div>
+                    <div class="choice"><input id="riskMedium" type="radio" name="recurrenceRisk" value="Sedang"><label for="riskMedium">Sedang</label></div>
+                    <div class="choice"><input id="riskHigh" type="radio" name="recurrenceRisk" value="Tinggi"><label for="riskHigh">Tinggi</label></div>
+                  </div>
+                </div>
+
+                <div class="verification-box">
+                  <h5>Status Temuan</h5>
+                  <div class="choice-grid">
+                    <div class="choice"><input id="statusClosed" type="radio" name="findingStatus" value="DITUTUP"><label for="statusClosed">DITUTUP</label></div>
+                    <div class="choice"><input id="statusAdditional" type="radio" name="findingStatus" value="PERBAIKAN TAMBAHAN"><label for="statusAdditional">PERBAIKAN TAMBAHAN</label></div>
+                    <div class="choice"><input id="statusOpen" type="radio" name="findingStatus" value="TETAP TERBUKA"><label for="statusOpen">TETAP TERBUKA</label></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="status-banner" id="statusBanner">
+                Status penutupan belum ditetapkan.
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h4>G. Hasil Verifikasi dan Penilaian Efektivitas</h4>
+                <p>Jelaskan kecukupan bukti, hasil uji petik, perubahan, dan alasan penetapan status.</p>
+              </div>
+              <div class="section-letter">G</div>
+            </div>
+            <div class="panel-body">
+              <div class="field">
+                <label>Hasil Verifikasi dan Penilaian Efektivitas</label>
+                <textarea class="tall" data-current="verificationResult"
+                  placeholder="Tuliskan hasil verifikasi secara objektif dan alasan penetapan status temuan."></textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <h4>H. Perbaikan Tambahan, Jika Diperlukan</h4>
+                <p>Tuliskan tindakan tambahan, bukti yang masih harus dilengkapi, PIC, dan tenggat baru.</p>
+              </div>
+              <div class="section-letter">H</div>
+            </div>
+            <div class="panel-body">
+              <div class="source-grid">
+                <div class="field">
+                  <label>Perbaikan Tambahan</label>
+                  <textarea class="tall" data-current="additionalImprovement"
+                    placeholder="Diisi apabila bukti belum memadai atau tindakan belum efektif."></textarea>
+                </div>
+                <div class="field">
+                  <label>Penanggung Jawab dan Tenggat Baru</label>
+                  <textarea class="tall" data-current="additionalPICDeadline"
+                    placeholder="Tuliskan PIC, bukti yang diperlukan, serta tenggat baru."></textarea>
+                </div>
+              </div>
+
+              <div class="signature-grid" style="margin-top:15px">
+                <div class="signature-card">
+                  <h5>Wakil Auditi</h5>
+                  <div class="field">
+                    <label>Nama</label>
+                    <input data-closure="auditeeName" type="text">
+                  </div>
+                  <div class="field">
+                    <label>Tanggal</label>
+                    <input data-closure="auditeeDate" type="date">
+                  </div>
+                </div>
+                <div class="signature-card">
+                  <h5>Auditor Verifikator</h5>
+                  <div class="field">
+                    <label>Nama</label>
+                    <input data-closure="verifierName" type="text">
+                  </div>
+                  <div class="field">
+                    <label>Tanggal</label>
+                    <input data-closure="verifierDate" type="date">
+                  </div>
+                </div>
+                <div class="signature-card">
+                  <h5>Ketua LPMI / Pejabat Berwenang</h5>
+                  <div class="field">
+                    <label>Nama</label>
+                    <input data-closure="lpmiName" type="text">
+                  </div>
+                  <div class="field">
+                    <label>Tanggal</label>
+                    <input data-closure="lpmiDate" type="date">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="footer-nav no-print">
+            <div class="footer-status">
+              <strong id="activeUser">Pengguna SIAMI</strong><br>
+              <span id="saveStatus">Belum pernah disimpan</span>
+            </div>
+            <div class="footer-actions">
+              <button class="btn btn-soft" type="button" onclick="previousPTK()">← Sebelumnya</button>
+              <button class="btn btn-primary" type="button" onclick="saveAll(true)">Simpan Draft</button>
+              <button class="btn btn-soft" type="button" onclick="nextPTK()">Selanjutnya →</button>
+              <button class="btn btn-success" type="button" onclick="continueToReport()">Lanjut ke Laporan →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast">Data tersimpan.</div>
+
+  <script>
+    const SESSION_KEY = "siamiPreviewSession";
+    const FORM3_KEY = "siami_preview_form3_2026";
+    const FORM4_KEY = "siami_preview_form4_2026";
+
+    const REQUIRED_CORE = [
+      "immediateCorrection",
+      "rootMethod",
+      "rootCause",
+      "systemicFactors"
+    ];
+
+    let session = null;
+    let form3 = {identity:{},findings:[],updatedAt:null};
+    let state = {
+      identity:{},
+      ptks:[],
+      currentIndex:0,
+      sourceUpdatedAt:null,
+      generatedAt:null,
+      updatedAt:null
+    };
+    let saveTimer;
+
+    function parseJSON(value){
+      try{return JSON.parse(value || "null")}
+      catch(error){return null}
+    }
+
+    function getSession(){
+      return parseJSON(sessionStorage.getItem(SESSION_KEY)) ||
+             parseJSON(localStorage.getItem(SESSION_KEY));
+    }
+
+    function escapeHTML(value){
+      return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function showToast(message){
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(window.form4Toast);
+      window.form4Toast = setTimeout(() => toast.classList.remove("show"),2500);
+    }
+
+    function formatDateTime(value){
+      if(!value)return "-";
+      const date = new Date(value);
+      if(Number.isNaN(date.getTime()))return "-";
+      return date.toLocaleString("id-ID",{
+        day:"2-digit",month:"short",year:"numeric",
+        hour:"2-digit",minute:"2-digit"
+      });
+    }
+
+    function todayISO(){
+      const date = new Date();
+      const local = new Date(date.getTime() - date.getTimezoneOffset()*60000);
+      return local.toISOString().slice(0,10);
+    }
+
+    function readForm3(){
+      form3 = parseJSON(localStorage.getItem(FORM3_KEY)) ||
+              {identity:{},findings:[],updatedAt:null};
+    }
+
+    function loadState(){
+      const stored = parseJSON(localStorage.getItem(FORM4_KEY));
+      if(stored && Array.isArray(stored.ptks)){
+        state = {
+          ...state,
+          ...stored,
+          identity:{...state.identity,...(stored.identity || {})},
+          ptks:stored.ptks
+        };
+      }
+    }
+
+    function defaultPlanRows(){
+      return Array.from({length:3},() => ({
+        action:"",
+        plannedEvidence:"",
+        personInCharge:"",
+        startDate:"",
+        deadline:"",
+        successIndicator:""
+      }));
+    }
+
+    function defaultImplementationRows(){
+      return Array.from({length:3},() => ({
+        implementedAction:"",
+        submittedEvidence:"",
+        completionDate:"",
+        checkedBy:"",
+        initialVerificationNote:""
+      }));
+    }
+
+    function makePTK(finding,index,old){
+      const base = {
+        key:`source-${finding.sourceNo}`,
+        sourceNo:finding.sourceNo,
+        kode:finding.kode || "",
+        classification:finding.klasifikasi || "",
+        noForm4:finding.noForm4 || `F4-${String(index+1).padStart(3,"0")}`,
+        noForm3:finding.noForm3 || "",
+        noTemuanForm2:finding.noTemuanForm2 || "",
+        tanggalDiterbitkan:todayISO(),
+        priority:finding.klasifikasi === "Ma" ? "Tinggi" : "Sedang",
+        findingSummary:finding.gapStatement || finding.sourceSummary || finding.factualCondition || "",
+        criteriaStandard:finding.criteriaStandard || "",
+        objectiveEvidence:finding.objectiveEvidence || "",
+        requirementTarget:finding.requirementTarget || "",
+        immediateCorrection:"",
+        rootMethod:"",
+        rootMethodOther:"",
+        rootCause:"",
+        systemicFactors:"",
+        mainDeadline:"",
+        plans:defaultPlanRows(),
+        approvals:{
+          auditeeName:finding.signatures?.wakilAuditiNama || "",
+          auditeeDate:"",
+          auditorName:finding.signatures?.auditorKetuaNama || form3.identity?.auditorKetua || "",
+          auditorDate:"",
+          upmName:"",
+          upmDate:""
+        },
+        implementations:defaultImplementationRows(),
+        verification:{
+          verificationDate:"",
+          closureDate:"",
+          methods:[],
+          evidenceAdequacy:"",
+          actionImplementation:"",
+          effectiveness:"",
+          recurrenceRisk:"",
+          findingStatus:""
+        },
+        verificationResult:"",
+        additionalImprovement:"",
+        additionalPICDeadline:"",
+        closure:{
+          auditeeName:finding.signatures?.wakilAuditiNama || "",
+          auditeeDate:"",
+          verifierName:finding.signatures?.auditorKetuaNama || form3.identity?.auditorKetua || "",
+          verifierDate:"",
+          lpmiName:"",
+          lpmiDate:""
+        },
+        updatedAt:null
+      };
+
+      if(!old)return base;
+
+      return {
+        ...base,
+        ...old,
+        key:base.key,
+        sourceNo:base.sourceNo,
+        kode:base.kode,
+        classification:base.classification,
+        noForm4:base.noForm4,
+        noForm3:base.noForm3,
+        noTemuanForm2:base.noTemuanForm2,
+        findingSummary:base.findingSummary,
+        criteriaStandard:base.criteriaStandard,
+        objectiveEvidence:base.objectiveEvidence,
+        requirementTarget:base.requirementTarget,
+        plans:Array.isArray(old.plans) && old.plans.length ? old.plans : base.plans,
+        approvals:{...base.approvals,...(old.approvals || {})},
+        implementations:Array.isArray(old.implementations) && old.implementations.length ? old.implementations : base.implementations,
+        verification:{...base.verification,...(old.verification || {})},
+        closure:{...base.closure,...(old.closure || {})}
+      };
+    }
+
+    function syncFromForm3(manual=false){
+      collectCurrent();
+      readForm3();
+
+      const sourceFindings = (form3.findings || []).filter(item =>
+        ["Mi","Ma"].includes(item.klasifikasi)
+      );
+
+      const existing = new Map(
+        (state.ptks || []).map(item => [Number(item.sourceNo),item])
+      );
+
+      state.ptks = sourceFindings.map((finding,index) =>
+        makePTK(finding,index,existing.get(Number(finding.sourceNo)))
+      );
+
+      state.identity = {...form3.identity,...state.identity};
+      if(!state.identity.tahapAudit)state.identity.tahapAudit = "Tindak Lanjut Hasil AMI";
+      if(!state.identity.distribusi)state.identity.distribusi = "Auditi; Auditor; UPM/GPM; Arsip";
+
+      state.currentIndex = Math.min(
+        Math.max(0,Number(state.currentIndex || 0)),
+        Math.max(0,state.ptks.length-1)
+      );
+
+      state.sourceUpdatedAt = form3.updatedAt || null;
+      if(!state.generatedAt)state.generatedAt = new Date().toISOString();
+
+      state.updatedAt = new Date().toISOString();
+      localStorage.setItem(FORM4_KEY,JSON.stringify(state));
+      renderAll();
+
+      if(manual)showToast(`${state.ptks.length} Form 4 disinkronkan dari Form 3.`);
+    }
+
+    function currentPTK(){
+      return state.ptks?.[state.currentIndex] || null;
+    }
+
+    function planHasContent(row){
+      return Object.values(row || {}).some(value => String(value || "").trim());
+    }
+
+    function coreCompletion(ptk){
+      if(!ptk)return {filled:0,total:6,complete:false,partial:false,closed:false};
+
+      let filled = REQUIRED_CORE.filter(field => String(ptk[field] || "").trim()).length;
+      const hasPlan = (ptk.plans || []).some(row =>
+        String(row.action || "").trim() &&
+        String(row.personInCharge || "").trim() &&
+        String(row.deadline || "").trim()
+      );
+      if(hasPlan)filled += 1;
+      if(String(ptk.priority || "").trim())filled += 1;
+
+      const total = 6;
+      return {
+        filled,
+        total,
+        complete:filled === total,
+        partial:filled > 0 && filled < total,
+        closed:ptk.verification?.findingStatus === "DITUTUP"
+      };
+    }
+
+    function summaryProgress(){
+      const ptks = state.ptks || [];
+      const complete = ptks.filter(item => coreCompletion(item).complete).length;
+      return {
+        complete,
+        total:ptks.length,
+        percent:ptks.length ? Math.round((complete/ptks.length)*100) : 0
+      };
+    }
+
+    function renderAll(){
+      const hasPTKs = state.ptks.length > 0;
+      document.getElementById("emptyContainer").style.display = hasPTKs ? "none" : "block";
+      document.getElementById("formContainer").style.display = hasPTKs ? "block" : "none";
+
+      renderSidebar();
+      renderIdentity();
+      renderPTK();
+      renderSyncStatus();
+      updateSaveStatus();
+    }
+
+    function renderSidebar(){
+      const progress = summaryProgress();
+      setText("sideComplete",progress.complete);
+      setText("sideTotal",progress.total);
+      document.getElementById("sideProgressFill").style.width = `${progress.percent}%`;
+      setText("sideProgressNote",
+        progress.total
+          ? `${progress.percent}% data inti lengkap · ${progress.total-progress.complete} PTK masih perlu dilengkapi`
+          : "Menunggu data Form 3."
+      );
+      setText("navCount",progress.total);
+
+      const nav = document.getElementById("ptkNav");
+      if(!state.ptks.length){
+        nav.innerHTML = "";
+        return;
+      }
+
+      nav.innerHTML = state.ptks.map((ptk,index) => {
+        const status = coreCompletion(ptk);
+        const dotClass = status.closed ? "closed" : status.complete ? "complete" : status.partial ? "partial" : "";
+        const statusText = ptk.verification?.findingStatus || (status.complete ? "RTL lengkap" : "Belum lengkap");
+        return `
+          <button class="ptk-link ${index===state.currentIndex?"active":""}"
+                  type="button" onclick="selectPTK(${index})">
+            <span class="num">${index+1}</span>
+            <span>
+              <strong>${escapeHTML(ptk.noForm4)} · ${escapeHTML(ptk.kode)}</strong>
+              <span>${escapeHTML(ptk.classification === "Ma" ? "KTS Mayor" : "KTS Minor")} · ${escapeHTML(statusText)}</span>
+            </span>
+            <span class="status-dot ${dotClass}"></span>
+          </button>`;
+      }).join("");
+    }
+
+    function renderIdentity(){
+      document.querySelectorAll("[data-identity]").forEach(input => {
+        input.value = state.identity?.[input.id] ?? "";
+      });
+    }
+
+    function renderPTK(){
+      const ptk = currentPTK();
+      if(!ptk)return;
+
+      setText("pageTitle",`${ptk.noForm4} · Butir ${ptk.kode}`);
+      setText("pageSubtitle",
+        `${ptk.classification === "Ma" ? "KTS Mayor" : "KTS Minor"} · Sumber ${ptk.noForm3}`
+      );
+      setText("positionBadge",`PTK ${state.currentIndex+1} dari ${state.ptks.length}`);
+
+      document.querySelectorAll("[data-current]").forEach(input => {
+        input.value = ptk[input.dataset.current] ?? "";
+      });
+
+      document.getElementById("classMi").checked = ptk.classification === "Mi";
+      document.getElementById("classMa").checked = ptk.classification === "Ma";
+
+      document.querySelectorAll('input[name="priority"]').forEach(input => {
+        input.checked = input.value === ptk.priority;
+      });
+
+      document.querySelectorAll('input[name="rootMethod"]').forEach(input => {
+        input.checked = input.value === ptk.rootMethod;
+      });
+
+      document.querySelectorAll("[data-approval]").forEach(input => {
+        input.value = ptk.approvals?.[input.dataset.approval] ?? "";
+      });
+
+      document.querySelectorAll("[data-verification]").forEach(input => {
+        input.value = ptk.verification?.[input.dataset.verification] ?? "";
+      });
+
+      document.querySelectorAll("[data-closure]").forEach(input => {
+        input.value = ptk.closure?.[input.dataset.closure] ?? "";
+      });
+
+      renderPlanRows();
+      renderImplementationRows();
+      renderVerificationChoices();
+      renderStatusBanner();
+    }
+
+    function renderPlanRows(){
+      const ptk = currentPTK();
+      const tbody = document.getElementById("planRows");
+      tbody.innerHTML = (ptk.plans || []).map((row,index) => `
+        <tr>
+          <td class="row-number">${index+1}</td>
+          <td><textarea data-plan="${index}" data-field="action">${escapeHTML(row.action)}</textarea></td>
+          <td><textarea data-plan="${index}" data-field="plannedEvidence">${escapeHTML(row.plannedEvidence)}</textarea></td>
+          <td><input data-plan="${index}" data-field="personInCharge" value="${escapeHTML(row.personInCharge)}"></td>
+          <td><input type="date" data-plan="${index}" data-field="startDate" value="${escapeHTML(row.startDate)}"></td>
+          <td><input type="date" data-plan="${index}" data-field="deadline" value="${escapeHTML(row.deadline)}"></td>
+          <td><textarea data-plan="${index}" data-field="successIndicator">${escapeHTML(row.successIndicator)}</textarea></td>
+        </tr>
+      `).join("");
+      bindDynamicInputs();
+    }
+
+    function renderImplementationRows(){
+      const ptk = currentPTK();
+      const tbody = document.getElementById("implementationRows");
+      tbody.innerHTML = (ptk.implementations || []).map((row,index) => `
+        <tr>
+          <td class="row-number">${index+1}</td>
+          <td><textarea data-implementation="${index}" data-field="implementedAction">${escapeHTML(row.implementedAction)}</textarea></td>
+          <td><textarea data-implementation="${index}" data-field="submittedEvidence">${escapeHTML(row.submittedEvidence)}</textarea></td>
+          <td><input type="date" data-implementation="${index}" data-field="completionDate" value="${escapeHTML(row.completionDate)}"></td>
+          <td><input data-implementation="${index}" data-field="checkedBy" value="${escapeHTML(row.checkedBy)}"></td>
+          <td><textarea data-implementation="${index}" data-field="initialVerificationNote">${escapeHTML(row.initialVerificationNote)}</textarea></td>
+        </tr>
+      `).join("");
+      bindDynamicInputs();
+    }
+
+    function bindDynamicInputs(){
+      document.querySelectorAll("[data-plan],[data-implementation]").forEach(input => {
+        input.oninput = autoSave;
+      });
+    }
+
+    function renderVerificationChoices(){
+      const ptk = currentPTK();
+      const verification = ptk.verification || {};
+
+      document.querySelectorAll("[data-check-group='methods']").forEach(input => {
+        input.checked = (verification.methods || []).includes(input.value);
+      });
+
+      const groups = {
+        evidenceAdequacy:verification.evidenceAdequacy,
+        actionImplementation:verification.actionImplementation,
+        effectiveness:verification.effectiveness,
+        recurrenceRisk:verification.recurrenceRisk,
+        findingStatus:verification.findingStatus
+      };
+
+      Object.entries(groups).forEach(([name,value]) => {
+        document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+          input.checked = input.value === value;
+        });
+      });
+    }
+
+    function renderStatusBanner(){
+      const ptk = currentPTK();
+      const status = ptk?.verification?.findingStatus || "";
+      const banner = document.getElementById("statusBanner");
+      banner.className = "status-banner";
+
+      if(status === "DITUTUP"){
+        banner.classList.add("closed");
+        banner.textContent = "Temuan DITUTUP. Pastikan bukti memadai, tindakan selesai, dan efektivitas telah dinilai.";
+      }else if(status === "PERBAIKAN TAMBAHAN"){
+        banner.classList.add("additional");
+        banner.textContent = "PERBAIKAN TAMBAHAN diperlukan. Lengkapi bagian H dengan tindakan, PIC, bukti, dan tenggat baru.";
+      }else if(status === "TETAP TERBUKA"){
+        banner.classList.add("open");
+        banner.textContent = "Temuan TETAP TERBUKA dan masih memerlukan tindak lanjut.";
+      }else{
+        banner.textContent = "Status penutupan belum ditetapkan.";
+      }
+    }
+
+    function renderSyncStatus(){
+      const notice = document.getElementById("syncNotice");
+      if(form3.updatedAt && state.sourceUpdatedAt && form3.updatedAt !== state.sourceUpdatedAt){
+        notice.className = "notice warning";
+        notice.textContent =
+          "Form 3 berubah setelah sinkronisasi terakhir. Tekan “Sinkronkan” agar referensi Form 4 memakai data terbaru.";
+      }else{
+        notice.className = "notice";
+        notice.textContent =
+          `Sumber Form 3 terakhir disimpan ${formatDateTime(form3.updatedAt)}. ` +
+          "Isian PTK, RTL, pelaksanaan, dan verifikasi disimpan terpisah.";
+      }
+    }
+
+    function collectCurrent(){
+      const ptk = currentPTK();
+      if(!ptk)return;
+
+      document.querySelectorAll("[data-identity]").forEach(input => {
+        state.identity[input.id] = input.value;
+      });
+
+      document.querySelectorAll("[data-current]").forEach(input => {
+        ptk[input.dataset.current] = input.value;
+      });
+
+      const priority = document.querySelector('input[name="priority"]:checked');
+      ptk.priority = priority?.value || "";
+
+      const rootMethod = document.querySelector('input[name="rootMethod"]:checked');
+      ptk.rootMethod = rootMethod?.value || "";
+
+      document.querySelectorAll("[data-plan]").forEach(input => {
+        const index = Number(input.dataset.plan);
+        if(ptk.plans[index])ptk.plans[index][input.dataset.field] = input.value;
+      });
+
+      ptk.approvals = ptk.approvals || {};
+      document.querySelectorAll("[data-approval]").forEach(input => {
+        ptk.approvals[input.dataset.approval] = input.value;
+      });
+
+      document.querySelectorAll("[data-implementation]").forEach(input => {
+        const index = Number(input.dataset.implementation);
+        if(ptk.implementations[index])ptk.implementations[index][input.dataset.field] = input.value;
+      });
+
+      ptk.verification = ptk.verification || {};
+      document.querySelectorAll("[data-verification]").forEach(input => {
+        ptk.verification[input.dataset.verification] = input.value;
+      });
+
+      ptk.verification.methods = Array.from(
+        document.querySelectorAll("[data-check-group='methods']:checked")
+      ).map(input => input.value);
+
+      ["evidenceAdequacy","actionImplementation","effectiveness","recurrenceRisk","findingStatus"]
+        .forEach(name => {
+          const checked = document.querySelector(`input[name="${name}"]:checked`);
+          ptk.verification[name] = checked?.value || "";
+        });
+
+      ptk.closure = ptk.closure || {};
+      document.querySelectorAll("[data-closure]").forEach(input => {
+        ptk.closure[input.dataset.closure] = input.value;
+      });
+
+      ptk.updatedAt = new Date().toISOString();
+    }
+
+    function saveAll(show=false){
+      collectCurrent();
+      state.updatedAt = new Date().toISOString();
+      localStorage.setItem(FORM4_KEY,JSON.stringify(state));
+      updateSaveStatus();
+      renderSidebar();
+      renderStatusBanner();
+      if(show)showToast("Form 4 berhasil disimpan.");
+    }
+
+    function autoSave(){
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => saveAll(false),450);
+    }
+
+    function updateSaveStatus(){
+      const ptk = currentPTK();
+      const status = coreCompletion(ptk);
+      setText("saveStatus",
+        state.updatedAt
+          ? `Terakhir disimpan: ${formatDateTime(state.updatedAt)} · ${status.filled}/${status.total} data inti lengkap`
+          : `${status.filled}/${status.total} data inti lengkap`
+      );
+    }
+
+    function selectPTK(index){
+      saveAll(false);
+      state.currentIndex = Math.min(
+        Math.max(0,index),
+        Math.max(0,state.ptks.length-1)
+      );
+      localStorage.setItem(FORM4_KEY,JSON.stringify(state));
+      renderAll();
+      closeSidebar();
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function previousPTK(){
+      if(!state.ptks.length)return;
+      if(state.currentIndex === 0){
+        showToast("Ini adalah PTK pertama.");
+        return;
+      }
+      selectPTK(state.currentIndex-1);
+    }
+
+    function nextPTK(){
+      if(!state.ptks.length)return;
+      if(state.currentIndex >= state.ptks.length-1){
+        showToast("Ini adalah PTK terakhir.");
+        return;
+      }
+      selectPTK(state.currentIndex+1);
+    }
+
+    function addPlanRow(){
+      saveAll(false);
+      currentPTK().plans.push({
+        action:"",
+        plannedEvidence:"",
+        personInCharge:"",
+        startDate:"",
+        deadline:"",
+        successIndicator:""
+      });
+      renderPlanRows();
+      showToast("Baris tindakan ditambahkan.");
+    }
+
+    function removePlanRow(){
+      const ptk = currentPTK();
+      if(ptk.plans.length <= 1){
+        showToast("Minimal satu baris tindakan harus tersedia.");
+        return;
+      }
+      ptk.plans.pop();
+      saveAll(false);
+      renderPlanRows();
+    }
+
+    function addImplementationRow(){
+      saveAll(false);
+      currentPTK().implementations.push({
+        implementedAction:"",
+        submittedEvidence:"",
+        completionDate:"",
+        checkedBy:"",
+        initialVerificationNote:""
+      });
+      renderImplementationRows();
+      showToast("Baris pelaksanaan ditambahkan.");
+    }
+
+    function removeImplementationRow(){
+      const ptk = currentPTK();
+      if(ptk.implementations.length <= 1){
+        showToast("Minimal satu baris pelaksanaan harus tersedia.");
+        return;
+      }
+      ptk.implementations.pop();
+      saveAll(false);
+      renderImplementationRows();
+    }
+
+    function validateCore(){
+      saveAll(false);
+      const incomplete = state.ptks
+        .map((ptk,index) => ({ptk,index,status:coreCompletion(ptk)}))
+        .filter(item => !item.status.complete);
+
+      if(!incomplete.length)return true;
+
+      state.currentIndex = incomplete[0].index;
+      localStorage.setItem(FORM4_KEY,JSON.stringify(state));
+      renderAll();
+      showToast(`${incomplete.length} Form 4 belum lengkap. Lengkapi data inti pada ${incomplete[0].ptk.noForm4}.`);
+      return false;
+    }
+
+    function continueToReport(){
+      if(!state.ptks.length){
+        showToast("Tidak ada Form 4 yang dapat dilanjutkan.");
+        return;
+      }
+      if(!validateCore())return;
+      window.location.href = "laporan.html";
+    }
+
+    function printCurrent(){
+      saveAll(false);
+      window.print();
+    }
+
+    function exportData(){
+      saveAll(false);
+      const payload = {
+        system:"SIAMI UNRIKA",
+        form:"Form 4",
+        version:"2026",
+        exportedAt:new Date().toISOString(),
+        data:state
+      };
+      const blob = new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `Form4_${state.identity.auditId || "AUDIT"}.json`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+      showToast("Cadangan Form 4 berhasil diekspor.");
+    }
+
+    function goForm3(){
+      saveAll(false);
+      window.location.href = "form3.html";
+    }
+
+    function goDashboard(){
+      saveAll(false);
+      window.location.href = "dashboard.html";
+    }
+
+    function openSidebar(){
+      document.getElementById("sidebar").classList.add("open");
+      document.getElementById("overlay").classList.add("show");
+    }
+
+    function closeSidebar(){
+      document.getElementById("sidebar").classList.remove("open");
+      document.getElementById("overlay").classList.remove("show");
+    }
+
+    function setText(id,value){
+      const element = document.getElementById(id);
+      if(element)element.textContent = value;
+    }
+
+    function bindEvents(){
+      document.querySelectorAll("[data-identity],[data-current],[data-approval],[data-verification],[data-closure]")
+        .forEach(input => input.addEventListener("input",autoSave));
+
+      document.querySelectorAll(
+        'input[name="priority"],input[name="rootMethod"],input[name="evidenceAdequacy"],' +
+        'input[name="actionImplementation"],input[name="effectiveness"],input[name="recurrenceRisk"],' +
+        'input[name="findingStatus"],[data-check-group="methods"]'
+      ).forEach(input => input.addEventListener("change",() => {
+        saveAll(false);
+        renderStatusBanner();
+      }));
+    }
+
+    function initialize(){
+      session = getSession();
+      if(!session){
+        window.location.replace("index.html");
+        return;
+      }
+
+      setText("activeUser",`${session.name || "Pengguna SIAMI"} · ${session.roleLabel || "Auditor"}`);
+
+      readForm3();
+      loadState();
+
+      if(!state.ptks.length || !state.sourceUpdatedAt){
+        syncFromForm3(false);
+      }else{
+        renderAll();
+      }
+
+      bindEvents();
+
+      window.addEventListener("beforeunload",() => saveAll(false));
+      document.addEventListener("visibilitychange",() => {
+        if(document.hidden)saveAll(false);
+      });
+    }
+
+    initialize();
+  </script>
+</body>
+</html>

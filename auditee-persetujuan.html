@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Persetujuan Saya | SIAMI Preview</title><link rel="stylesheet" href="preview.css">
+<script src="preview.js"></script><script src="audit-items.js"></script></head><body>
+<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Preview alur sebelum implementasi hosting</p></div></div>
+<div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header><div class="shell"><aside class="side">
+<div class="panel"><h3>Menu Auditee</h3><div class="nav mt">
+<a href="auditee.html">Dashboard Auditee</a>
+<a href="auditee-bukti.html">Persiapan Bukti Form 1b</a>
+<a href="auditee-form3.html">Tanggapan Temuan Form 3</a>
+<a href="auditee-form4.html">Tindakan Koreksi & RTL</a>
+<a href="auditee-persetujuan.html" class="active">Persetujuan Saya</a>
+<a href="auditee-status.html">Status Audit</a>
+<a href="cek-alur.html">Panduan Uji Alur</a>
+</div></div>
+<div class="panel"><h3>Prinsip Akses</h3><p class="small">Akun Auditee menampilkan bagian yang memang menjadi tanggung jawab Auditee. Penilaian A/S/T dan klasifikasi tetap dilakukan Auditor.</p></div>
+</aside><main class="main">
+<section class="hero"><h2>Persetujuan Elektronik Saya</h2><p>Rekap dokumen yang menunggu atau sudah mendapat persetujuan elektronik dari akun Auditee yang sedang login.</p></section>
+<div class="grid g3">
+ <div class="card stat"><span>FORM 3 DISETUJUI</span><strong id="aF3">0</strong><span>konfirmasi temuan</span></div>
+ <div class="card stat"><span>RTL DISETUJUI</span><strong id="aPlan">0</strong><span>rencana Form 4</span></div>
+ <div class="card stat"><span>PENUTUPAN DISETUJUI</span><strong id="aClose">0</strong><span>Form 4</span></div>
+</div>
+<section class="card"><div class="itemhead"><div><div class="code">AUDIT TRAIL PREVIEW</div><h4>Riwayat Persetujuan</h4><p>Pada versi Hostinger, data ini harus dicatat oleh server, bukan hanya browser.</p></div></div><div class="itembody"><div id="approvalList" class="timeline"></div></div></section>
+<section class="card"><div class="itemhead"><div><div class="code">MENUNGGU PERSETUJUAN</div><h4>Dokumen yang Belum Disetujui</h4></div></div><div class="itembody"><div id="pendingList" class="workspace-list"></div></div></section>
+<script>
+function state(k,f){try{return JSON.parse(localStorage.getItem(k)||"null")||f}catch(e){return f}}
+function render(){
+ const a=SIAMI_PREVIEW.assignment(),apps=Object.values(SIAMI_PREVIEW.approvals()).filter(x=>x.unitId===a.unitId);
+ aF3.textContent=apps.filter(x=>x.kind==="form3-confirm").length;aPlan.textContent=apps.filter(x=>x.kind==="form4-plan").length;aClose.textContent=apps.filter(x=>x.kind==="form4-close").length;
+ approvalList.innerHTML=apps.length?apps.sort((x,y)=>String(y.approvedAt).localeCompare(String(x.approvedAt))).map((ap,i)=>`<div class="timeline-row"><div class="timeline-no">✓</div><div><strong>${SIAMI_PREVIEW.escape(ap.documentLabel)}</strong><p>${SIAMI_PREVIEW.escape(ap.signerName)} · ${SIAMI_PREVIEW.escape(ap.signerRole)}<br>${SIAMI_PREVIEW.escape(ap.unitName)} · ${SIAMI_PREVIEW.escape(SIAMI_PREVIEW.fmtDateTime(ap.approvedAt))}</p></div><span class="badge ok">Disetujui</span></div>`).join(""):`<div class="notice">Belum ada persetujuan elektronik.</div>`;
+ const f3=state("siami_preview_form3_2026",{findings:[]}).findings||[],f4=state("siami_preview_form4_2026",{ptks:[]}).ptks||[];
+ const pending=[];
+ f3.forEach(f=>{const k=f.key||`source-${f.sourceNo}`;if(!SIAMI_PREVIEW.approval("form3-confirm",k))pending.push({title:f.noForm3||"Form 3",desc:"Konfirmasi temuan",url:"auditee-form3.html"})});
+ f4.forEach(p=>{const k=p.key||`source-${p.sourceNo}`;if(!SIAMI_PREVIEW.approval("form4-plan",k))pending.push({title:p.noForm4||"Form 4",desc:"Persetujuan rencana tindak lanjut",url:"auditee-form4.html"});if(p.verification?.findingStatus==="DITUTUP"&&!SIAMI_PREVIEW.approval("form4-close",k))pending.push({title:p.noForm4||"Form 4",desc:"Persetujuan keputusan penutupan",url:"auditee-form4.html"})});
+ pendingList.innerHTML=pending.length?pending.map(x=>`<div class="workspace-card"><h4>${SIAMI_PREVIEW.escape(x.title)}</h4><p>${SIAMI_PREVIEW.escape(x.desc)}</p><div class="actions"><a class="btn primary" href="${x.url}">Buka Dokumen</a><span class="badge wait">Menunggu</span></div></div>`).join(""):`<div class="notice">Tidak ada persetujuan yang menunggu.</div>`
+}
+render();window.addEventListener("focus",render);
+</script>
+</main></div>
+<script>
+(function(){
+ const s=SIAMI_PREVIEW.session();
+ if(!s){location.href="index.html";return;}
+ if(s.role!=="auditee"){location.href=SIAMI_PREVIEW.roleHome(s.role);return;}
+ const el=document.getElementById("accountPill");if(el)el.textContent=`${s.name||"Pengguna"} · ${s.roleLabel||"Auditee"}`;
+})();
+</script>
+</body></html>
