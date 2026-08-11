@@ -1,0 +1,25 @@
+1. Ilmu Pemerintahan
+2. Magister Manajemen Pendidikan
+3. Bisnis Digital
+4. Pendidikan Sejarah
+5. Teknik Mesin
+6. Bimbingan Konseling
+7. Magister Hukum
+8. Manajemen
+9. Teknik Industri
+10. Akuntansi
+11. Pendidikan Biologi
+12. Pendidikan Bahasa Inggris
+13. Teknik Sipil
+14. Teknik Elektro
+15. Ilmu Hukum
+16. Pendidikan Matematika
+17. Magister Manajemen
+18. PPG
+19. Arsitektur
+20. Biro Kerjasama
+21. Sistem Informasi
+22. LPPM
+23. CEDC
+24. LC
+25. Perpustakaan

@@ -8,9 +8,10 @@ window.SIAMI_PREVIEW = {
   APPROVAL_KEY: "siami_preview_eapprovals",
 
   defaultUnits(){
-    return Array.from({length:25},(_,i)=>({
+    const names=["Ilmu Pemerintahan", "Magister Manajemen Pendidikan", "Bisnis Digital", "Pendidikan Sejarah", "Teknik Mesin", "Bimbingan Konseling", "Magister Hukum", "Manajemen", "Teknik Industri", "Akuntansi", "Pendidikan Biologi", "Pendidikan Bahasa Inggris", "Teknik Sipil", "Teknik Elektro", "Ilmu Hukum", "Pendidikan Matematika", "Magister Manajemen", "PPG", "Arsitektur", "Biro Kerjasama", "Sistem Informasi", "LPPM", "CEDC", "LC", "Perpustakaan"];
+    return names.map((name,i)=>({
       id:`U${String(i+1).padStart(2,"0")}`,
-      name:`Unit ${String(i+1).padStart(2,"0")}`,
+      name,
       faculty:"",
       active:true
     }));
@@ -25,10 +26,28 @@ window.SIAMI_PREVIEW = {
   },
 
   ensureUnits(){
-    if(!localStorage.getItem(this.UNITS_KEY)){
-      localStorage.setItem(this.UNITS_KEY,JSON.stringify(this.defaultUnits()));
+    const official=this.defaultUnits();
+    const stored=this.json(this.UNITS_KEY,null);
+
+    if(!Array.isArray(stored) || stored.length!==25){
+      localStorage.setItem(this.UNITS_KEY,JSON.stringify(official));
+      return official;
     }
-    return this.units();
+
+    // Migrasi otomatis dari versi lama "Unit 01"–"Unit 25".
+    // Jika Admin sudah mengganti nama unit secara manual, nama tersebut tidak ditimpa.
+    let changed=false;
+    const migrated=stored.map((u,i)=>{
+      const legacyName=`Unit ${String(i+1).padStart(2,"0")}`;
+      if(!u || !String(u.name||"").trim() || String(u.name).trim()===legacyName){
+        changed=true;
+        return {...official[i],...(u||{}),name:official[i].name};
+      }
+      return u;
+    });
+
+    if(changed)localStorage.setItem(this.UNITS_KEY,JSON.stringify(migrated));
+    return migrated;
   },
 
   saveUnits(units){
