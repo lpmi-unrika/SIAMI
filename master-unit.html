@@ -1,33 +1,44 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Master 25 Unit | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css"></head><body>
+<title>Master 25 Unit | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=4"></head><body>
 <header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Sistem Informasi Audit Mutu Internal</p></div></div>
 <div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header>
 <div class="shell"><aside class="side">
 <div class="panel"><h3>Menu Admin LPMI</h3><div class="nav mt">
-<a href="monitoring.html">Monitoring</a><a href="master-unit.html" class="active">Master 25 Unit</a><a href="penugasan.html">Penugasan Auditor</a><a href="cek-alur.html">Panduan Uji Alur</a>
+<a href="monitoring.html">Monitoring</a><a href="master-unit.html" class="active">Master 25 Unit</a><a href="penugasan.html">Penugasan Auditor</a><a href="cek-alur.html">Panduan Alur</a>
 </div></div>
-<div class="panel"><h3>Catatan</h3><p class="small">Nama unit dan UPPS/Fakultas/Unit Induk telah dimuat pada Master Unit. Admin memilih unit pada saat membuat penugasan audit.</p></div>
+<div class="panel"><h3>Master Audit</h3><p class="small">Nama unit, UPPS/Fakultas/Unit Induk, Auditor Ketua, Auditor Anggota, dan jadwal audit telah dimuat pada master AMI 2026.</p></div>
 </aside>
 <main class="main">
-<section class="hero"><h2>Master 25 Unit Audit</h2><p>Daftar 25 unit/program studi yang menjadi objek AMI 2026 sudah dimuat otomatis. Admin tetap dapat mengoreksi nama atau UPPS/Fakultas/Unit Induk bila diperlukan.</p></section>
-<section class="card"><div class="itemhead"><div><div class="code">MASTER UNIT</div><h4>Daftar Unit yang Diaudit</h4><p>ID unit dipertahankan agar data antarform tetap dapat ditelusuri.</p></div><span class="badge info">25 Unit</span></div>
+<section class="hero"><h2>Master 25 Unit Audit</h2><p>Daftar unit yang diaudit beserta UPPS/unit induk dan tim auditor AMI Tahun Akademik 2025/2026.</p></section>
+<section class="card"><div class="itemhead"><div><div class="code">MASTER UNIT</div><h4>Daftar Unit, UPPS, dan Tim Auditor</h4><p>Data dapat diperbarui oleh Admin LPMI jika terdapat perubahan penugasan.</p></div><span class="badge info">25 Unit</span></div>
 <div class="itembody">
-<div style="overflow:auto"><table style="width:100%;border-collapse:collapse;min-width:760px">
-<thead><tr style="background:#eef6fb"><th style="padding:9px;text-align:left">No.</th><th style="padding:9px;text-align:left">ID</th><th style="padding:9px;text-align:left">Nama Unit / Program Studi</th><th style="padding:9px;text-align:left">UPPS / Fakultas / Unit Induk</th><th style="padding:9px;text-align:left">Aktif</th></tr></thead>
+<div style="overflow:auto"><table style="width:100%;border-collapse:collapse;min-width:1500px">
+<thead><tr>
+<th style="padding:9px;text-align:left">No.</th>
+<th style="padding:9px;text-align:left">ID</th>
+<th style="padding:9px;text-align:left">Unit yang Diaudit</th>
+<th style="padding:9px;text-align:left">UPPS / Fakultas / Unit Induk</th>
+<th style="padding:9px;text-align:left">Auditor Ketua</th>
+<th style="padding:9px;text-align:left">Auditor Anggota</th>
+<th style="padding:9px;text-align:left">Jadwal Audit</th>
+<th style="padding:9px;text-align:left">Aktif</th>
+</tr></thead>
 <tbody id="unitRows"></tbody></table></div>
-<div class="actions mt"><button class="btn primary" onclick="saveUnits()">Simpan Master 25 Unit</button><button class="btn soft" onclick="resetUnits()">Kembalikan 25 Slot Kosong</button></div>
+<div class="actions mt"><button class="btn primary" onclick="saveUnits()">Simpan Perubahan Master</button><button class="btn soft" onclick="resetUnits()">Kembalikan Master AMI 2026</button></div>
 </div></section>
-<div class="notice"><strong>Penting:</strong> saya tidak mengisi nama 25 unit secara otomatis karena daftar resmi unit audit LPMI belum diberikan. Jadi tidak ada nama unit yang saya tebak.</div>
 </main></div>
-<script src="preview.js"></script>
+<script src="preview.js?v=4"></script>
 <script>
-let units=SIAMI_PREVIEW.units();
+let units=SIAMI_PREVIEW.ensureUnits();
 function render(){
  unitRows.innerHTML=units.map((u,i)=>`<tr style="border-bottom:1px solid #e5edf2">
  <td style="padding:8px">${i+1}</td><td style="padding:8px"><strong>${u.id}</strong></td>
  <td style="padding:8px"><input class="input" data-i="${i}" data-f="name" value="${SIAMI_PREVIEW.escape(u.name||"")}"></td>
  <td style="padding:8px"><input class="input" data-i="${i}" data-f="faculty" value="${SIAMI_PREVIEW.escape(u.faculty||"")}"></td>
+ <td style="padding:8px"><input class="input" data-i="${i}" data-f="leadAuditor" value="${SIAMI_PREVIEW.escape(u.leadAuditor||"")}"></td>
+ <td style="padding:8px"><input class="input" data-i="${i}" data-f="memberAuditor" value="${SIAMI_PREVIEW.escape(u.memberAuditor||"")}"></td>
+ <td style="padding:8px"><input class="input" type="date" data-i="${i}" data-f="auditDate" value="${SIAMI_PREVIEW.escape(u.auditDate||"")}"></td>
  <td style="padding:8px"><input type="checkbox" data-i="${i}" data-f="active" ${u.active!==false?"checked":""}></td>
  </tr>`).join("");
 }
@@ -38,10 +49,10 @@ function collect(){
  });
 }
 function saveUnits(){
- collect();SIAMI_PREVIEW.saveUnits(units);alert("Master 25 unit disimpan.");
+ collect();SIAMI_PREVIEW.saveUnits(units);alert("Master unit dan tim auditor disimpan.");
 }
 function resetUnits(){
- if(!confirm("Kembalikan seluruh daftar menjadi Unit 01 sampai Unit 25?"))return;
+ if(!confirm("Kembalikan seluruh data ke Master AMI 2026?"))return;
  units=SIAMI_PREVIEW.defaultUnits();SIAMI_PREVIEW.saveUnits(units);render();
 }
 render();
