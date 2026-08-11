@@ -1,0 +1,9 @@
+SIAMI UNRIKA v7
+- Language Center (LC) dipaksa mengikuti master sebagai Unit Pendukung.
+- form1b.html sekarang hanya merutekan ke dua formulir fisik:
+  * form1b-prodi.html = 59 butir
+  * form1b-unit.html = 25 butir
+- Setelah Simpan Penugasan, form yang sesuai langsung dibuka.
+- Identitas Form 1b diteruskan otomatis ke Form 2 -> Form 3 -> Form 4.
+- Form 4 menampilkan Tanggal Audit, Wakil Auditi/Auditee, dan ID Audit.
+- Storage Form 1b-4 menggunakan versi v7 agar data kosong versi lama tidak menimpa data baru.

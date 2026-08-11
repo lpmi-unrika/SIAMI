@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Status Audit Auditee | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=6">
-<script src="preview.js?v=6"></script><script src="audit-items.js?v=6"></script><script src="audit-items-unit.js?v=6"></script></head><body>
+<title>Status Audit Auditee | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=7">
+<script src="preview.js?v=7"></script><script src="audit-items.js?v=7"></script><script src="audit-items-unit.js?v=7"></script></head><body>
 <header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Sistem Informasi Audit Mutu Internal</p></div></div>
 <div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header><div class="shell"><aside class="side">
 <div class="panel"><h3>Menu Auditee</h3><div class="nav mt">
@@ -28,7 +28,7 @@
 function state(k,f){try{return JSON.parse(localStorage.getItem(k)||"null")||f}catch(e){return f}}
 function render(){
  const a=SIAMI_PREVIEW.assignment(),ev=SIAMI_PREVIEW.evidence();const itemNos=new Set(Object.entries(ev).filter(([k,v])=>k.startsWith(a.unitId+":")&&(v.fileName||v.linkUrl||v.documentRef)).map(([k])=>Number(k.split(":")[1])));
- const f3=state("siami_preview_form3_2026",{findings:[]}).findings||[],f4=state("siami_preview_form4_2026",{ptks:[]}).ptks||[];
+ const f3=state("siami_preview_form3_2026_v7",{findings:[]}).findings||[],f4=state("siami_preview_form4_2026_v7",{ptks:[]}).ptks||[];
  stEvidence.textContent=`${itemNos.size}/${AUDIT_TOTAL}`;stF3.textContent=f3.length;stF4.textContent=f4.length;stClosed.textContent=f4.filter(p=>p.verification?.findingStatus==="DITUTUP").length;
  const steps=[
   {title:"Persiapan Bukti Form 1b",desc:`${itemNos.size} dari ${AUDIT_TOTAL} butir memiliki bukti/identitas dokumen.`,done:itemNos.size===AUDIT_TOTAL,url:"auditee-bukti.html"},

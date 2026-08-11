@@ -1096,6 +1096,18 @@
                   <input id="lokasi" data-identity type="text">
                 </div>
                 <div class="field">
+                  <label>Tanggal Audit</label>
+                  <input id="tanggalAudit" data-identity type="date">
+                </div>
+                <div class="field">
+                  <label>Wakil Auditi / Auditee</label>
+                  <input id="wakilAuditi" data-identity type="text">
+                </div>
+                <div class="field">
+                  <label>ID Audit</label>
+                  <input id="auditId" data-identity type="text">
+                </div>
+                <div class="field">
                   <label>Tanggal Diterbitkan</label>
                   <input id="tanggalDiterbitkan" data-current="tanggalDiterbitkan" type="date">
                 </div>
@@ -1550,10 +1562,11 @@
 
   <div class="toast" id="toast">Data tersimpan.</div>
 
+  <script src="preview.js?v=7"></script>
   <script>
     const SESSION_KEY = "siamiPreviewSession";
-    const FORM3_KEY = "siami_preview_form3_2026";
-    const FORM4_KEY = "siami_preview_form4_2026";
+    const FORM3_KEY = "siami_preview_form3_2026_v7";
+    const FORM4_KEY = "siami_preview_form4_2026_v7";
 
     const REQUIRED_CORE = [
       "immediateCorrection",
@@ -1577,6 +1590,31 @@
     function parseJSON(value){
       try{return JSON.parse(value || "null")}
       catch(error){return null}
+    }
+
+    function nonEmpty(value){
+      return String(value ?? "").trim() !== "";
+    }
+
+    function mergeIdentity(primary={},fallback={}){
+      const merged={...(fallback||{})};
+      Object.entries(primary||{}).forEach(([k,v])=>{
+        if(nonEmpty(v))merged[k]=v;
+      });
+      return merged;
+    }
+
+    function hydrateIdentityFromForm3(){
+      const a=SIAMI_PREVIEW.assignment();
+      const fallback={
+        prodi:a.unitName||"",fakultas:a.faculty||"",lokasi:a.location||"",
+        tanggalAudit:a.auditDate||"",wakilAuditi:a.auditeeName||"",
+        auditorKetua:a.leadAuditor||"",auditorAnggota:a.memberAuditor||"",
+        auditId:a.auditId||"",tahunAkademik:a.academicYear||"2025/2026"
+      };
+      state.identity=mergeIdentity(form3.identity || {},mergeIdentity(fallback,state.identity || {}));
+      if(!state.identity.tahapAudit)state.identity.tahapAudit="Tindak Lanjut Hasil AMI";
+      if(!state.identity.distribusi)state.identity.distribusi="Auditi; Auditor; UPM/GPM; Arsip";
     }
 
     function getSession(){
@@ -1750,9 +1788,7 @@
         makePTK(finding,index,existing.get(Number(finding.sourceNo)))
       );
 
-      state.identity = {...form3.identity,...state.identity};
-      if(!state.identity.tahapAudit)state.identity.tahapAudit = "Tindak Lanjut Hasil AMI";
-      if(!state.identity.distribusi)state.identity.distribusi = "Auditi; Auditor; UPM/GPM; Arsip";
+      hydrateIdentityFromForm3();
 
       state.currentIndex = Math.min(
         Math.max(0,Number(state.currentIndex || 0)),
@@ -2258,10 +2294,12 @@
 
       readForm3();
       loadState();
+      hydrateIdentityFromForm3();
 
       if(!state.ptks.length || !state.sourceUpdatedAt){
         syncFromForm3(false);
       }else{
+        localStorage.setItem(FORM4_KEY,JSON.stringify(state));
         renderAll();
       }
 

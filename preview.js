@@ -1,9 +1,9 @@
 
 window.SIAMI_PREVIEW = {
   SESSION_KEY: "siamiPreviewSession",
-  ASSIGNMENT_KEY: "siami_preview_assignment_v6",
+  ASSIGNMENT_KEY: "siami_preview_assignment_v7",
   EVIDENCE_KEY: "siami_preview_auditee_evidence_v6",
-  UNITS_KEY: "siami_preview_units_26_v6",
+  UNITS_KEY: "siami_preview_units_26_v7",
   AUDITEE_ITEM_KEY: "siami_preview_auditee_item_data_v6",
   APPROVAL_KEY: "siami_preview_eapprovals_v6",
 
@@ -26,7 +26,15 @@ window.SIAMI_PREVIEW = {
       this.saveUnits(official);
       return official;
     }
-    const repaired=stored.map((u,i)=>({...official[i],...(u||{}),id:official[i].id}));
+    const repaired=stored.map((u,i)=>{
+      const o=official[i];
+      const current={...o,...(u||{})};
+      current.id=o.id;
+      current.auditeeType=o.auditeeType;
+      if(!String(current.name||"").trim())current.name=o.name;
+      if(!String(current.faculty||"").trim())current.faculty=o.faculty;
+      return current;
+    });
     this.saveUnits(repaired);
     return repaired;
   },
@@ -53,6 +61,24 @@ window.SIAMI_PREVIEW = {
     };
   },
 
+  resolveAssignment(raw){
+    const base={...this.emptyAssignment(),...(raw||{})};
+    const master=this.ensureUnits();
+    const u=master.find(x=>x.id===base.unitId) ||
+      master.find(x=>String(x.name||"").trim().toLowerCase()===String(base.unitName||"").trim().toLowerCase());
+    if(!u)return base;
+    return {
+      ...base,
+      unitId:u.id,
+      unitName:u.name,
+      faculty:u.faculty||base.faculty||"",
+      auditeeType:u.auditeeType,
+      leadAuditor:String(base.leadAuditor||"").trim()?base.leadAuditor:(u.leadAuditor||""),
+      memberAuditor:String(base.memberAuditor||"").trim()?base.memberAuditor:(u.memberAuditor||""),
+      auditDate:String(base.auditDate||"").trim()?base.auditDate:(u.auditDate||"")
+    };
+  },
+
   session(){
     try{
       return JSON.parse(sessionStorage.getItem(this.SESSION_KEY)||localStorage.getItem(this.SESSION_KEY)||"null")
@@ -60,17 +86,29 @@ window.SIAMI_PREVIEW = {
   },
 
   assignment(){
-    return this.json(this.ASSIGNMENT_KEY, this.emptyAssignment());
+    return this.resolveAssignment(this.json(this.ASSIGNMENT_KEY,this.emptyAssignment()));
+  },
+
+  saveAssignment(data){
+    const resolved=this.resolveAssignment(data);
+    localStorage.setItem(this.ASSIGNMENT_KEY,JSON.stringify(resolved));
+    return resolved;
   },
 
   auditTotal(){
-    const a=this.assignment();
-    return a && a.auditeeType==="unit" ? 25 : 59;
+    return this.assignment().auditeeType==="unit" ? 25 : 59;
   },
 
   auditFormLabel(){
-    const a=this.assignment();
-    return a && a.auditeeType==="unit" ? "Form 1b Unit Pendukung" : "Form 1b Program Studi";
+    return this.assignment().auditeeType==="unit"
+      ? "Form 1b Unit Pendukung"
+      : "Form 1b Program Studi";
+  },
+
+  form1bUrl(){
+    return this.assignment().auditeeType==="unit"
+      ? "form1b-unit.html"
+      : "form1b-prodi.html";
   },
 
   hasAssignment(){
@@ -87,7 +125,6 @@ window.SIAMI_PREVIEW = {
   },
 
   evidenceKey(unitId,itemNo,index){return `${unitId}:${itemNo}:${index}`},
-
 
   auditeeItems(){
     return this.json(this.AUDITEE_ITEM_KEY,{});
@@ -116,20 +153,11 @@ window.SIAMI_PREVIEW = {
     const k=this.approvalKey(kind,docKey);
     const now=new Date();
     const rec={
-      key:k,
-      kind,
-      docKey,
-      documentLabel,
-      status:"approved",
+      key:k,kind,docKey,documentLabel,status:"approved",
       signerName:s.name || a.auditeeName || "Wakil Auditi",
       signerRole:"Wakil Auditi / Auditee",
-      unitId:a.unitId || "",
-      unitName:a.unitName || "",
-      auditId:a.auditId || "",
-      documentVersion:1,
-      approvedAt:now.toISOString(),
-      approvedDate:now.toISOString().slice(0,10),
-      preview:true
+      unitId:a.unitId || "",unitName:a.unitName || "",auditId:a.auditId || "",
+      documentVersion:1,approvedAt:now.toISOString(),approvedDate:now.toISOString().slice(0,10)
     };
     all[k]=rec;
     this.saveApprovals(all);
@@ -161,10 +189,10 @@ window.SIAMI_PREVIEW = {
 
   resetAuditOnly(){
     [
-      "siami_preview_form1b_2026",
-      "siami_preview_form2_2026",
-      "siami_preview_form3_2026",
-      "siami_preview_form4_2026"
+      "siami_preview_form1b_2026_v7",
+      "siami_preview_form2_2026_v7",
+      "siami_preview_form3_2026_v7",
+      "siami_preview_form4_2026_v7"
     ].forEach(k=>localStorage.removeItem(k));
   },
 

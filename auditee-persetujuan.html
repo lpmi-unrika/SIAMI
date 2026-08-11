@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Persetujuan Saya | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=6">
-<script src="preview.js?v=6"></script><script src="audit-items.js?v=6"></script></head><body>
+<title>Persetujuan Saya | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=7">
+<script src="preview.js?v=7"></script><script src="audit-items.js?v=7"></script></head><body>
 <header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Sistem Informasi Audit Mutu Internal</p></div></div>
 <div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header><div class="shell"><aside class="side">
 <div class="panel"><h3>Menu Auditee</h3><div class="nav mt">
@@ -29,7 +29,7 @@ function render(){
  const a=SIAMI_PREVIEW.assignment(),apps=Object.values(SIAMI_PREVIEW.approvals()).filter(x=>x.unitId===a.unitId);
  aF3.textContent=apps.filter(x=>x.kind==="form3-confirm").length;aPlan.textContent=apps.filter(x=>x.kind==="form4-plan").length;aClose.textContent=apps.filter(x=>x.kind==="form4-close").length;
  approvalList.innerHTML=apps.length?apps.sort((x,y)=>String(y.approvedAt).localeCompare(String(x.approvedAt))).map((ap,i)=>`<div class="timeline-row"><div class="timeline-no">✓</div><div><strong>${SIAMI_PREVIEW.escape(ap.documentLabel)}</strong><p>${SIAMI_PREVIEW.escape(ap.signerName)} · ${SIAMI_PREVIEW.escape(ap.signerRole)}<br>${SIAMI_PREVIEW.escape(ap.unitName)} · ${SIAMI_PREVIEW.escape(SIAMI_PREVIEW.fmtDateTime(ap.approvedAt))}</p></div><span class="badge ok">Disetujui</span></div>`).join(""):`<div class="notice">Belum ada persetujuan elektronik.</div>`;
- const f3=state("siami_preview_form3_2026",{findings:[]}).findings||[],f4=state("siami_preview_form4_2026",{ptks:[]}).ptks||[];
+ const f3=state("siami_preview_form3_2026_v7",{findings:[]}).findings||[],f4=state("siami_preview_form4_2026_v7",{ptks:[]}).ptks||[];
  const pending=[];
  f3.forEach(f=>{const k=f.key||`source-${f.sourceNo}`;if(!SIAMI_PREVIEW.approval("form3-confirm",k))pending.push({title:f.noForm3||"Form 3",desc:"Konfirmasi temuan",url:"auditee-form3.html"})});
  f4.forEach(p=>{const k=p.key||`source-${p.sourceNo}`;if(!SIAMI_PREVIEW.approval("form4-plan",k))pending.push({title:p.noForm4||"Form 4",desc:"Persetujuan rencana tindak lanjut",url:"auditee-form4.html"});if(p.verification?.findingStatus==="DITUTUP"&&!SIAMI_PREVIEW.approval("form4-close",k))pending.push({title:p.noForm4||"Form 4",desc:"Persetujuan keputusan penutupan",url:"auditee-form4.html"})});

@@ -263,16 +263,16 @@
     </main>
   </div>
   <div class="toast" id="toast">Data tersimpan.</div>
-<script src="preview.js?v=6"></script>
-<script src="audit-items.js?v=6"></script>
-<script src="audit-items-unit.js?v=6"></script>
+<script src="preview.js?v=7"></script>
+<script src="audit-items.js?v=7"></script>
+<script src="audit-items-unit.js?v=7"></script>
 <script>
   const CURRENT_ASSIGNMENT=SIAMI_PREVIEW.assignment();
   const IS_UNIT_AUDIT=CURRENT_ASSIGNMENT.auditeeType==="unit";
   const MASTER_ITEMS=IS_UNIT_AUDIT?SIAMI_UNIT_AUDIT_ITEMS(CURRENT_ASSIGNMENT.unitName):SIAMI_AUDIT_ITEMS;
   const AUDITEE_SUBJECT=IS_UNIT_AUDIT?"Unit kerja":"Program studi";
-  const FORM1B_KEY = "siami_preview_form1b_2026";
-  const FORM2_KEY = "siami_preview_form2_2026";
+  const FORM1B_KEY = "siami_preview_form1b_2026_v7";
+  const FORM2_KEY = "siami_preview_form2_2026_v7";
   const SESSION_KEY = "siamiPreviewSession";
   const CLASS_LABELS = {
     PB:"Praktik Baik",
@@ -444,7 +444,7 @@
     const requirement=[
       item.indikator,
       item.bukti && !["—","-"].includes(item.bukti) ? `Bukti yang dipersyaratkan: ${item.bukti}` : "",
-      answer.target ? `Target prodi: ${answer.target}.` : "",
+      answer.target ? `Target ${IS_UNIT_AUDIT?"unit":"prodi"}: ${answer.target}.` : "",
       item.acuan && item.acuan!=="-" ? `Acuan: ${item.acuan}` : ""
     ].filter(Boolean).join(" ");
 
@@ -519,7 +519,23 @@
       buildRow(item,source.answers[item.no] || {},existing.get(Number(item.no)))
     );
 
-    state.identity={...source.meta,...state.identity};
+    const assignmentIdentity={
+      prodi:CURRENT_ASSIGNMENT.unitName || "",fakultas:CURRENT_ASSIGNMENT.faculty || "",
+      lokasi:CURRENT_ASSIGNMENT.location || "",tanggalAudit:CURRENT_ASSIGNMENT.auditDate || "",
+      wakilAuditi:CURRENT_ASSIGNMENT.auditeeName || "",auditorKetua:CURRENT_ASSIGNMENT.leadAuditor || "",
+      auditorAnggota:CURRENT_ASSIGNMENT.memberAuditor || "",auditId:CURRENT_ASSIGNMENT.auditId || "",
+      tahunAkademik:CURRENT_ASSIGNMENT.academicYear || "2025/2026"
+    };
+    state.identity={...state.identity};
+    Object.entries(assignmentIdentity).forEach(([k,v])=>{
+      if(String(v||"").trim() && !String(state.identity[k]||"").trim())state.identity[k]=v;
+    });
+    Object.entries(source.meta || {}).forEach(([k,v])=>{
+      if(String(v??"").trim()!=="")state.identity[k]=v;
+    });
+    if(!state.signatures.wakilAuditiNama && state.identity.wakilAuditi)state.signatures.wakilAuditiNama=state.identity.wakilAuditi;
+    if(!state.signatures.auditorKetuaNama && state.identity.auditorKetua)state.signatures.auditorKetuaNama=state.identity.auditorKetua;
+    if(!state.signatures.auditorAnggotaNama && state.identity.auditorAnggota)state.signatures.auditorAnggotaNama=state.identity.auditorAnggota;
     if(!state.identity.distribusi)state.identity.distribusi="Auditi; Auditor; UPM/GPM; Arsip";
     state.sourceUpdatedAt=source.updatedAt || null;
     if(!state.generatedAt)state.generatedAt=new Date().toISOString();
@@ -899,6 +915,26 @@
       .forEach(input=>input.addEventListener("change",autoSave));
   }
 
+  function hydrateIdentityOnly(){
+    const a=CURRENT_ASSIGNMENT;
+    const fallback={
+      prodi:a.unitName||"",fakultas:a.faculty||"",lokasi:a.location||"",
+      tanggalAudit:a.auditDate||"",wakilAuditi:a.auditeeName||"",
+      auditorKetua:a.leadAuditor||"",auditorAnggota:a.memberAuditor||"",
+      auditId:a.auditId||"",tahunAkademik:a.academicYear||"2025/2026"
+    };
+    Object.entries(fallback).forEach(([k,v])=>{
+      if(String(v||"").trim() && !String(state.identity[k]||"").trim())state.identity[k]=v;
+    });
+    Object.entries(source.meta || {}).forEach(([k,v])=>{
+      if(String(v??"").trim()!=="")state.identity[k]=v;
+    });
+    if(!state.identity.distribusi)state.identity.distribusi="Auditi; Auditor; UPM/GPM; Arsip";
+    if(!state.signatures.wakilAuditiNama && state.identity.wakilAuditi)state.signatures.wakilAuditiNama=state.identity.wakilAuditi;
+    if(!state.signatures.auditorKetuaNama && state.identity.auditorKetua)state.signatures.auditorKetuaNama=state.identity.auditorKetua;
+    if(!state.signatures.auditorAnggotaNama && state.identity.auditorAnggota)state.signatures.auditorAnggotaNama=state.identity.auditorAnggota;
+  }
+
   function initialize(){
     session=getSession();
     if(!session){
@@ -910,9 +946,11 @@
 
     readSource();
     loadState();
+    hydrateIdentityOnly();
     if(!state.rows.length || !state.sourceUpdatedAt){
       syncFromForm1b(false);
     }else{
+      localStorage.setItem(FORM2_KEY,JSON.stringify(state));
       renderAll();
     }
     bindEvents();

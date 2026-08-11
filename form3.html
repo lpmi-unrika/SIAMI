@@ -999,6 +999,10 @@
                   <input id="distribusi" data-identity type="text">
                 </div>
                 <div class="field">
+                  <label>ID Audit</label>
+                  <input id="auditId" data-identity type="text">
+                </div>
+                <div class="field">
                   <label>Status Dokumen</label>
                   <input value="Terkendali · Revisi 00" type="text" readonly>
                 </div>
@@ -1217,10 +1221,11 @@
 
   <div class="toast" id="toast">Data tersimpan.</div>
 
+  <script src="preview.js?v=7"></script>
   <script>
     const SESSION_KEY = "siamiPreviewSession";
-    const FORM2_KEY = "siami_preview_form2_2026";
-    const FORM3_KEY = "siami_preview_form3_2026";
+    const FORM2_KEY = "siami_preview_form2_2026_v7";
+    const FORM3_KEY = "siami_preview_form3_2026_v7";
 
     const CLASS_LABELS = {
       OB: "Observasi / Peluang Peningkatan",
@@ -1313,7 +1318,15 @@
 
       // Data yang sudah diisi di Form 3 dipertahankan, tetapi kolom kosong
       // selalu dilengkapi kembali dari identitas Form 2.
-      state.identity = mergeIdentity(state.identity || {}, sourceIdentity);
+      const assignment=SIAMI_PREVIEW.assignment();
+      const assignmentIdentity={
+        prodi:assignment.unitName||"",fakultas:assignment.faculty||"",lokasi:assignment.location||"",
+        tanggalAudit:assignment.auditDate||"",wakilAuditi:assignment.auditeeName||"",
+        auditorKetua:assignment.leadAuditor||"",auditorAnggota:assignment.memberAuditor||"",
+        auditId:assignment.auditId||"",tahunAkademik:assignment.academicYear||"2025/2026"
+      };
+      const sourceWithFallback=mergeIdentity(sourceIdentity,assignmentIdentity);
+      state.identity = mergeIdentity(sourceWithFallback,state.identity || {});
       if(!state.identity.distribusi){
         state.identity.distribusi = "Auditi; Auditor; UPM/GPM; Arsip";
       }

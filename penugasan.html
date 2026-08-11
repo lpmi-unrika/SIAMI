@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Penugasan Auditor | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=6"></head><body>
+<title>Penugasan Auditor | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=7"></head><body>
 <header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Sistem Informasi Audit Mutu Internal</p></div></div>
 <div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header>
 <div class="shell"><aside class="side">
@@ -21,7 +21,7 @@
  <div class="field"><label>ID Audit</label><input id="auditId" readonly></div>
  <div class="actions"><button class="btn primary" type="submit">Simpan Penugasan</button><button class="btn soft" type="button" onclick="clearAssignment()">Kosongkan Penugasan</button></div>
 </form></div></section></main></div>
-<script src="preview.js?v=6"></script>
+<script src="preview.js?v=7"></script>
 <script>
 const units=SIAMI_PREVIEW.ensureUnits().filter(u=>u.active!==false);
 unitId.innerHTML += units.map(u=>`<option value="${u.id}">${SIAMI_PREVIEW.escape(u.name)} — ${u.auditeeType==="unit"?"Unit Pendukung":"Program Studi/Program"}</option>`).join("");
@@ -49,8 +49,11 @@ assignForm.addEventListener("submit",e=>{
    auditeeName:auditeeName.value.trim(),leadAuditor:leadAuditor.value.trim(),memberAuditor:memberAuditor.value.trim(),
    auditDate:auditDate.value,location:location.value.trim(),auditId:auditId.value,updatedAt:new Date().toISOString()
  };
- localStorage.setItem(SIAMI_PREVIEW.ASSIGNMENT_KEY,JSON.stringify(a));SIAMI_PREVIEW.resetAuditOnly();
- alert(`Penugasan ${u.name} disimpan. ${u.auditeeType==="unit"?"Form 1b Unit 25 butir":"Form 1b Prodi 59 butir"} akan digunakan otomatis.`);
+ SIAMI_PREVIEW.saveAssignment(a);
+ SIAMI_PREVIEW.resetAuditOnly();
+ const label=u.auditeeType==="unit"?"Form 1b Unit Pendukung · 25 butir":"Form 1b Program Studi · 59 butir";
+ alert(`Penugasan ${u.name} disimpan. ${label} akan dibuka.`);
+ window.location.href=SIAMI_PREVIEW.form1bUrl();
 });
 function clearAssignment(){if(!confirm("Kosongkan penugasan aktif?"))return;SIAMI_PREVIEW.resetCurrentAssignment();fill(SIAMI_PREVIEW.emptyAssignment());}
 const s=SIAMI_PREVIEW.session();if(!s){location.href="index.html"}else accountPill.textContent=`${s.name||"Pengguna"} · ${s.roleLabel||s.role}`;

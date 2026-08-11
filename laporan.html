@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Laporan Audit Terintegrasi | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=6"></head><body>
+<title>Laporan Audit Terintegrasi | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=7"></head><body>
 <header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Sistem Informasi Audit Mutu Internal</p></div></div>
 <div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header>
 <div class="shell"><aside class="side"><div class="panel"><h3>Menu Auditor / LPMI</h3><div class="nav mt"><a href="dashboard.html" class="">Dashboard Auditor</a><a href="laporan.html" class="active">Trace Laporan</a><a href="cek-alur.html" class="">Panduan Uji Alur</a></div></div>
@@ -18,7 +18,7 @@
 <div class="actions"><a class="btn soft" href="form4.html">← Kembali ke Form 4</a><a class="btn primary" href="cek-alur.html">Panduan Uji Alur</a></div>
 <script>
 function j(k,f){try{return JSON.parse(localStorage.getItem(k)||"null")||f}catch(e){return f}}
-const a=j("siami_preview_form1b_2026",{answers:{}}),b=j("siami_preview_form2_2026",{rows:[]}),c=j("siami_preview_form3_2026",{findings:[]}),d=j("siami_preview_form4_2026",{ptks:[]});
+const a=j("siami_preview_form1b_2026_v7",{answers:{}}),b=j("siami_preview_form2_2026_v7",{rows:[]}),c=j("siami_preview_form3_2026_v7",{findings:[]}),d=j("siami_preview_form4_2026_v7",{ptks:[]});
 f1.textContent=Object.values(a.answers||{}).filter(x=>x&&(x.hasilBukti||x.manualResult)).length;f2.textContent=(b.rows||[]).length;f3.textContent=(c.findings||[]).length;f4.textContent=(d.ptks||[]).length;
 const rows=(b.rows||[]).map(r=>{
  const f=(c.findings||[]).find(x=>Number(x.sourceNo)===Number(r.sourceNo));
@@ -31,7 +31,7 @@ const rows=(b.rows||[]).map(r=>{
 trace.innerHTML=rows||'<div class="notice">Belum ada data Form 2. Jalankan skenario uji terlebih dahulu.</div>';
 </script>
 </main></div>
-<script src="preview.js?v=6"></script><script src="audit-items.js?v=6"></script><script src="audit-items-unit.js?v=6"></script>
+<script src="preview.js?v=7"></script><script src="audit-items.js?v=7"></script><script src="audit-items-unit.js?v=7"></script>
 <script>
 (function(){
  const s=SIAMI_PREVIEW.session();
