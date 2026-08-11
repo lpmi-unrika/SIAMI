@@ -1,0 +1,26 @@
+1. Ilmu Pemerintahan | Program Studi/Program | Fakultas Ilmu Sosial dan Ilmu Politik (FISIP) | Ketua: Dr. Desi Surlitasari Dewi, M.Pd. | Anggota: M. Hidayat, M.Ak. | 2026-09-07
+2. Magister Manajemen Pendidikan | Program Studi/Program | Program Pascasarjana | Ketua: Ismarti, Ph.D. | Anggota: Sulastri Manurung, M.Pd. | 2026-09-07
+3. Pendidikan Sejarah | Program Studi/Program | Fakultas Keguruan dan Ilmu Pendidikan (FKIP) | Ketua: Doni Subrata, M.Pd. | Anggota: Adam, M.Pd. | 2026-09-07
+4. Teknik Mesin | Program Studi/Program | Fakultas Teknik (FT) | Ketua: Novita Mandasari, M.Hum. | Anggota: Dr. Safnidar Siahaan, M.S. | 2026-09-07
+5. Bimbingan Konseling | Program Studi/Program | Fakultas Keguruan dan Ilmu Pendidikan (FKIP) | Ketua: Alpino Susanto, Ph.D. | Anggota: Dian Hastari, M.T. | 2026-09-07
+6. Magister Hukum | Program Studi/Program | Program Pascasarjana | Ketua: M. Hidayat, M.Ak. | Anggota: Dr. Desi Surlitasari Dewi, M.Pd. | 2026-09-08
+7. Manajemen | Program Studi/Program | Fakultas Ekonomi dan Bisnis (FEB) | Ketua: Ismarti, Ph.D. | Anggota: Dian Hastari, M.T. | 2026-09-08
+8. Teknik Industri | Program Studi/Program | Fakultas Teknik (FT) | Ketua: Doni Subrata, M.Pd. | Anggota: Adam, M.Pd. | 2026-09-08
+9. Akuntansi | Program Studi/Program | Fakultas Ekonomi dan Bisnis (FEB) | Ketua: Novita Mandasari, M.Hum. | Anggota: Alpino Susanto, Ph.D. | 2026-09-08
+10. Pendidikan Biologi | Program Studi/Program | Fakultas Keguruan dan Ilmu Pendidikan (FKIP) | Ketua: Assoc. Prof. Linayati Lestari, M.A., Ph.D. | Anggota: Dr. Safnidar Siahaan, M.S. | 2026-09-08
+11. Pendidikan Bahasa Inggris | Program Studi/Program | Fakultas Keguruan dan Ilmu Pendidikan (FKIP) | Ketua: Alpino Susanto, Ph.D. | Anggota: M. Hidayat, M.Ak. | 2026-09-09
+12. Teknik Sipil | Program Studi/Program | Fakultas Teknik (FT) | Ketua: Ismarti, Ph.D. | Anggota: Novita Mandasari, M.Hum. | 2026-09-09
+13. Teknik Elektro | Program Studi/Program | Fakultas Teknik (FT) | Ketua: Assoc. Prof. Linayati Lestari, M.A., Ph.D. | Anggota: Doni Subrata, M.Pd. | 2026-09-09
+14. Ilmu Hukum | Program Studi/Program | Fakultas Hukum (FH) | Ketua: Dr. Desi Surlitasari Dewi, M.Pd. | Anggota: Sulastri Manurung, M.Pd. | 2026-09-09
+15. Pendidikan Matematika | Program Studi/Program | Fakultas Keguruan dan Ilmu Pendidikan (FKIP) | Ketua: Alpino Susanto, Ph.D. | Anggota: Dian Hastari, M.T. | 2026-09-10
+16. Magister Manajemen | Program Studi/Program | Program Pascasarjana | Ketua: Ismarti, Ph.D. | Anggota: Sulastri Manurung, M.Pd. | 2026-09-10
+17. PPG | Program Studi/Program | Fakultas Keguruan dan Ilmu Pendidikan (FKIP) | Ketua: Assoc. Prof. Linayati Lestari, M.A., Ph.D. | Anggota: Novita Mandasari, M.Hum. | 2026-09-10
+18. Arsitektur | Program Studi/Program | Fakultas Teknik (FT) | Ketua: M. Hidayat, M.Ak. | Anggota: Doni Subrata, M.Pd. | 2026-09-10
+19. Biro Kerjasama | Unit Pendukung | Universitas / Rektorat | Ketua: Dr. Safnidar Siahaan, M.S. | Anggota: Dr. Desi Surlitasari Dewi, M.Pd. | 2026-09-10
+20. Sistem Informasi | Program Studi/Program | Fakultas Teknik (FT) | Ketua: Alpino Susanto, Ph.D. | Anggota: Adam, M.Pd. | 2026-09-14
+21. LPPM | Unit Pendukung | Universitas / Rektorat | Ketua: Ismarti, Ph.D. | Anggota: Assoc. Prof. Linayati Lestari, M.A., Ph.D. | 2026-09-14
+22. Bisnis Digital | Program Studi/Program | Fakultas Ekonomi dan Bisnis (FEB) | Ketua: Sulastri Manurung, M.Pd. | Anggota: Dian Hastari, M.T. | 2026-09-14
+23. Language Center (LC) | Unit Pendukung | Universitas / Rektorat | Ketua: Dr. Desi Surlitasari Dewi, M.Pd. | Anggota: Doni Subrata, M.Pd. | 2026-09-14
+24. Perpustakaan | Unit Pendukung | Universitas / Rektorat | Ketua: Dr. Safnidar Siahaan, M.S. | Anggota: Doni Subrata, M.Pd. | 2026-09-15
+25. CEDC | Unit Pendukung | Universitas / Rektorat | Ketua: Sulastri Manurung, M.Pd. | Anggota: Novita Mandasari, M.Hum. | 2026-09-15
+26. Puskom | Unit Pendukung | Universitas / Rektorat | Ketua: Alpino Susanto, Ph.D. | Anggota: M. Hidayat, M.Ak. | 2026-09-15

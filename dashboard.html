@@ -1040,7 +1040,7 @@
               <div class="timeline" id="timeline">
                 <div class="empty-note">
                   Belum ada data Form 1b yang tersimpan. Klik <strong>Masuk Audit</strong>
-                  untuk mulai memeriksa 59 butir audit.
+                  untuk mulai memeriksa Form 1b yang sesuai dengan jenis auditee.
                 </div>
               </div>
             </section>
@@ -1052,7 +1052,7 @@
 
   <div class="toast" id="toast">Progres diperbarui.</div>
 
-  <script src="preview.js?v=4"></script>
+  <script src="preview.js?v=6"></script>
   <script>
     const SESSION_KEY = "siamiPreviewSession";
     const FORM1B_KEY = "siami_preview_form1b_2026";
@@ -1157,7 +1157,7 @@
       const academicYear = String(meta.tahunAkademik || previewAssignment.academicYear || "2025/2026").trim();
       const auditId = String(meta.auditId || previewAssignment.auditId || "AMI-2026").trim();
 
-      setText("programName", prodi || "Audit Program Studi");
+      setText("programName", prodi || (previewAssignment.auditeeType==="unit"?"Audit Unit Pendukung":"Audit Program Studi"));
       setText("facultyName", faculty || "Fakultas belum diisi");
       setText("academicYear", academicYear);
       setText("auditCode", auditId);
@@ -1182,13 +1182,13 @@
       } else if (progress.percent < 100) {
         pill.textContent = "Sedang Berjalan";
         pill.classList.add("started");
-        setText("step1Status", `${progress.completed}/59 butir`);
+        setText("step1Status", `${progress.completed}/${AUDIT_TOTAL} butir`);
       } else {
         pill.textContent = "Form 1b Selesai";
         pill.classList.add("complete");
         step.className = "step done";
         stepIcon.textContent = "✓";
-        setText("step1Status", "59/59 butir");
+        setText("step1Status", `${AUDIT_TOTAL}/${AUDIT_TOTAL} butir`);
       }
     }
 
@@ -1206,7 +1206,7 @@
       if (formState.updatedAt) {
         entries.push({
           title: "Form 1b terakhir disimpan",
-          detail: `${formatDate(formState.updatedAt, true)} · ${progress.completed} dari 59 butir diperiksa`
+          detail: `${formatDate(formState.updatedAt, true)} · ${progress.completed} dari ${AUDIT_TOTAL} butir diperiksa`
         });
       }
 
@@ -1330,7 +1330,7 @@
 (function(){
  if(typeof SIAMI_PREVIEW!=="undefined" && !SIAMI_PREVIEW.hasAssignment()){
    const main=document.querySelector(".main")||document.querySelector("main");
-   if(main)main.innerHTML=`<section class="hero"><h2>Dashboard Auditor</h2><p>Belum ada unit yang ditugaskan.</p></section><div class="notice">Admin LPMI harus memilih salah satu unit dari Master 25 Unit pada menu Penugasan Auditor.</div>`;
+   if(main)main.innerHTML=`<section class="hero"><h2>Dashboard Auditor</h2><p>Belum ada unit yang ditugaskan.</p></section><div class="notice">Admin LPMI harus memilih salah satu unit dari Master 26 Auditee pada menu Penugasan Auditor.</div>`;
  }
 })();
 </script>

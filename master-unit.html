@@ -1,60 +1,45 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Master 25 Unit | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=4"></head><body>
+<title>Master 26 Auditee | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=6"></head><body>
 <header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Sistem Informasi Audit Mutu Internal</p></div></div>
 <div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header>
 <div class="shell"><aside class="side">
 <div class="panel"><h3>Menu Admin LPMI</h3><div class="nav mt">
-<a href="monitoring.html">Monitoring</a><a href="master-unit.html" class="active">Master 25 Unit</a><a href="penugasan.html">Penugasan Auditor</a><a href="cek-alur.html">Panduan Alur</a>
+<a href="monitoring.html">Monitoring</a><a href="master-unit.html" class="active">Master 26 Auditee</a><a href="penugasan.html">Penugasan Auditor</a><a href="cek-alur.html">Panduan Alur</a>
 </div></div>
-<div class="panel"><h3>Master Audit</h3><p class="small">Nama unit, UPPS/Fakultas/Unit Induk, Auditor Ketua, Auditor Anggota, dan jadwal audit telah dimuat pada master AMI 2026.</p></div>
+<div class="panel"><h3>Jenis Form 1b</h3><p class="small"><strong>Program Studi/Program</strong> menggunakan Form 1b 59 butir. <strong>Unit Pendukung</strong> menggunakan Form 1b 25 butir.</p></div>
 </aside>
 <main class="main">
-<section class="hero"><h2>Master 25 Unit Audit</h2><p>Daftar unit yang diaudit beserta UPPS/unit induk dan tim auditor AMI Tahun Akademik 2025/2026.</p></section>
-<section class="card"><div class="itemhead"><div><div class="code">MASTER UNIT</div><h4>Daftar Unit, UPPS, dan Tim Auditor</h4><p>Data dapat diperbarui oleh Admin LPMI jika terdapat perubahan penugasan.</p></div><span class="badge info">25 Unit</span></div>
-<div class="itembody">
-<div style="overflow:auto"><table style="width:100%;border-collapse:collapse;min-width:1500px">
-<thead><tr>
-<th style="padding:9px;text-align:left">No.</th>
-<th style="padding:9px;text-align:left">ID</th>
-<th style="padding:9px;text-align:left">Unit yang Diaudit</th>
-<th style="padding:9px;text-align:left">UPPS / Fakultas / Unit Induk</th>
-<th style="padding:9px;text-align:left">Auditor Ketua</th>
-<th style="padding:9px;text-align:left">Auditor Anggota</th>
-<th style="padding:9px;text-align:left">Jadwal Audit</th>
-<th style="padding:9px;text-align:left">Aktif</th>
-</tr></thead>
+<section class="hero"><h2>Master 26 Auditee AMI 2026</h2><p>Master auditee memuat jenis auditee, UPPS/Fakultas/Unit Induk, tim auditor, dan tanggal audit sesuai jadwal terbaru.</p></section>
+<div class="grid g4">
+<div class="card stat"><span>TOTAL AUDITEE</span><strong>26</strong><span>AMI 2026</span></div>
+<div class="card stat"><span>PROGRAM STUDI/PROGRAM</span><strong>20</strong><span>Form 1b · 59 butir</span></div>
+<div class="card stat"><span>UNIT PENDUKUNG</span><strong>6</strong><span>Form 1b · 25 butir</span></div>
+<div class="card stat"><span>PERIODE</span><strong style="font-size:17px">7–15 Sep</strong><span>2026</span></div>
+</div>
+<section class="card"><div class="itemhead"><div><div class="code">MASTER AUDITEE</div><h4>Daftar Auditee, UPPS/Unit Induk, dan Tim Auditor</h4><p>Admin dapat memperbarui data bila terdapat perubahan penugasan resmi.</p></div><span class="badge info">26 Auditee</span></div>
+<div class="itembody"><div style="overflow:auto"><table style="width:100%;border-collapse:collapse;min-width:1750px">
+<thead><tr><th style="padding:9px;text-align:left">No.</th><th style="padding:9px;text-align:left">ID</th><th style="padding:9px;text-align:left">Auditee</th><th style="padding:9px;text-align:left">Jenis</th><th style="padding:9px;text-align:left">UPPS / Fakultas / Unit Induk</th><th style="padding:9px;text-align:left">Auditor Ketua</th><th style="padding:9px;text-align:left">Auditor Anggota</th><th style="padding:9px;text-align:left">Tanggal Audit</th><th style="padding:9px;text-align:left">Aktif</th></tr></thead>
 <tbody id="unitRows"></tbody></table></div>
-<div class="actions mt"><button class="btn primary" onclick="saveUnits()">Simpan Perubahan Master</button><button class="btn soft" onclick="resetUnits()">Kembalikan Master AMI 2026</button></div>
-</div></section>
+<div class="actions mt"><button class="btn primary" onclick="saveUnits()">Simpan Perubahan Master</button><button class="btn soft" onclick="resetUnits()">Kembalikan Master Jadwal Terbaru</button></div></div></section>
 </main></div>
-<script src="preview.js?v=4"></script>
+<script src="preview.js?v=6"></script>
 <script>
 let units=SIAMI_PREVIEW.ensureUnits();
 function render(){
  unitRows.innerHTML=units.map((u,i)=>`<tr style="border-bottom:1px solid #e5edf2">
  <td style="padding:8px">${i+1}</td><td style="padding:8px"><strong>${u.id}</strong></td>
  <td style="padding:8px"><input class="input" data-i="${i}" data-f="name" value="${SIAMI_PREVIEW.escape(u.name||"")}"></td>
+ <td style="padding:8px"><select class="input" data-i="${i}" data-f="auditeeType"><option value="prodi" ${u.auditeeType==="prodi"?"selected":""}>Program Studi/Program</option><option value="unit" ${u.auditeeType==="unit"?"selected":""}>Unit Pendukung</option></select></td>
  <td style="padding:8px"><input class="input" data-i="${i}" data-f="faculty" value="${SIAMI_PREVIEW.escape(u.faculty||"")}"></td>
  <td style="padding:8px"><input class="input" data-i="${i}" data-f="leadAuditor" value="${SIAMI_PREVIEW.escape(u.leadAuditor||"")}"></td>
  <td style="padding:8px"><input class="input" data-i="${i}" data-f="memberAuditor" value="${SIAMI_PREVIEW.escape(u.memberAuditor||"")}"></td>
  <td style="padding:8px"><input class="input" type="date" data-i="${i}" data-f="auditDate" value="${SIAMI_PREVIEW.escape(u.auditDate||"")}"></td>
- <td style="padding:8px"><input type="checkbox" data-i="${i}" data-f="active" ${u.active!==false?"checked":""}></td>
- </tr>`).join("");
+ <td style="padding:8px"><input type="checkbox" data-i="${i}" data-f="active" ${u.active!==false?"checked":""}></td></tr>`).join("");
 }
-function collect(){
- document.querySelectorAll("[data-i][data-f]").forEach(el=>{
-  const i=Number(el.dataset.i),f=el.dataset.f;
-  units[i][f]=f==="active"?el.checked:el.value.trim();
- });
-}
-function saveUnits(){
- collect();SIAMI_PREVIEW.saveUnits(units);alert("Master unit dan tim auditor disimpan.");
-}
-function resetUnits(){
- if(!confirm("Kembalikan seluruh data ke Master AMI 2026?"))return;
- units=SIAMI_PREVIEW.defaultUnits();SIAMI_PREVIEW.saveUnits(units);render();
-}
+function collect(){document.querySelectorAll("[data-i][data-f]").forEach(el=>{const i=Number(el.dataset.i),f=el.dataset.f;units[i][f]=f==="active"?el.checked:el.value.trim();});}
+function saveUnits(){collect();SIAMI_PREVIEW.saveUnits(units);alert("Master 26 auditee disimpan.");}
+function resetUnits(){if(!confirm("Kembalikan seluruh data ke master jadwal terbaru AMI 2026?"))return;units=SIAMI_PREVIEW.defaultUnits();SIAMI_PREVIEW.saveUnits(units);render();}
 render();
 const s=SIAMI_PREVIEW.session();if(!s){location.href="index.html"}else accountPill.textContent=`${s.name||"Pengguna"} · ${s.roleLabel||s.role}`;
 </script></body></html>

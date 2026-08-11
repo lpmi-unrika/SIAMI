@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Persiapan Bukti Form 1b | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=4">
-<script src="preview.js?v=4"></script><script src="audit-items.js"></script></head><body>
+<title>Persiapan Bukti Form 1b | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=6">
+<script src="preview.js?v=6"></script><script src="audit-items.js?v=6"></script><script src="audit-items-unit.js?v=6"></script></head><body>
 <header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Sistem Informasi Audit Mutu Internal</p></div></div>
 <div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header><div class="shell"><aside class="side">
 <div class="panel"><h3>Menu Auditee</h3><div class="nav mt">
@@ -15,24 +15,23 @@
 </div></div>
 <div class="panel"><h3>Prinsip Akses</h3><p class="small">Akun Auditee menampilkan bagian yang memang menjadi tanggung jawab Auditee. Penilaian A/S/T dan klasifikasi tetap dilakukan Auditor.</p></div>
 </aside><main class="main">
-<section class="hero"><h2>Persiapan Bukti Form 1b — 59 Butir</h2><p>Auditee menyiapkan dokumen/bukti untuk setiap butir. Status A/S/T, klasifikasi PB/K/OB/Mi/Ma, dan catatan verifikasi tetap menjadi kewenangan Auditor.</p></section>
+<section class="hero"><h2>Persiapan Bukti Form 1b — <span id="heroTotal">59</span> Butir</h2><p>Auditee menyiapkan dokumen/bukti untuk setiap butir. Status A/S/T, klasifikasi PB/K/OB/Mi/Ma, dan catatan verifikasi tetap menjadi kewenangan Auditor.</p></section>
 <div id="noAssignment" class="notice warn" style="display:none">Belum ada penugasan aktif. Admin LPMI harus menentukan unit terlebih dahulu.</div>
 <div id="workspace">
 <div class="grid g4">
  <div class="card stat"><span>UNIT</span><strong id="unitShort" style="font-size:16px">-</strong><span id="facultyText">-</span></div>
- <div class="card stat"><span>TOTAL BUTIR</span><strong>59</strong><span>Form 1b</span></div>
+ <div class="card stat"><span>TOTAL BUTIR</span><strong id="totalButir">59</strong><span id="formTypeText">Form 1b</span></div>
  <div class="card stat"><span>BUKTI TERISI</span><strong id="filledEvidence">0</strong><span>file/link</span></div>
- <div class="card stat"><span>BUTIR DENGAN BUKTI</span><strong id="readyItems">0</strong><span>dari 59</span></div>
+ <div class="card stat"><span>BUTIR DENGAN BUKTI</span><strong id="readyItems">0</strong><span id="readyOf">dari 59</span></div>
 </div>
 <div class="notice"><strong>Ketentuan bukti:</strong> PDF maksimum 2 MB per file. Untuk dokumen yang lebih besar, gunakan tautan dokumen yang dapat diakses oleh tim auditor.</div>
-<section class="card"><div class="itembody"><div class="actions">
- <button class="btn primary" onclick="fillTestScenario()">Isi Contoh Uji Butir 1.4</button>
- <button class="btn soft" onclick="clearEvidence()">Kosongkan Bukti Unit Ini</button>
-</div></div></section>
 <div id="itemList"></div>
 </div>
 <script>
-const assignment=SIAMI_PREVIEW.assignment();let saved=SIAMI_PREVIEW.evidence();let itemData=SIAMI_PREVIEW.auditeeItems();
+const assignment=SIAMI_PREVIEW.assignment();
+const AUDIT_ITEMS=assignment.auditeeType==="unit"?SIAMI_UNIT_AUDIT_ITEMS(assignment.unitName):SIAMI_AUDIT_ITEMS;
+const AUDIT_TOTAL=AUDIT_ITEMS.length;
+let saved=SIAMI_PREVIEW.evidence();let itemData=SIAMI_PREVIEW.auditeeItems();
 function key(no,i){return SIAMI_PREVIEW.evidenceKey(assignment.unitId,no,i)}
 function itemKey(no){return `${assignment.unitId}:${no}`}
 function hasData(d){return !!(d&&(d.fileName||d.linkUrl||d.documentRef))}
@@ -48,9 +47,11 @@ function removeFile(no,i){const k=key(no,i);if(saved[k]){saved[k].fileName="";sa
 function render(){
  const has=SIAMI_PREVIEW.hasAssignment();noAssignment.style.display=has?"none":"block";workspace.style.display=has?"block":"none";if(!has)return;
  unitShort.textContent=assignment.unitName;facultyText.textContent=assignment.faculty||"-";
+ heroTotal.textContent=AUDIT_TOTAL;totalButir.textContent=AUDIT_TOTAL;readyOf.textContent=`dari ${AUDIT_TOTAL}`;
+ formTypeText.textContent=assignment.auditeeType==="unit"?"Form 1b Unit Pendukung":"Form 1b Program Studi";
  let filled=0,itemsWith=0;
- itemList.innerHTML=SIAMI_AUDIT_ITEMS.map(item=>{
-  const names=(item.evidenceItems&&item.evidenceItems.length)?item.evidenceItems:["Bukti tambahan/pendukung (opsional; tidak ada dokumen khusus yang wajib disiapkan prodi)"];
+ itemList.innerHTML=AUDIT_ITEMS.map(item=>{
+  const names=(item.evidenceItems&&item.evidenceItems.length)?item.evidenceItems:["Bukti tambahan/pendukung (jika relevan)"];
   let itemCount=0;
   const rows=names.map((name,i)=>{
    const d=saved[key(item.no,i)]||{};if(hasData(d)){filled++;itemCount++}
@@ -69,24 +70,12 @@ function render(){
   return `<section class="card item"><div class="itemhead"><div><div class="code">${item.no}. ${SIAMI_PREVIEW.escape(item.kode)}</div><h4>${SIAMI_PREVIEW.escape(item.aspek)}</h4><p>${SIAMI_PREVIEW.escape(item.indikator)}</p></div><span class="badge ${itemCount?"ok":"wait"}">${itemCount}/${names.length}</span></div>
    <div class="itembody">
     <div class="grid g2" style="margin-bottom:10px">
-     <div class="field"><label>Target Program Studi</label><input value="${SIAMI_PREVIEW.escape(meta.target||"")}" placeholder="Target prodi pada butir ini" onchange="updateItem(${item.no},'target',this.value.trim())"></div>
+     <div class="field"><label>Target Auditee</label><input value="${SIAMI_PREVIEW.escape(meta.target||"")}" placeholder="Target pada butir ini" onchange="updateItem(${item.no},'target',this.value.trim())"></div>
      <div class="field"><label>Capaian / Keterangan Auditee</label><input value="${SIAMI_PREVIEW.escape(meta.capaian||"")}" placeholder="Capaian sampai periode audit" onchange="updateItem(${item.no},'capaian',this.value.trim())"></div>
     </div>${rows}
    </div></section>`;
  }).join("");
  filledEvidence.textContent=filled;readyItems.textContent=itemsWith;
-}
-function fillTestScenario(){
- if(!SIAMI_PREVIEW.hasAssignment())return;
- const demo=[
-  {fileName:"Matriks_Keterkaitan_Visi_CPL.pdf",fileSize:420000,documentRef:"Matriks Keterkaitan Visi-CPL 2026"},
-  {fileName:"RPS_Semester_Ganjil.pdf",fileSize:610000,documentRef:"Sampel RPS Semester Ganjil 2025/2026"},
-  {fileName:"",fileSize:0,documentRef:""},
-  {fileName:"Roadmap_PkM.pdf",fileSize:540000,documentRef:"Roadmap PkM — belum disahkan"}
- ];
- demo.forEach((d,i)=>saved[key(4,i)]={...d,linkUrl:"",updatedAt:new Date().toISOString()});
- itemData[itemKey(4)]={target:"Visi menjadi rujukan seluruh tridharma",capaian:"Roadmap penelitian belum tersedia; roadmap PkM belum disahkan",updatedAt:new Date().toISOString()};
- SIAMI_PREVIEW.saveEvidence(saved);SIAMI_PREVIEW.saveAuditeeItems(itemData);render();document.querySelectorAll(".item")[3]?.scrollIntoView({behavior:"smooth",block:"start"})
 }
 function clearEvidence(){
  if(!confirm("Hapus bukti dan target/capaian Auditee untuk unit aktif?"))return;

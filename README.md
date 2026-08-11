@@ -14,3 +14,11 @@ Versi GitHub Preview memakai key `siami_preview_*`, sehingga tidak menimpa data 
 
 ## Master 25 Unit
 Daftar unit audit AMI 2026 sudah dimuat otomatis pada `preview.js` dan tetap dapat diedit oleh Admin LPMI melalui `master-unit.html`.
+
+## Versi 6 — 26 Auditee & Dua Form 1b
+- 26 auditee: 20 program studi/program + 6 unit pendukung.
+- Program studi/program: Form 1b 59 butir.
+- Unit pendukung: Form 1b 25 butir.
+- Sistem Informasi = Program Studi, Fakultas Teknik.
+- Puskom = Unit Pendukung.
+- Jenis Form 1b dipilih otomatis berdasarkan Master Auditee.
