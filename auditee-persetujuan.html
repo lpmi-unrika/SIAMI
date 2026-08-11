@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Persetujuan Saya | SIAMI Preview</title><link rel="stylesheet" href="preview.css">
+<title>Persetujuan Saya | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css">
 <script src="preview.js"></script><script src="audit-items.js"></script></head><body>
-<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Preview alur sebelum implementasi hosting</p></div></div>
+<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Sistem Informasi Audit Mutu Internal</p></div></div>
 <div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header><div class="shell"><aside class="side">
 <div class="panel"><h3>Menu Auditee</h3><div class="nav mt">
 <a href="auditee.html">Dashboard Auditee</a>
@@ -21,7 +21,7 @@
  <div class="card stat"><span>RTL DISETUJUI</span><strong id="aPlan">0</strong><span>rencana Form 4</span></div>
  <div class="card stat"><span>PENUTUPAN DISETUJUI</span><strong id="aClose">0</strong><span>Form 4</span></div>
 </div>
-<section class="card"><div class="itemhead"><div><div class="code">AUDIT TRAIL PREVIEW</div><h4>Riwayat Persetujuan</h4><p>Pada versi Hostinger, data ini harus dicatat oleh server, bukan hanya browser.</p></div></div><div class="itembody"><div id="approvalList" class="timeline"></div></div></section>
+<section class="card"><div class="itemhead"><div><div class="code">REKAM JEJAK PERSETUJUAN</div><h4>Riwayat Persetujuan</h4><p>Setiap persetujuan elektronik dicatat bersama identitas pengguna, dokumen, unit, dan waktu persetujuan.</p></div></div><div class="itembody"><div id="approvalList" class="timeline"></div></div></section>
 <section class="card"><div class="itemhead"><div><div class="code">MENUNGGU PERSETUJUAN</div><h4>Dokumen yang Belum Disetujui</h4></div></div><div class="itembody"><div id="pendingList" class="workspace-list"></div></div></section>
 <script>
 function state(k,f){try{return JSON.parse(localStorage.getItem(k)||"null")||f}catch(e){return f}}

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Monitoring LPMI | SIAMI Preview</title><link rel="stylesheet" href="preview.css"></head><body>
-<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Preview alur sebelum implementasi hosting</p></div></div>
+<title>Monitoring LPMI | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css"></head><body>
+<header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Sistem Informasi Audit Mutu Internal</p></div></div>
 <div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header>
 <div class="shell"><aside class="side">
 <div class="panel"><h3>Menu Admin LPMI</h3><div class="nav mt">
 <a href="monitoring.html" class="active">Monitoring</a><a href="master-unit.html">Master 25 Unit</a><a href="penugasan.html">Penugasan Auditor</a><a href="cek-alur.html">Panduan Uji Alur</a>
 </div></div>
-<div class="panel"><h3>Mode Preview</h3><p class="small">Tabel menampilkan 25 unit master. Untuk preview lokal, satu unit dapat dijadikan penugasan aktif untuk menguji alur lengkap.</p></div></aside>
+<div class="panel"><h3>Informasi Audit</h3><p class="small">Tabel menampilkan 25 unit audit beserta status penugasan dan progres pelaksanaan AMI.</p></div></aside>
 <main class="main">
 <section class="hero"><h2>Monitoring LPMI</h2><p>Daftar 25 unit audit menjadi titik awal. Pilih unit melalui Penugasan Auditor, kemudian uji alur Auditee → Auditor → Form 1b–4.</p></section>
 <div class="grid g4">
   <div class="card stat"><span>MASTER UNIT</span><strong id="unitCount">25</strong><span>unit audit</span></div>
-  <div class="card stat"><span>PENUGASAN AKTIF</span><strong id="assignedCount">0</strong><span>preview lokal</span></div>
+  <div class="card stat"><span>PENUGASAN AKTIF</span><strong id="assignedCount">0</strong><span>unit</span></div>
   <div class="card stat"><span>BUKTI AUDITEE</span><strong id="evidenceCount">0</strong><span>dokumen/link unit aktif</span></div>
   <div class="card stat"><span>FORM 1b</span><strong id="form1Progress">0%</strong><span>unit aktif</span></div>
 </div>
@@ -21,7 +21,7 @@
 </div></div></section>
 <section class="card"><div class="itemhead"><div><div class="code">25 UNIT AUDIT</div><h4>Monitoring Unit</h4><p>Unit aktif diberi tanda “Penugasan Aktif”.</p></div></div>
 <div class="itembody"><div style="overflow:auto"><table style="width:100%;border-collapse:collapse;min-width:880px">
-<thead><tr style="background:#eef6fb"><th style="padding:9px;text-align:left">No.</th><th style="padding:9px;text-align:left">Unit</th><th style="padding:9px;text-align:left">UPPS/Fakultas</th><th style="padding:9px;text-align:left">Auditee</th><th style="padding:9px;text-align:left">Auditor Ketua</th><th style="padding:9px;text-align:left">Status</th></tr></thead>
+<thead><tr style="background:#eef6fb"><th style="padding:9px;text-align:left">No.</th><th style="padding:9px;text-align:left">Unit</th><th style="padding:9px;text-align:left">UPPS/Fakultas/Unit Induk</th><th style="padding:9px;text-align:left">Auditee</th><th style="padding:9px;text-align:left">Auditor Ketua</th><th style="padding:9px;text-align:left">Status</th></tr></thead>
 <tbody id="monitorRows"></tbody></table></div></div></section>
 </main></div>
 <script src="preview.js"></script>

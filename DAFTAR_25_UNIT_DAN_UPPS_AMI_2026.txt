@@ -1,0 +1,25 @@
+1. Ilmu Pemerintahan — Fakultas Ilmu Sosial dan Ilmu Politik (FISIP)
+2. Magister Manajemen Pendidikan — Program Pascasarjana
+3. Bisnis Digital — Fakultas Ekonomi dan Bisnis (FEB)
+4. Pendidikan Sejarah — Fakultas Keguruan dan Ilmu Pendidikan (FKIP)
+5. Teknik Mesin — Fakultas Teknik (FT)
+6. Bimbingan Konseling — Fakultas Keguruan dan Ilmu Pendidikan (FKIP)
+7. Magister Hukum — Program Pascasarjana
+8. Manajemen — Fakultas Ekonomi dan Bisnis (FEB)
+9. Teknik Industri — Fakultas Teknik (FT)
+10. Akuntansi — Fakultas Ekonomi dan Bisnis (FEB)
+11. Pendidikan Biologi — Fakultas Keguruan dan Ilmu Pendidikan (FKIP)
+12. Pendidikan Bahasa Inggris — Fakultas Keguruan dan Ilmu Pendidikan (FKIP)
+13. Teknik Sipil — Fakultas Teknik (FT)
+14. Teknik Elektro — Fakultas Teknik (FT)
+15. Ilmu Hukum — Fakultas Hukum (FH)
+16. Pendidikan Matematika — Fakultas Keguruan dan Ilmu Pendidikan (FKIP)
+17. Magister Manajemen — Program Pascasarjana
+18. PPG — Fakultas Keguruan dan Ilmu Pendidikan (FKIP)
+19. Arsitektur — Fakultas Teknik (FT)
+20. Biro Kerjasama — Unit Pendukung Universitas / Rektorat
+21. Sistem Informasi — Unit IT / Unit Pendukung Universitas
+22. LPPM — Unit Pendukung Universitas
+23. CEDC — Unit Pendukung Universitas
+24. LC — Unit Pendukung Universitas
+25. Perpustakaan — Unit Pendukung Universitas

@@ -8,11 +8,11 @@ window.SIAMI_PREVIEW = {
   APPROVAL_KEY: "siami_preview_eapprovals",
 
   defaultUnits(){
-    const names=["Ilmu Pemerintahan", "Magister Manajemen Pendidikan", "Bisnis Digital", "Pendidikan Sejarah", "Teknik Mesin", "Bimbingan Konseling", "Magister Hukum", "Manajemen", "Teknik Industri", "Akuntansi", "Pendidikan Biologi", "Pendidikan Bahasa Inggris", "Teknik Sipil", "Teknik Elektro", "Ilmu Hukum", "Pendidikan Matematika", "Magister Manajemen", "PPG", "Arsitektur", "Biro Kerjasama", "Sistem Informasi", "LPPM", "CEDC", "LC", "Perpustakaan"];
-    return names.map((name,i)=>({
+    const units=[{"name": "Ilmu Pemerintahan", "faculty": "Fakultas Ilmu Sosial dan Ilmu Politik (FISIP)"}, {"name": "Magister Manajemen Pendidikan", "faculty": "Program Pascasarjana"}, {"name": "Bisnis Digital", "faculty": "Fakultas Ekonomi dan Bisnis (FEB)"}, {"name": "Pendidikan Sejarah", "faculty": "Fakultas Keguruan dan Ilmu Pendidikan (FKIP)"}, {"name": "Teknik Mesin", "faculty": "Fakultas Teknik (FT)"}, {"name": "Bimbingan Konseling", "faculty": "Fakultas Keguruan dan Ilmu Pendidikan (FKIP)"}, {"name": "Magister Hukum", "faculty": "Program Pascasarjana"}, {"name": "Manajemen", "faculty": "Fakultas Ekonomi dan Bisnis (FEB)"}, {"name": "Teknik Industri", "faculty": "Fakultas Teknik (FT)"}, {"name": "Akuntansi", "faculty": "Fakultas Ekonomi dan Bisnis (FEB)"}, {"name": "Pendidikan Biologi", "faculty": "Fakultas Keguruan dan Ilmu Pendidikan (FKIP)"}, {"name": "Pendidikan Bahasa Inggris", "faculty": "Fakultas Keguruan dan Ilmu Pendidikan (FKIP)"}, {"name": "Teknik Sipil", "faculty": "Fakultas Teknik (FT)"}, {"name": "Teknik Elektro", "faculty": "Fakultas Teknik (FT)"}, {"name": "Ilmu Hukum", "faculty": "Fakultas Hukum (FH)"}, {"name": "Pendidikan Matematika", "faculty": "Fakultas Keguruan dan Ilmu Pendidikan (FKIP)"}, {"name": "Magister Manajemen", "faculty": "Program Pascasarjana"}, {"name": "PPG", "faculty": "Fakultas Keguruan dan Ilmu Pendidikan (FKIP)"}, {"name": "Arsitektur", "faculty": "Fakultas Teknik (FT)"}, {"name": "Biro Kerjasama", "faculty": "Unit Pendukung Universitas / Rektorat"}, {"name": "Sistem Informasi", "faculty": "Unit IT / Unit Pendukung Universitas"}, {"name": "LPPM", "faculty": "Unit Pendukung Universitas"}, {"name": "CEDC", "faculty": "Unit Pendukung Universitas"}, {"name": "LC", "faculty": "Unit Pendukung Universitas"}, {"name": "Perpustakaan", "faculty": "Unit Pendukung Universitas"}];
+    return units.map((u,i)=>({
       id:`U${String(i+1).padStart(2,"0")}`,
-      name,
-      faculty:"",
+      name:u.name,
+      faculty:u.faculty,
       active:true
     }));
   },
@@ -34,16 +34,31 @@ window.SIAMI_PREVIEW = {
       return official;
     }
 
-    // Migrasi otomatis dari versi lama "Unit 01"–"Unit 25".
-    // Jika Admin sudah mengganti nama unit secara manual, nama tersebut tidak ditimpa.
     let changed=false;
     const migrated=stored.map((u,i)=>{
+      const o=official[i];
+      const current={...(u||{})};
       const legacyName=`Unit ${String(i+1).padStart(2,"0")}`;
-      if(!u || !String(u.name||"").trim() || String(u.name).trim()===legacyName){
+
+      if(!String(current.name||"").trim() || String(current.name).trim()===legacyName){
+        current.name=o.name;
         changed=true;
-        return {...official[i],...(u||{}),name:official[i].name};
       }
-      return u;
+
+      // Isi otomatis UPPS/Fakultas/Unit Induk bila masih kosong
+      // dan nama unit masih sama dengan master resmi.
+      if(String(current.name||"").trim()===o.name && !String(current.faculty||"").trim()){
+        current.faculty=o.faculty;
+        changed=true;
+      }
+
+      if(typeof current.active!=="boolean"){
+        current.active=true;
+        changed=true;
+      }
+
+      current.id=current.id||o.id;
+      return current;
     });
 
     if(changed)localStorage.setItem(this.UNITS_KEY,JSON.stringify(migrated));
