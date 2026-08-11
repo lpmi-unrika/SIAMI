@@ -1,0 +1,18 @@
+SIAMI UNRIKA v9 — Form 4 Terpandu
+
+Perubahan utama:
+1. Bagian B diberi penjelasan sederhana tentang Koreksi/Tindakan Segera.
+2. Bagian C Analisis Akar Penyebab diberi definisi dan contoh "bukan akar penyebab" vs "akar penyebab".
+3. Metode 5 Why menampilkan pertanyaan Mengapa 1–5 secara bertahap.
+4. Metode Fishbone menampilkan stimulus:
+   - SDM/Personel
+   - Metode/Prosedur
+   - Sistem/Teknologi
+   - Dokumen/Data
+   - Sarana/Sumber Daya
+   - Koordinasi/Manajemen
+5. Analisis lainnya menampilkan pertanyaan tentang metode, penyebab, kegagalan pencegahan, dan faktor paling berpengaruh.
+6. Akar Penyebab Utama dan Faktor Pendukung/Penyebab Sistemik tetap menjadi ringkasan final yang wajib diperhatikan.
+7. Sebelum Bagian D, Auditee diingatkan bahwa RTL harus mengatasi akar penyebab, bukan hanya kondisi sementara.
+8. Rincian analisis Auditee dapat dilihat pada Form 4 Auditor.
+9. Data tambahan disimpan pada objek rootAnalysis dan tetap kompatibel dengan data Form 4 versi sebelumnya.

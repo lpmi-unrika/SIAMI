@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Tindakan Koreksi & RTL Form 4 | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=8">
-<script src="preview.js?v=8"></script><script src="audit-items.js?v=8"></script></head><body>
+<title>Tindakan Koreksi & RTL Form 4 | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=9">
+<script src="preview.js?v=9"></script><script src="audit-items.js?v=9"></script></head><body>
 <header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Sistem Informasi Audit Mutu Internal</p></div></div>
 <div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header><div class="shell"><aside class="side">
 <div class="panel"><h3>Menu Auditee</h3><div class="nav mt">
@@ -13,7 +13,7 @@
 <a href="auditee-status.html">Status Audit</a>
 <a href="cek-alur.html">Panduan Uji Alur</a>
 </div></div>
-<div class="panel"><h3>Prinsip Akses</h3><p class="small">Akun Auditee menampilkan bagian yang memang menjadi tanggung jawab Auditee. Penilaian A/S/T dan klasifikasi tetap dilakukan Auditor.</p></div>
+<div class="panel"><h3>Prinsip Akses</h3><p class="small">Bagian A dibaca dari temuan Auditor. Auditee mengisi B–E. Bagian F–H merupakan hasil verifikasi Auditor/LPMI dan hanya dapat dibaca Auditee.</p></div>
 </aside><main class="main">
 <section class="hero"><h2>Tindakan Koreksi & RTL — Form 4</h2><p>Auditee mengisi koreksi/tindakan segera, analisis akar penyebab, rencana tindakan korektif dan pencegahan keberulangan, serta pelaksanaan tindakan dan bukti penyelesaian. Verifikasi tetap dilakukan Auditor/LPMI.</p></section>
 <div class="grid g3">
@@ -35,13 +35,25 @@ function ensure(p){
  p.plans=Array.isArray(p.plans)&&p.plans.length?p.plans:Array.from({length:3},()=>({action:"",plannedEvidence:"",personInCharge:"",startDate:"",deadline:"",successIndicator:""}));
  p.implementations=Array.isArray(p.implementations)&&p.implementations.length?p.implementations:Array.from({length:3},()=>({implementedAction:"",submittedEvidence:"",completionDate:"",checkedBy:"",initialVerificationNote:""}));
  p.approvals=p.approvals||{};p.closure=p.closure||{};p.verification=p.verification||{};
+ p.rootAnalysis=p.rootAnalysis||{};
+ p.rootAnalysis.why=p.rootAnalysis.why||{why1:"",why2:"",why3:"",why4:"",why5:""};
+ p.rootAnalysis.fishbone=p.rootAnalysis.fishbone||{sdm:"",prosedur:"",sistem:"",dokumen:"",sumberDaya:"",koordinasi:""};
+ p.rootAnalysis.other=p.rootAnalysis.other||{methodName:"",cause:"",preventionFailure:"",influentialFactors:""};
 }
 function setField(field,val){const p=f4.ptks[current];p[field]=val;save()}
+function setRootMethod(val){const p=f4.ptks[current];ensure(p);p.rootMethod=val;save();render()}
+function setRootAnalysis(group,field,val){const p=f4.ptks[current];ensure(p);p.rootAnalysis[group][field]=val;save()}
 function setPlan(i,field,val){const p=f4.ptks[current];ensure(p);p.plans[i][field]=val;save()}
 function setImpl(i,field,val){const p=f4.ptks[current];ensure(p);p.implementations[i][field]=val;save()}
 function approvePlan(){
  const p=f4.ptks[current];ensure(p);if(!document.getElementById("agreePlan")?.checked){alert("Centang pernyataan persetujuan terlebih dahulu.");return}
- const required=[p.immediateCorrection,p.rootCause,p.systemicFactors];if(required.some(x=>!String(x||"").trim())){if(!confirm("Masih ada bagian inti B/C yang kosong. Tetap setujui rencana?"))return}
+ const required=[p.immediateCorrection,p.rootMethod,p.rootCause,p.systemicFactors];
+ if(required.some(x=>!String(x||"").trim())){if(!confirm("Masih ada bagian inti B/C yang kosong, termasuk metode/akar penyebab. Tetap setujui rencana?"))return}
+ let detailReady=true;
+ if(p.rootMethod==="5 Why")detailReady=Boolean(String(p.rootAnalysis?.why?.why1||"").trim());
+ if(p.rootMethod==="Fishbone")detailReady=Object.values(p.rootAnalysis?.fishbone||{}).some(x=>String(x||"").trim());
+ if(p.rootMethod==="Analisis lainnya")detailReady=Boolean(String(p.rootAnalysis?.other?.cause||"").trim() || String(p.rootAnalysis?.other?.preventionFailure||"").trim());
+ if(!detailReady && !confirm("Rincian analisis sesuai metode yang dipilih masih kosong. Tetap setujui rencana?"))return;
  const rec=SIAMI_PREVIEW.approve("form4-plan",pkey(p),`${p.noForm4||"Form 4"} · Persetujuan RTL`);
  p.approvals.auditeeName=rec.signerName;p.approvals.auditeeDate=rec.approvedDate;p.planEApprovalAuditee=rec;save();render()
 }
@@ -51,7 +63,62 @@ function approveClosure(){
  const rec=SIAMI_PREVIEW.approve("form4-close",pkey(p),`${p.noForm4||"Form 4"} · Keputusan Penutupan`);
  p.closure.auditeeName=rec.signerName;p.closure.auditeeDate=rec.approvedDate;p.closeEApprovalAuditee=rec;save();render()
 }
-function rootRadios(p){return ["5 Why","Fishbone","Analisis lainnya"].map(v=>`<label class="checkline" style="padding:8px"><input type="radio" name="rootMethod" value="${v}" ${p.rootMethod===v?"checked":""} onchange="setField('rootMethod',this.value)"> <span>${v}</span></label>`).join("")}
+function rootRadios(p,locked){return ["5 Why","Fishbone","Analisis lainnya"].map(v=>`<label class="checkline" style="padding:8px"><input type="radio" name="rootMethod" value="${v}" ${p.rootMethod===v?"checked":""} ${locked?"disabled":""} onchange="setRootMethod(this.value)"> <span>${v}</span></label>`).join("")}
+
+function guidedRootHTML(p,locked){
+ ensure(p);
+ const dis=locked?"disabled":"";
+ const w=p.rootAnalysis.why, f=p.rootAnalysis.fishbone, o=p.rootAnalysis.other;
+
+ if(p.rootMethod==="5 Why"){
+   return `
+   <div class="notice mt">
+     <strong>Panduan 5 Why</strong><br>
+     Mulailah dari temuan Auditor lalu tanyakan <em>“Mengapa hal ini terjadi?”</em> secara bertahap sampai ditemukan penyebab yang dapat diperbaiki. Tidak harus tepat lima kali apabila akar penyebab sudah jelas.
+   </div>
+   <div class="readonly-block mt"><label>Masalah / temuan awal</label><p>${SIAMI_PREVIEW.escape(p.findingSummary||"-")}</p></div>
+   <div class="grid mt">
+     <div class="field"><label>Mengapa 1 — Mengapa kondisi ini terjadi?</label><textarea ${dis} oninput="setRootAnalysis('why','why1',this.value)" placeholder="Tuliskan penyebab langsung yang diketahui.">${SIAMI_PREVIEW.escape(w.why1||"")}</textarea></div>
+     <div class="field"><label>Mengapa 2 — Mengapa penyebab tersebut terjadi?</label><textarea ${dis} oninput="setRootAnalysis('why','why2',this.value)" placeholder="Telusuri satu tingkat lebih dalam.">${SIAMI_PREVIEW.escape(w.why2||"")}</textarea></div>
+     <div class="field"><label>Mengapa 3 — Mengapa kondisi tersebut belum dicegah atau diperbaiki sebelumnya?</label><textarea ${dis} oninput="setRootAnalysis('why','why3',this.value)" placeholder="Periksa mekanisme pencegahan, monitoring, atau tindak lanjut.">${SIAMI_PREVIEW.escape(w.why3||"")}</textarea></div>
+     <div class="field"><label>Mengapa 4 — Apakah ada kelemahan prosedur, pembagian tugas, sumber daya, atau pengendalian?</label><textarea ${dis} oninput="setRootAnalysis('why','why4',this.value)" placeholder="Isi jika masih diperlukan untuk menemukan penyebab yang lebih mendasar.">${SIAMI_PREVIEW.escape(w.why4||"")}</textarea></div>
+     <div class="field"><label>Mengapa 5 — Apa penyebab paling mendasar yang masih dapat diperbaiki oleh unit/prodi?</label><textarea ${dis} oninput="setRootAnalysis('why','why5',this.value)" placeholder="Isi jika masih diperlukan.">${SIAMI_PREVIEW.escape(w.why5||"")}</textarea></div>
+   </div>`;
+ }
+
+ if(p.rootMethod==="Fishbone"){
+   return `
+   <div class="notice mt">
+     <strong>Panduan Fishbone</strong><br>
+     Periksa faktor-faktor berikut. Isi hanya yang relevan; tidak semua kategori harus memiliki masalah.
+   </div>
+   <div class="grid g2 mt">
+     <div class="field"><label>SDM / Personel</label><small>Apakah ada kekurangan personel, kompetensi, pemahaman tugas, pelatihan, atau pembagian tanggung jawab?</small><textarea ${dis} oninput="setRootAnalysis('fishbone','sdm',this.value)">${SIAMI_PREVIEW.escape(f.sdm||"")}</textarea></div>
+     <div class="field"><label>Metode / Prosedur</label><small>Apakah SOP, pedoman, alur kerja, atau mekanisme pengendalian belum tersedia, belum jelas, atau belum dilaksanakan?</small><textarea ${dis} oninput="setRootAnalysis('fishbone','prosedur',this.value)">${SIAMI_PREVIEW.escape(f.prosedur||"")}</textarea></div>
+     <div class="field"><label>Sistem / Teknologi</label><small>Apakah sistem informasi, aplikasi, database, atau mekanisme pencatatan belum mendukung proses?</small><textarea ${dis} oninput="setRootAnalysis('fishbone','sistem',this.value)">${SIAMI_PREVIEW.escape(f.sistem||"")}</textarea></div>
+     <div class="field"><label>Dokumen / Data</label><small>Apakah dokumen, bukti, data, atau rekaman belum tersedia, tidak lengkap, tidak mutakhir, atau tidak terdokumentasi?</small><textarea ${dis} oninput="setRootAnalysis('fishbone','dokumen',this.value)">${SIAMI_PREVIEW.escape(f.dokumen||"")}</textarea></div>
+     <div class="field"><label>Sarana / Sumber Daya</label><small>Apakah fasilitas, anggaran, peralatan, waktu, atau sumber daya lain belum memadai?</small><textarea ${dis} oninput="setRootAnalysis('fishbone','sumberDaya',this.value)">${SIAMI_PREVIEW.escape(f.sumberDaya||"")}</textarea></div>
+     <div class="field"><label>Koordinasi / Manajemen</label><small>Apakah ada masalah komunikasi, koordinasi, pengawasan, penetapan PIC, monitoring, atau tindak lanjut?</small><textarea ${dis} oninput="setRootAnalysis('fishbone','koordinasi',this.value)">${SIAMI_PREVIEW.escape(f.koordinasi||"")}</textarea></div>
+   </div>`;
+ }
+
+ if(p.rootMethod==="Analisis lainnya"){
+   return `
+   <div class="notice mt">
+     <strong>Panduan Analisis Lainnya</strong><br>
+     Gunakan metode lain yang sesuai dengan kondisi unit/prodi. Jelaskan proses analisis secara singkat agar alasan penetapan akar penyebab dapat ditelusuri.
+   </div>
+   <div class="grid g2 mt">
+     <div class="field"><label>Metode yang digunakan</label><input ${dis} value="${SIAMI_PREVIEW.escape(o.methodName||p.rootMethodOther||"")}" onchange="setRootAnalysis('other','methodName',this.value);setField('rootMethodOther',this.value)" placeholder="Contoh: evaluasi internal, analisis proses, rapat evaluasi."></div>
+     <div class="field"><label>Apa yang menyebabkan kondisi/temuan ini terjadi?</label><textarea ${dis} oninput="setRootAnalysis('other','cause',this.value)">${SIAMI_PREVIEW.escape(o.cause||"")}</textarea></div>
+     <div class="field"><label>Mengapa kondisi tersebut tidak terdeteksi atau tidak dicegah sebelumnya?</label><textarea ${dis} oninput="setRootAnalysis('other','preventionFailure',this.value)">${SIAMI_PREVIEW.escape(o.preventionFailure||"")}</textarea></div>
+     <div class="field"><label>Faktor apa yang paling berpengaruh?</label><textarea ${dis} oninput="setRootAnalysis('other','influentialFactors',this.value)">${SIAMI_PREVIEW.escape(o.influentialFactors||"")}</textarea></div>
+   </div>`;
+ }
+
+ return `<div class="notice mt">Pilih salah satu metode di atas. Setelah metode dipilih, SIAMI akan menampilkan pertanyaan panduan yang sesuai.</div>`;
+}
+
 function approvalHTML(ap){return `<div class="approval-box"><div class="approval-title"><strong>✓ DISETUJUI SECARA ELEKTRONIK</strong><span class="badge ok">Tercatat</span></div><div class="approval-meta"><div><b>Nama</b>${SIAMI_PREVIEW.escape(ap.signerName)}</div><div><b>Peran</b>${SIAMI_PREVIEW.escape(ap.signerRole)}</div><div><b>Unit</b>${SIAMI_PREVIEW.escape(ap.unitName)}</div><div><b>Waktu</b>${SIAMI_PREVIEW.escape(SIAMI_PREVIEW.fmtDateTime(ap.approvedAt))}</div><div><b>Dokumen</b>${SIAMI_PREVIEW.escape(ap.documentLabel)}</div><div><b>Audit ID</b>${SIAMI_PREVIEW.escape(ap.auditId||"-")}</div></div></div>`}
 function renderStats(){
  const ps=f4.ptks||[];totalF4.textContent=ps.length;approvedPlan.textContent=ps.filter(p=>SIAMI_PREVIEW.approval("form4-plan",pkey(p))).length;closedCount.textContent=ps.filter(p=>p.verification?.findingStatus==="DITUTUP").length
@@ -71,13 +138,25 @@ function render(){
    <div class="readonly-block"><label>Persyaratan / Target</label><p>${SIAMI_PREVIEW.escape(p.requirementTarget||"-")}</p></div>
   </div>
   <div class="section-title mt">B. Koreksi / Tindakan Segera — Diisi Auditee</div>
-  <div class="field"><textarea ${planAp?"disabled":""} oninput="setField('immediateCorrection',this.value)" placeholder="Tindakan langsung untuk mengendalikan dampak atau memperbaiki kondisi.">${SIAMI_PREVIEW.escape(p.immediateCorrection||"")}</textarea></div>
+  <div class="notice"><strong>Apa yang ditulis di sini?</strong><br>Tuliskan tindakan langsung untuk mengendalikan dampak atau memperbaiki kondisi saat ini. Bagian ini belum harus menyelesaikan akar penyebab.</div>
+  <div class="field mt"><label>Koreksi / Tindakan Segera</label><textarea ${planAp?"disabled":""} oninput="setField('immediateCorrection',this.value)" placeholder="Contoh: melengkapi dokumen yang belum tersedia, memperbaiki data, atau menghentikan kondisi yang berisiko.">${SIAMI_PREVIEW.escape(p.immediateCorrection||"")}</textarea></div>
+
   <div class="section-title mt">C. Analisis Akar Penyebab — Diisi Auditee</div>
-  <div class="grid g2"><div><div class="kpi-label">Metode</div><div class="grid mt">${rootRadios(p)}</div></div>
-   <div class="field"><label>Akar Penyebab Utama</label><textarea ${planAp?"disabled":""} oninput="setField('rootCause',this.value)">${SIAMI_PREVIEW.escape(p.rootCause||"")}</textarea></div>
-   <div class="field"><label>Faktor Pendukung / Penyebab Sistemik</label><textarea ${planAp?"disabled":""} oninput="setField('systemicFactors',this.value)">${SIAMI_PREVIEW.escape(p.systemicFactors||"")}</textarea></div>
-   <div class="field"><label>Metode lain (jika ada)</label><input ${planAp?"disabled":""} value="${SIAMI_PREVIEW.escape(p.rootMethodOther||"")}" onchange="setField('rootMethodOther',this.value)"></div>
+  <div class="notice">
+   <strong>Apa yang dimaksud akar penyebab?</strong><br>
+   Akar penyebab adalah penyebab mendasar yang membuat ketidaksesuaian terjadi atau berulang. Jangan hanya menyalin kembali masalah yang sudah ditulis Auditor.<br><br>
+   <strong>Contoh:</strong><br>
+   ❌ “Dokumen SOP belum tersedia.”<br>
+   ✅ “Belum ada penanggung jawab dan mekanisme reviu berkala untuk penyusunan serta pengendalian SOP.”
   </div>
+  <div class="mt"><div class="kpi-label">Pilih metode analisis</div><div class="grid mt">${rootRadios(p,Boolean(planAp))}</div></div>
+  ${guidedRootHTML(p,Boolean(planAp))}
+  <div class="grid g2 mt">
+   <div class="field"><label>Akar Penyebab Utama *</label><small>Berdasarkan analisis di atas, tuliskan penyebab utama yang harus diperbaiki agar masalah tidak berulang.</small><textarea ${planAp?"disabled":""} oninput="setField('rootCause',this.value)" placeholder="Ringkas akar penyebab yang paling mendasar dan dapat ditindaklanjuti.">${SIAMI_PREVIEW.escape(p.rootCause||"")}</textarea></div>
+   <div class="field"><label>Faktor Pendukung / Penyebab Sistemik *</label><small>Apakah ada kondisi lain yang ikut menyebabkan masalah terjadi atau berulang? Misalnya SOP, pembagian tugas, monitoring, sistem informasi, kompetensi SDM, komunikasi, sarana, atau pengendalian.</small><textarea ${planAp?"disabled":""} oninput="setField('systemicFactors',this.value)" placeholder="Tuliskan faktor lain yang ikut berkontribusi; jika tidak ada, jelaskan secara singkat.">${SIAMI_PREVIEW.escape(p.systemicFactors||"")}</textarea></div>
+  </div>
+  <div class="notice mt"><strong>Sebelum lanjut ke Bagian D:</strong> pastikan rencana tindakan korektif benar-benar mengatasi akar penyebab di atas, bukan hanya memperbaiki dokumen atau kondisi sementara.</div>
+
   <div class="section-title mt">D. Rencana Tindakan Korektif dan Pencegahan Keberulangan</div>
   <div class="rtl-table ${planAp?"locked":""}">${p.plans.map((r,i)=>`<div class="rtl-row"><div class="rowno">${i+1}</div><textarea placeholder="Tindakan korektif" oninput="setPlan(${i},'action',this.value)">${SIAMI_PREVIEW.escape(r.action||"")}</textarea><textarea placeholder="Bukti penyelesaian direncanakan" oninput="setPlan(${i},'plannedEvidence',this.value)">${SIAMI_PREVIEW.escape(r.plannedEvidence||"")}</textarea><input placeholder="PIC" value="${SIAMI_PREVIEW.escape(r.personInCharge||"")}" onchange="setPlan(${i},'personInCharge',this.value)"><input type="date" value="${r.startDate||""}" onchange="setPlan(${i},'startDate',this.value)"><input type="date" value="${r.deadline||""}" onchange="setPlan(${i},'deadline',this.value)"><textarea placeholder="Indikator keberhasilan" oninput="setPlan(${i},'successIndicator',this.value)">${SIAMI_PREVIEW.escape(r.successIndicator||"")}</textarea></div>`).join("")}</div>
   <div class="mt">${planAp?approvalHTML(planAp):`<div class="approval-box pending"><div class="approval-title"><strong>Persetujuan Rencana Tindak Lanjut oleh Auditee</strong><span class="badge wait">Menunggu</span></div><div class="mt"><label class="checkline"><input id="agreePlan" type="checkbox"><span>Saya menyatakan rencana tindak lanjut telah disusun berdasarkan akar penyebab dan dapat dilaksanakan pada tenggat yang disepakati.</span></label></div><div class="actions mt"><button class="btn success" onclick="approvePlan()">Setujui RTL Secara Elektronik</button></div></div>`}</div>

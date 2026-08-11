@@ -1266,6 +1266,8 @@
                   placeholder="Contoh: analisis proses, fault tree, atau metode lain.">
               </div>
 
+              <div id="rootAnalysisDetail" style="margin-top:12px"></div>
+
               <div class="source-grid" style="margin-top:12px">
                 <div class="field">
                   <label>Akar Penyebab Utama *</label>
@@ -1562,7 +1564,7 @@
 
   <div class="toast" id="toast">Data tersimpan.</div>
 
-  <script src="preview.js?v=8"></script>
+  <script src="preview.js?v=9"></script>
   <script>
     const SESSION_KEY = "siamiPreviewSession";
     const FORM3_KEY = "siami_preview_form3_2026_v7";
@@ -1711,6 +1713,11 @@
         immediateCorrection:"",
         rootMethod:"",
         rootMethodOther:"",
+        rootAnalysis:{
+          why:{why1:"",why2:"",why3:"",why4:"",why5:""},
+          fishbone:{sdm:"",prosedur:"",sistem:"",dokumen:"",sumberDaya:"",koordinasi:""},
+          other:{methodName:"",cause:"",preventionFailure:"",influentialFactors:""}
+        },
         rootCause:"",
         systemicFactors:"",
         mainDeadline:"",
@@ -1898,6 +1905,38 @@
       });
     }
 
+    function renderRootAnalysisDetail(ptk){
+      const box=document.getElementById("rootAnalysisDetail");
+      if(!box)return;
+      const ra=ptk.rootAnalysis||{};
+      const why=ra.why||{}, fish=ra.fishbone||{}, other=ra.other||{};
+      const esc=escapeHTML;
+
+      let rows=[];
+      if(ptk.rootMethod==="5 Why"){
+        [
+          ["Mengapa 1",why.why1],["Mengapa 2",why.why2],["Mengapa 3",why.why3],
+          ["Mengapa 4",why.why4],["Mengapa 5",why.why5]
+        ].forEach(([label,val])=>{if(nonEmpty(val))rows.push(`<div class="field"><label>${label}</label><textarea readonly>${esc(val)}</textarea></div>`)});
+      }else if(ptk.rootMethod==="Fishbone"){
+        [
+          ["SDM / Personel",fish.sdm],["Metode / Prosedur",fish.prosedur],["Sistem / Teknologi",fish.sistem],
+          ["Dokumen / Data",fish.dokumen],["Sarana / Sumber Daya",fish.sumberDaya],["Koordinasi / Manajemen",fish.koordinasi]
+        ].forEach(([label,val])=>{if(nonEmpty(val))rows.push(`<div class="field"><label>${label}</label><textarea readonly>${esc(val)}</textarea></div>`)});
+      }else if(ptk.rootMethod==="Analisis lainnya"){
+        [
+          ["Metode yang digunakan",other.methodName||ptk.rootMethodOther],
+          ["Penyebab kondisi/temuan",other.cause],
+          ["Mengapa tidak terdeteksi/dicegah",other.preventionFailure],
+          ["Faktor paling berpengaruh",other.influentialFactors]
+        ].forEach(([label,val])=>{if(nonEmpty(val))rows.push(`<div class="field"><label>${label}</label><textarea readonly>${esc(val)}</textarea></div>`)});
+      }
+
+      box.innerHTML=rows.length
+        ? `<div class="notice"><strong>Rincian Analisis yang Diisi Auditee</strong><br>Rincian berikut membantu Auditor menilai apakah akar penyebab dan RTL sudah logis.</div><div class="source-grid" style="margin-top:10px">${rows.join("")}</div>`
+        : `<div class="notice"><strong>Rincian Analisis Auditee</strong><br>Belum ada rincian stimulus analisis yang diisi Auditee untuk metode ini.</div>`;
+    }
+
     function renderPTK(){
       const ptk = currentPTK();
       if(!ptk)return;
@@ -1922,6 +1961,8 @@
       document.querySelectorAll('input[name="rootMethod"]').forEach(input => {
         input.checked = input.value === ptk.rootMethod;
       });
+
+      renderRootAnalysisDetail(ptk);
 
       document.querySelectorAll("[data-approval]").forEach(input => {
         input.value = ptk.approvals?.[input.dataset.approval] ?? "";
