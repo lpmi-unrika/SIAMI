@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Penugasan Auditor | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=4"></head><body>
+<title>Penugasan Auditor | SIAMI UNRIKA</title><link rel="stylesheet" href="preview.css?v=5"></head><body>
 <header class="topbar"><div class="brand"><div class="brandmark">AMI</div><div><h1>SIAMI UNRIKA</h1><p>Sistem Informasi Audit Mutu Internal</p></div></div>
 <div class="account"><span class="pill" id="accountPill">Memuat akun...</span><button class="btn soft" onclick="SIAMI_PREVIEW.logout()">Keluar</button></div></header>
 <div class="shell"><aside class="side">
 <div class="panel"><h3>Menu Admin LPMI</h3><div class="nav mt">
 <a href="monitoring.html">Monitoring</a><a href="master-unit.html">Master 25 Unit</a><a href="penugasan.html" class="active">Penugasan Auditor</a><a href="cek-alur.html">Panduan Alur</a>
 </div></div>
-<div class="panel"><h3>Penugasan Audit</h3><p class="small">Pilih unit. UPPS/unit induk, Auditor Ketua, Auditor Anggota, dan jadwal audit akan terisi dari Master AMI 2026.</p></div></aside>
+<div class="panel"><h3>Penugasan Audit</h3><p class="small">Pilih unit. UPPS/unit induk, Auditor Ketua, Auditor Anggota, dan jadwal audit akan terisi otomatis dari Master AMI 2026. Nama auditor dan tanggal tetap dapat diubah secara manual.</p></div></aside>
 <main class="main">
-<section class="hero"><h2>Penugasan Auditor</h2><p>Pilih unit yang diaudit dan lengkapi identitas auditee. Tim auditor diambil otomatis dari Master AMI 2026.</p></section>
+<section class="hero"><h2>Penugasan Auditor</h2><p>Pilih unit yang diaudit dan lengkapi identitas auditee. Tim auditor dan tanggal audit terisi otomatis sebagai nilai awal, tetapi tetap dapat dihapus atau diganti.</p></section>
 <section class="card"><div class="itemhead"><div><div class="code">PENUGASAN AUDIT</div><h4>Hubungkan Unit, Auditee, dan Tim Auditor</h4><p>Data master dapat dikoreksi terlebih dahulu melalui menu Master 25 Unit bila ada perubahan resmi.</p></div></div>
 <div class="itembody"><form id="assignForm" class="grid g2">
  <div class="field"><label>Pilih Unit yang Diaudit</label><select id="unitId" required><option value="">— Pilih salah satu dari 25 unit —</option></select></div>
  <div class="field"><label>UPPS / Fakultas / Unit Induk</label><input id="faculty" readonly></div>
  <div class="field"><label>Wakil Auditi / Auditee</label><input id="auditeeName"></div>
- <div class="field"><label>Auditor Ketua</label><input id="leadAuditor" readonly></div>
- <div class="field"><label>Auditor Anggota</label><input id="memberAuditor" readonly></div>
- <div class="field"><label>Tanggal Audit</label><input id="auditDate" type="date" readonly></div>
+ <div class="field"><label>Auditor Ketua</label><input id="leadAuditor"></div>
+ <div class="field"><label>Auditor Anggota</label><input id="memberAuditor"></div>
+ <div class="field"><label>Tanggal Audit</label><input id="auditDate" type="date"></div>
  <div class="field"><label>Lokasi Audit</label><input id="location"></div>
  <div class="field"><label>ID Audit</label><input id="auditId" readonly></div>
  <div class="actions"><button class="btn primary" type="submit">Simpan Penugasan</button><button class="btn soft" type="button" onclick="clearAssignment()">Kosongkan Penugasan</button></div>
 </form></div></section>
 </main></div>
-<script src="preview.js?v=4"></script>
+<script src="preview.js?v=5"></script>
 <script>
 const units=SIAMI_PREVIEW.ensureUnits().filter(u=>u.active!==false);
 unitId.innerHTML += units.map(u=>`<option value="${u.id}">${SIAMI_PREVIEW.escape(u.name)} — ${SIAMI_PREVIEW.escape(u.faculty||"")}</option>`).join("");
@@ -54,8 +54,10 @@ assignForm.addEventListener("submit",e=>{
    ...SIAMI_PREVIEW.emptyAssignment(),
    unitId:u.id,unitName:u.name,faculty:u.faculty||"",
    auditeeName:auditeeName.value.trim(),
-   leadAuditor:u.leadAuditor||"",memberAuditor:u.memberAuditor||"",
-   auditDate:u.auditDate||"",location:location.value.trim(),auditId:auditId.value,
+   leadAuditor:leadAuditor.value.trim(),
+   memberAuditor:memberAuditor.value.trim(),
+   auditDate:auditDate.value,
+   location:location.value.trim(),auditId:auditId.value,
    updatedAt:new Date().toISOString()
  };
  localStorage.setItem(SIAMI_PREVIEW.ASSIGNMENT_KEY,JSON.stringify(a));
