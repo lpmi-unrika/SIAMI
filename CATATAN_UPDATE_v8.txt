@@ -1,0 +1,10 @@
+SIAMI UNRIKA v8
+- A -> K, S -> OB, T -> Mi otomatis.
+- Auditor dapat mengubah klasifikasi di Form 1b.
+- PB/OB/Mi/Ma otomatis masuk Form 2; K tidak.
+- OB/Mi/Ma otomatis dibuat Form 3.
+- Mi/Ma otomatis dibuat Form 4.
+- Klasifikasi Form 2 read-only dari Form 1b.
+- Form 3 Auditor: A/B/C/D/F editable, G read-only.
+- Form 3 Auditee: A-F read-only, G editable dan dapat dikonfirmasi elektronik.
+- Form 2/3/4 otomatis sinkron saat sumber berubah.

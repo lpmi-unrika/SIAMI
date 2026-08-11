@@ -587,7 +587,7 @@
           <strong>A</strong> = Ada/lengkap, <strong>S</strong> = Sebagian/belum lengkap,
           dan <strong>T</strong> = Tidak ada/tidak dapat diverifikasi.
           Kolom hasil memuat target auditee, capaian sampai 31 Juli 2026,
-          status/klasifikasi, dan catatan bukti objektif.
+          status/klasifikasi, dan catatan bukti objektif. Klasifikasi awal otomatis: A→K, S→OB, T→Mi; Auditor tetap dapat mengubah sesuai tingkat keseriusan temuan.
         </div>
       </section>
 
@@ -639,9 +639,9 @@
   <div class="toast" id="toast">Data tersimpan.</div>
 
   
-<script src="preview.js?v=7"></script>
-<script src="audit-items.js?v=7"></script>
-<script src="audit-items-unit.js?v=7"></script>
+<script src="preview.js?v=8"></script>
+<script src="audit-items.js?v=8"></script>
+<script src="audit-items-unit.js?v=8"></script>
 <script>
   const CURRENT_ASSIGNMENT=SIAMI_PREVIEW.assignment();
   if(CURRENT_ASSIGNMENT.auditeeType==="unit")window.location.replace("form1b-unit.html");
@@ -739,6 +739,8 @@
       target:"",
       capaian:"",
       klasifikasi:"",
+      klasifikasiOtomatis:"",
+      klasifikasiManual:false,
       catatan:"",
       masukForm2:false,
       evidenceChecks:officialChecks(item),
@@ -747,6 +749,10 @@
     if(!stored)return base;
 
     const answer={...base,...stored};
+    if(typeof answer.klasifikasiManual!=="boolean"){
+      const oldAuto=SIAMI_PREVIEW.classificationFromResult(stored.hasilBukti || "");
+      answer.klasifikasiManual=Boolean(String(answer.klasifikasi||"").trim() && answer.klasifikasi!==oldAuto);
+    }
     const oldChecks=Array.isArray(stored.evidenceChecks) ? stored.evidenceChecks : [];
     const oldById=new Map(oldChecks.map(c=>[c.id,c]));
     const oldByName=new Map(oldChecks.map(c=>[String(c.name || "").toLowerCase(),c]));
@@ -798,14 +804,18 @@
   }
 
   function refreshDerived(item,answer,autoSelect=true){
-    answer.hasilBukti=calculateResult(item,answer);
-    if(autoSelect && ["S","T"].includes(answer.hasilBukti)){
-      answer.masukForm2=true;
+    const previousResult=String(answer.hasilBukti||"");
+    const result=calculateResult(item,answer);
+    const autoClass=SIAMI_PREVIEW.classificationFromResult(result);
+    const resultChanged=previousResult!==result;
+    if(!answer.klasifikasiManual || resultChanged || !answer.klasifikasi){
+      answer.klasifikasi=autoClass;
+      answer.klasifikasiManual=false;
     }
-    if(autoSelect && ["OB","Mi","Ma"].includes(answer.klasifikasi)){
-      answer.masukForm2=true;
-    }
-    return answer.hasilBukti;
+    answer.hasilBukti=result;
+    answer.klasifikasiOtomatis=autoClass;
+    answer.masukForm2=SIAMI_PREVIEW.classificationNeedsForm2(answer.klasifikasi);
+    return result;
   }
 
   function itemComplete(item,answer){
@@ -1158,21 +1168,22 @@
 
             <div class="field">
               <label>Status / Klasifikasi Auditor</label>
-              <select onchange="setAnswer(${item.no},'klasifikasi',this.value,true)">
-                <option value="">Pilih klasifikasi</option>
+              <select onchange="setClassification(${item.no},this.value)">
+                <option value="">Belum dapat diklasifikasikan</option>
                 <option value="PB" ${selected("PB")}>PB · Praktik Baik</option>
                 <option value="K" ${selected("K")}>K · Kesesuaian</option>
                 <option value="OB" ${selected("OB")}>OB · Observasi/Peluang Peningkatan</option>
                 <option value="Mi" ${selected("Mi")}>Mi · KTS Minor</option>
                 <option value="Ma" ${selected("Ma")}>Ma · KTS Mayor</option>
               </select>
+              <small>${answer.klasifikasiManual
+                ? `Diubah oleh Auditor dari klasifikasi awal ${answer.klasifikasiOtomatis || "-"}.`
+                : (status ? `Klasifikasi awal otomatis dari hasil ${status}: ${answer.klasifikasiOtomatis || "-"}. Auditor dapat mengubah bila diperlukan.` : "Klasifikasi akan muncul otomatis setelah hasil A/S/T lengkap.")}</small>
             </div>
-
-            <label class="include-row">
-              <input class="include-checkbox" type="checkbox" ${answer.masukForm2 ? "checked" : ""}
-                onchange="setAnswer(${item.no},'masukForm2',this.checked,false)">
-              Masukkan butir ini ke Form 2
-            </label>
+            <div class="include-row">
+              <strong>${answer.masukForm2 ? "✓ Otomatis masuk Form 2" : "Tidak masuk Form 2"}</strong>
+              <span>${answer.klasifikasi==="K" ? "Kesesuaian tidak memerlukan ringkasan temuan." : (answer.masukForm2 ? "PB/OB/Mi/Ma diteruskan otomatis ke Form 2." : "Lengkapi hasil verifikasi terlebih dahulu.")}</span>
+            </div>
           </div>
 
           <div class="detail-fields">
@@ -1302,6 +1313,19 @@
     refreshDerived(item,answer,true);
     refreshItem(no);
     autoSave();
+  }
+
+  function setClassification(no,value){
+    const item=FORM_ITEMS.find(x=>x.no===Number(no));
+    const answer=state.answers[no];
+    if(!item || !answer)return;
+    const autoClass=SIAMI_PREVIEW.classificationFromResult(calculateResult(item,answer));
+    answer.klasifikasi=value;
+    answer.klasifikasiOtomatis=autoClass;
+    answer.klasifikasiManual=Boolean(value && value!==autoClass);
+    answer.masukForm2=SIAMI_PREVIEW.classificationNeedsForm2(value);
+    autoSave();
+    refreshItem(no);
   }
 
   function setAnswer(no,field,value,rerender){

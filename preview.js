@@ -105,6 +105,18 @@ window.SIAMI_PREVIEW = {
       : "Form 1b Program Studi";
   },
 
+  classificationFromResult(result){
+    return ({A:"K",S:"OB",T:"Mi"})[String(result||"").toUpperCase()] || "";
+  },
+
+  classificationLabel(code){
+    return ({PB:"Praktik Baik",K:"Kesesuaian",OB:"Observasi / Peluang Peningkatan",Mi:"Ketidaksesuaian Minor",Ma:"Ketidaksesuaian Mayor"})[code] || "";
+  },
+
+  classificationNeedsForm2(code){ return ["PB","OB","Mi","Ma"].includes(code); },
+  classificationNeedsForm3(code){ return ["OB","Mi","Ma"].includes(code); },
+  classificationNeedsForm4(code){ return ["Mi","Ma"].includes(code); },
+
   form1bUrl(){
     return this.assignment().auditeeType==="unit"
       ? "form1b-unit.html"

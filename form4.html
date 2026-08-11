@@ -1562,7 +1562,7 @@
 
   <div class="toast" id="toast">Data tersimpan.</div>
 
-  <script src="preview.js?v=7"></script>
+  <script src="preview.js?v=8"></script>
   <script>
     const SESSION_KEY = "siamiPreviewSession";
     const FORM3_KEY = "siami_preview_form3_2026_v7";
@@ -2296,7 +2296,7 @@
       loadState();
       hydrateIdentityFromForm3();
 
-      if(!state.ptks.length || !state.sourceUpdatedAt){
+      if(!state.sourceUpdatedAt || (form3.updatedAt && form3.updatedAt!==state.sourceUpdatedAt)){
         syncFromForm3(false);
       }else{
         localStorage.setItem(FORM4_KEY,JSON.stringify(state));

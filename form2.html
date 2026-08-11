@@ -180,7 +180,7 @@
           <p>Ringkaskan hasil yang telah dikonfirmasi dalam pertemuan penutupan. Klasifikasi: PB = Praktik Baik; K = Kesesuaian; OB = Observasi/Peluang Peningkatan; Mi = KTS Minor; Ma = KTS Mayor. Setiap OB, Mi, dan Ma dilanjutkan ke Form 3; Mi dan Ma juga dilanjutkan ke Form 4.</p></div>
       </section>
 
-      <div class="notice" id="syncNotice">Form 2 mengambil butir yang ditandai “Masukkan butir ini ke Form 2” pada Form 1b. Redaksi hasil dapat disempurnakan oleh auditor.</div>
+      <div class="notice" id="syncNotice">Form 2 mengambil otomatis PB, OB, Mi, dan Ma dari Form 1b. Klasifikasi hanya diubah pada Form 1b; redaksi ringkasan tetap dapat disempurnakan Auditor.</div>
 
       <section class="panel">
         <div class="section-head"><div><h3>Identitas Audit</h3><div class="small">Data awal disalin dari Form 1b dan dapat disesuaikan.</div></div><span class="small">Status dokumen: Terkendali · Revisi 00</span></div>
@@ -263,9 +263,9 @@
     </main>
   </div>
   <div class="toast" id="toast">Data tersimpan.</div>
-<script src="preview.js?v=7"></script>
-<script src="audit-items.js?v=7"></script>
-<script src="audit-items-unit.js?v=7"></script>
+<script src="preview.js?v=8"></script>
+<script src="audit-items.js?v=8"></script>
+<script src="audit-items-unit.js?v=8"></script>
 <script>
   const CURRENT_ASSIGNMENT=SIAMI_PREVIEW.assignment();
   const IS_UNIT_AUDIT=CURRENT_ASSIGNMENT.auditeeType==="unit";
@@ -502,7 +502,7 @@
       kondisiFaktual:keepEdited(old,"kondisiFaktual",auto.kondisiFaktual),
       buktiObjektif:keepEdited(old,"buktiObjektif",auto.buktiObjektif),
       pernyataanKesenjangan:keepEdited(old,"pernyataanKesenjangan",auto.pernyataanKesenjangan),
-      klasifikasi:answer.klasifikasi || old?.klasifikasi || "",
+      klasifikasi:answer.klasifikasi || "",
       noForm3:old?.noForm3 || "",
       noForm4:old?.noForm4 || "",
       autoDrafts:auto,
@@ -592,7 +592,7 @@
       list.innerHTML=`
         <div class="empty-state">
           <strong>Belum ada butir untuk Form 2</strong>
-          <p>Kembali ke Form 1b, verifikasi bukti, pilih klasifikasi, lalu centang “Masukkan butir ini ke Form 2”.</p>
+          <p>Kembali ke Form 1b dan selesaikan verifikasi A/S/T. PB, OB, Mi, dan Ma akan masuk Form 2 secara otomatis.</p>
           <button class="btn btn-primary no-print" type="button" onclick="goForm1b()">Buka Form 1b</button>
         </div>`;
       return;
@@ -641,15 +641,9 @@
             </div>
             <div>
               <div class="field">
-                <label>Klasifikasi Auditor *</label>
-                <select onchange="updateRow(${index},'klasifikasi',this.value,true)">
-                  <option value="">Pilih klasifikasi</option>
-                  <option value="PB" ${selected("PB")}>PB · Praktik Baik</option>
-                  <option value="K" ${selected("K")}>K · Kesesuaian</option>
-                  <option value="OB" ${selected("OB")}>OB · Observasi</option>
-                  <option value="Mi" ${selected("Mi")}>Mi · KTS Minor</option>
-                  <option value="Ma" ${selected("Ma")}>Ma · KTS Mayor</option>
-                </select>
+                <label>Klasifikasi Final dari Form 1b</label>
+                <input class="input" value="${escapeHTML(row.klasifikasi ? `${row.klasifikasi} · ${classLabel}` : "Belum diklasifikasikan")}" readonly>
+                <span class="small">Perubahan klasifikasi dilakukan pada Form 1b oleh Auditor.</span>
               </div>
               <div class="number-box">
                 <label>Nomor dokumen lanjutan</label>
@@ -947,7 +941,7 @@
     readSource();
     loadState();
     hydrateIdentityOnly();
-    if(!state.rows.length || !state.sourceUpdatedAt){
+    if(!state.sourceUpdatedAt || (source.updatedAt && source.updatedAt!==state.sourceUpdatedAt)){
       syncFromForm1b(false);
     }else{
       localStorage.setItem(FORM2_KEY,JSON.stringify(state));

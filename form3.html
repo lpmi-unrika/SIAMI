@@ -1031,7 +1031,7 @@
                 </div>
               </div>
               <div class="source-refresh no-print">
-                <button class="btn btn-soft" type="button" onclick="goForm2()">Ubah klasifikasi di Form 2</button>
+                <button class="btn btn-soft" type="button" onclick="saveAll(false);window.location.href='form1b.html'">Ubah klasifikasi di Form 1b</button>
               </div>
             </div>
           </section>
@@ -1137,7 +1137,7 @@
             <div class="panel-head">
               <div>
                 <h4>F. Dampak / Risiko dan G. Tanggapan Awal Auditi</h4>
-                <p>Jelaskan dampak terhadap mutu dan catat tanggapan awal auditi apabila tersedia.</p>
+                <p>Auditor mengisi F. Kolom G hanya dapat diisi oleh Auditee melalui akun Auditee.</p>
               </div>
               <div class="section-letter">F–G</div>
             </div>
@@ -1148,8 +1148,9 @@
                   <textarea class="tall" data-current="impactRisk" placeholder="Jelaskan dampak terhadap mutu, kepatuhan, capaian kinerja, layanan, atau risiko keberulangan."></textarea>
                 </div>
                 <div class="field">
-                  <label>G. Tanggapan Awal Auditi</label>
-                  <textarea class="tall" data-current="auditeeResponse" placeholder="Tuliskan klarifikasi, dokumen tambahan, atau tanggapan awal auditi."></textarea>
+                  <label>G. Tanggapan Awal Auditi — hanya Auditee</label>
+                  <textarea class="tall" id="auditeeResponseView" readonly placeholder="Menunggu tanggapan Auditee..."></textarea>
+                  <small id="auditeeResponseStatus">Menunggu tanggapan Auditee.</small>
                 </div>
               </div>
             </div>
@@ -1169,11 +1170,11 @@
                   <h5>Wakil Auditi</h5>
                   <div class="field">
                     <label>Nama</label>
-                    <input data-sign="wakilAuditiNama" type="text">
+                    <input data-sign="wakilAuditiNama" type="text" readonly>
                   </div>
                   <div class="field">
                     <label>Tanggal</label>
-                    <input data-sign="wakilAuditiTanggal" type="date">
+                    <input data-sign="wakilAuditiTanggal" type="date" readonly>
                   </div>
                 </div>
                 <div class="signature-card">
@@ -1221,7 +1222,7 @@
 
   <div class="toast" id="toast">Data tersimpan.</div>
 
-  <script src="preview.js?v=7"></script>
+  <script src="preview.js?v=8"></script>
   <script>
     const SESSION_KEY = "siamiPreviewSession";
     const FORM2_KEY = "siami_preview_form2_2026_v7";
@@ -1626,6 +1627,17 @@
         input.value = finding[input.dataset.current] ?? "";
       });
 
+      const responseView=document.getElementById("auditeeResponseView");
+      const responseStatus=document.getElementById("auditeeResponseStatus");
+      const responseText=String(finding.auditeeResponse||"").trim();
+      if(responseView)responseView.value=responseText;
+      if(responseStatus){
+        const approval=SIAMI_PREVIEW.approval("form3-confirm",finding.key || `source-${finding.sourceNo}`);
+        responseStatus.textContent=responseText
+          ? (approval ? `✓ Tanggapan dikonfirmasi Auditee · ${approval.signerName} · ${SIAMI_PREVIEW.fmtDateTime(approval.approvedAt)}` : "Tanggapan Auditee sudah diterima; menunggu konfirmasi elektronik.")
+          : "Menunggu tanggapan Auditee.";
+      }
+
       const signatureFallback = {
         wakilAuditiNama: state.identity?.wakilAuditi || "",
         auditorKetuaNama: state.identity?.auditorKetua || "",
@@ -1862,7 +1874,7 @@
       loadState();
       hydrateSharedIdentity();
 
-      if(!state.findings.length || !state.sourceUpdatedAt){
+      if(!state.sourceUpdatedAt || (form2.updatedAt && form2.updatedAt!==state.sourceUpdatedAt)){
         syncFromForm2(false);
       }else{
         localStorage.setItem(FORM3_KEY,JSON.stringify(state));
